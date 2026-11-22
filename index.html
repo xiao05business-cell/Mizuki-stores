@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mizuki Stores</title>
+<meta name="description" content="Mizuki Stores. Sign in to save your wishlist, track orders and check out faster.">
+<meta name="theme-color" content="#0F0907">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://appleid.cdn-apple.com; connect-src 'self' https://accounts.google.com https://appleid.apple.com; frame-src https://accounts.google.com https://appleid.apple.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23D8B48A'/%3E%3C/svg%3E">
+<style>
+:root{--espresso:#0F0907;--roast:#1A110D;--mocha:rgba(58,40,31,.38);--bronze:#D8B48A;--cream:#F4EDE4;--muted:rgba(244,237,228,.62);--line:1px solid rgba(216,180,138,.15);--ease:cubic-bezier(.16,1,.3,1);--danger:#E0836B;--ok:#9FC08A;
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;--sans:ui-sans-serif,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--espresso);color:var(--cream);font-family:var(--sans);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100svh}
+body.lock{overflow:hidden}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--bronze);outline-offset:3px;border-radius:12px}
+.wrap{width:min(1180px,100% - 2.5rem);margin-inline:auto}.center{text-align:center}.muted{color:var(--muted)}.fine{font-size:.8rem;color:var(--muted)}
+.glass{background:var(--mocha);border:var(--line);backdrop-filter:blur(24px) saturate(140%);-webkit-backdrop-filter:blur(24px) saturate(140%)}
+/* background auras */
+#aura{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.aura{position:absolute;border-radius:50%;filter:blur(90px);will-change:transform,opacity}
+.a1{width:70vmax;height:70vmax;left:50%;top:48%;margin:-35vmax 0 0 -35vmax;background:radial-gradient(circle,rgba(216,180,138,.3),rgba(150,90,50,.12) 45%,transparent 70%);animation:breathe 11s ease-in-out infinite}
+.a2{width:46vmax;height:46vmax;left:-14vmax;bottom:-18vmax;background:radial-gradient(circle,rgba(160,96,52,.3),transparent 68%);animation:drift 24s ease-in-out infinite}
+.a3{width:38vmax;height:38vmax;right:-12vmax;top:-12vmax;background:radial-gradient(circle,rgba(216,180,138,.18),transparent 68%);animation:drift 30s ease-in-out infinite reverse}
+@keyframes breathe{0%,100%{transform:scale(.88);opacity:.7}50%{transform:scale(1.08);opacity:1}}
+@keyframes drift{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(6vmax,-5vmax,0)}}
+/* buttons */
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.8rem 1.5rem;border-radius:999px;border:0;cursor:pointer;font-weight:600;font-size:.92rem;color:#1A110D;background:linear-gradient(135deg,#ECCFA6,#D8B48A 60%,#C09866);box-shadow:inset 0 1px 0 rgba(255,255,255,.35);transition:transform .7s var(--ease),box-shadow .7s var(--ease),opacity .4s;will-change:transform}
+.btn:hover{box-shadow:0 10px 40px rgba(216,180,138,.38),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn:active{transform:scale(.96)!important}.btn[disabled]{opacity:.55;pointer-events:none}
+.btn.ghost{background:transparent;color:var(--cream);border:var(--line);box-shadow:none}.btn.ghost:hover{background:rgba(216,180,138,.08);box-shadow:0 0 30px rgba(216,180,138,.12)}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid rgba(224,131,107,.35);box-shadow:none}.btn.danger:hover{background:rgba(224,131,107,.1)}
+.btn.sm{padding:.5rem 1rem;font-size:.82rem}.btn.block{width:100%}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);animation:rip .7s var(--ease) forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+.spin{width:16px;height:16px;border-radius:50%;border:2px solid rgba(26,17,13,.3);border-top-color:#1A110D;animation:rot .7s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+/* gate */
+.gate{min-height:100svh;display:grid;place-items:center;padding:4rem 0}
+.pill{display:inline-block;padding:.45rem 1.1rem;border-radius:999px;font-size:.82rem;color:var(--bronze);margin-bottom:2rem}
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.02em}
+.gate h1{font-size:clamp(2.8rem,9vw,7rem);line-height:.98;letter-spacing:-.035em;max-width:13ch;margin-inline:auto}
+.gate h1 span,.sheen{display:block;background:linear-gradient(100deg,var(--cream) 20%,var(--bronze) 60%,var(--cream) 90%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 9s ease-in-out infinite}
+@keyframes sheen{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+.lead{max-width:44ch;margin:1.6rem auto 2.2rem;color:var(--muted);font-size:clamp(1rem,2vw,1.18rem)}
+.cta-row{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap}.cta-row .btn{min-width:150px;padding:1rem 2rem}
+.load{opacity:0;transform:translateY(34px);filter:blur(10px);animation:in 1.5s var(--ease) forwards}
+.load:nth-child(2){animation-delay:.12s}.load:nth-child(3){animation-delay:.24s}.load:nth-child(4){animation-delay:.36s}.load:nth-child(5){animation-delay:.48s}
+@keyframes in{to{opacity:1;transform:none;filter:none}}
+/* sheet + modal */
+.veil{position:fixed;inset:0;z-index:80;background:rgba(8,4,2,.66);backdrop-filter:blur(8px);display:grid;place-items:center;padding:1rem;animation:fade .5s var(--ease) both}
+.veil.out{animation:fade .35s reverse both}
+@keyframes fade{from{opacity:0}}
+.sheet{width:min(440px,100%);max-height:94svh;overflow:auto;border-radius:32px;padding:1.8rem;background:rgba(26,17,13,.92);position:relative;animation:pop .8s var(--ease) both}
+.sheet.wide{width:min(560px,100%)}
+@keyframes pop{from{opacity:0;transform:translateY(40px) scale(.94)}}
+.sheet h2{font-size:1.8rem;margin-bottom:.3rem}.x{position:absolute;top:1rem;right:1.1rem;background:none;border:0;color:var(--muted);font-size:1.6rem;cursor:pointer;transition:transform .6s var(--ease),color .4s}.x:hover{transform:rotate(90deg);color:var(--cream)}
+.tabs{position:relative;display:flex;margin:1.2rem 0;border-bottom:var(--line)}.tabs button{flex:1;background:none;border:0;padding:.7rem;color:var(--muted);cursor:pointer;transition:color .5s}.tabs button.on{color:var(--bronze)}
+.tabs i{position:absolute;bottom:-1px;left:0;width:50%;height:2px;background:var(--bronze);transition:transform .7s var(--ease)}.tabs.s i{transform:translateX(100%)}
+.social{display:grid;gap:.6rem}.social .btn{justify-content:flex-start;gap:.8rem;padding-inline:1.2rem}
+.or{display:flex;align-items:center;gap:.8rem;color:var(--muted);font-size:.8rem;margin:1.1rem 0}.or:before,.or:after{content:"";flex:1;height:1px;background:rgba(216,180,138,.15)}
+label{display:block;font-size:.8rem;color:var(--muted);margin:.9rem 0 .35rem}
+input,select,textarea{width:100%;background:rgba(255,255,255,.04);border:var(--line);border-radius:16px;padding:.8rem 1rem;color:var(--cream);font:16px var(--sans);transition:border-color .5s,box-shadow .6s var(--ease),background .5s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:rgba(216,180,138,.6);box-shadow:0 0 0 4px rgba(216,180,138,.12),0 0 30px rgba(216,180,138,.12);background:rgba(255,255,255,.06)}
+select option{background:#1A110D}
+.pw{position:relative}.pw button{position:absolute;right:.5rem;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--muted);padding:.4rem .7rem;cursor:pointer;font-size:.8rem}
+.meter{display:flex;gap:4px;margin-top:.5rem}.meter i{flex:1;height:4px;border-radius:4px;background:rgba(244,237,228,.12);transition:background .6s var(--ease),transform .6s var(--ease)}.meter i.on{background:var(--bronze);transform:scaleY(1.4)}
+.err{min-height:1.4rem;margin-top:.8rem;font-size:.85rem;color:var(--danger)}.shake{animation:shake .5s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+/* ceremony */
+#ceremony{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:var(--espresso);padding:1rem}#ceremony.on{display:grid;animation:fade .6s both}#ceremony.out{animation:fade .6s reverse both}
+.cer{text-align:center;width:min(420px,100%)}.rings{position:relative;width:110px;height:110px;margin:0 auto 1.6rem}.rings i{position:absolute;inset:0;border-radius:50%;border:1px solid var(--bronze);opacity:0;animation:ring 2.4s var(--ease) infinite}.rings i:nth-child(2){animation-delay:.8s}.rings i:nth-child(3){animation-delay:1.6s}
+.rings:after{content:"";position:absolute;inset:38px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ECCFA6,#B07F4E 60%,#3A281F);box-shadow:0 0 40px rgba(216,180,138,.6)}
+@keyframes ring{from{transform:scale(.4);opacity:.9}to{transform:scale(1.6);opacity:0}}
+.cer h2{font-size:clamp(1.7rem,5vw,2.3rem)}.steps{list-style:none;margin:1.4rem auto;display:grid;gap:.6rem;width:max-content;max-width:100%;text-align:left}
+.steps li{display:flex;align-items:center;gap:.7rem;color:var(--muted);opacity:0;transform:translateX(-14px);animation:in .8s var(--ease) forwards;animation-delay:calc(var(--i)*.25s + .3s);transition:color .5s}.steps li.done{color:var(--cream)}
+.tick{width:20px;height:20px;border-radius:50%;border:1px solid rgba(216,180,138,.4);display:grid;place-items:center;transition:background .5s,border-color .5s}.done .tick{background:var(--bronze);border-color:var(--bronze)}.done .tick:after{content:"";width:5px;height:9px;border:solid #1A110D;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.prog{height:3px;border-radius:3px;background:rgba(244,237,228,.1);overflow:hidden;margin:1rem 0 1.6rem}.prog b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--bronze),#ECCFA6);transition:width 1s var(--ease)}
+.idcard{position:relative;overflow:hidden;border-radius:26px;padding:1.4rem;text-align:left;aspect-ratio:1.7;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(135deg,rgba(236,207,166,.22),rgba(58,40,31,.7));border:1px solid rgba(216,180,138,.4);opacity:0;transform:perspective(900px) rotateY(-80deg) scale(.9);transition:transform 1.2s var(--ease),opacity .8s}
+.idcard.show{opacity:1;transform:none}.idcard:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.18) 50%,transparent 70%);transform:translateX(-100%)}.idcard.show:after{animation:sweep 2s .8s var(--ease)}
+@keyframes sweep{to{transform:translateX(100%)}}
+.idcard small{color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-size:.68rem}.idcard b{font-family:var(--serif);font-weight:400;font-size:1.7rem;letter-spacing:.06em;color:var(--bronze)}
+/* app shell */
+.top{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(1180px,100% - 1.5rem);z-index:50;display:flex;align-items:center;gap:.8rem;padding:.5rem .6rem;border-radius:999px;animation:down 1s var(--ease) both}
+@keyframes down{from{opacity:0;transform:translate(-50%,-30px)}}
+.burger{width:44px;height:44px;border-radius:50%;border:var(--line);background:rgba(216,180,138,.06);cursor:pointer;display:grid;place-content:center;gap:5px;transition:background .5s,transform .7s var(--ease)}.burger:hover{background:rgba(216,180,138,.14);transform:scale(1.06)}
+.burger i{display:block;width:20px;height:2px;border-radius:2px;background:var(--cream);transition:transform .7s var(--ease),opacity .4s,width .6s var(--ease)}.burger i:nth-child(2){width:14px}.burger:hover i:nth-child(2){width:20px}
+.burger.open i:nth-child(1){transform:translateY(7px) rotate(45deg)}.burger.open i:nth-child(2){opacity:0}.burger.open i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.logo{font-family:var(--serif);font-size:1.15rem;display:flex;align-items:center;gap:.55rem;cursor:pointer;background:none;border:0}.logo i{width:10px;height:10px;border-radius:50%;background:var(--bronze);box-shadow:0 0 14px var(--bronze)}
+.sp{flex:1}.iconbtn{position:relative;width:44px;height:44px;border-radius:50%;border:var(--line);background:rgba(216,180,138,.06);cursor:pointer;display:grid;place-items:center;transition:background .5s,transform .7s var(--ease)}.iconbtn:hover{background:rgba(216,180,138,.14);transform:translateY(-2px)}
+.iconbtn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.tbl td:first-child b{white-space:nowrap}
+.badge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:var(--bronze);color:#1A110D;font-size:.72rem;font-weight:700;display:grid;place-items:center}.badge.bump{animation:bump .6s var(--ease)}.badge:empty{display:none}
+@keyframes bump{40%{transform:scale(1.5)}}
+.drawer-veil{position:fixed;inset:0;z-index:55;background:rgba(8,4,2,.55);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .6s var(--ease)}.drawer-veil.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;bottom:0;left:0;z-index:60;width:min(340px,86vw);padding:calc(1.2rem + env(safe-area-inset-top,0px)) 1.1rem 1.2rem;background:rgba(20,12,9,.9);border-right:var(--line);transform:translateX(-102%);transition:transform .9s var(--ease);display:flex;flex-direction:column;gap:.3rem;overflow:auto}.drawer.on{transform:none}
+.me{display:flex;gap:.8rem;align-items:center;padding:1rem;border-radius:22px;margin:3rem 0 1rem}.av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-size:1.3rem;color:#1A110D;background:linear-gradient(135deg,#ECCFA6,#C09866);flex:none}
+.me b{display:block;font-weight:600;line-height:1.2}.me small{color:var(--bronze);letter-spacing:.08em}
+.nav{display:flex;align-items:center;gap:.8rem;width:100%;text-align:left;padding:.85rem 1rem;border-radius:16px;border:0;background:none;color:var(--muted);cursor:pointer;opacity:0;transform:translateX(-24px);transition:background .5s,color .5s,transform .7s var(--ease),opacity .7s var(--ease)}
+.drawer.on .nav{opacity:1;transform:none;transition-delay:calc(var(--i)*.05s + .15s)}.nav:hover,.nav.on{background:rgba(216,180,138,.1);color:var(--cream)}.nav.on{box-shadow:inset 3px 0 var(--bronze)}.nav:hover{transform:translateX(6px)!important;transition-delay:0s}
+.nav svg,.ico svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}.nav em{margin-left:auto;font-style:normal;font-size:.75rem;color:var(--bronze)}
+.hr{height:1px;background:rgba(216,180,138,.12);margin:.6rem 0}
+main{padding:6.5rem 0 5rem}.pg{animation:pg .9s var(--ease) both}@keyframes pg{from{opacity:0;transform:translateY(24px)}}
+.ph{display:flex;align-items:end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}.ph h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05}.ph p{color:var(--muted);margin-top:.4rem}
+.rv{opacity:0;transform:translateY(40px);transition:opacity 1.2s var(--ease),transform 1.2s var(--ease)}.rv.on{opacity:1;transform:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.1rem}
+.card{position:relative;overflow:hidden;border-radius:28px;padding:1.3rem;transition:transform 1s var(--ease),border-color 1s var(--ease),box-shadow 1s var(--ease)}
+.card:before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(216,180,138,.18),transparent 60%);opacity:0;transition:opacity 1s var(--ease);pointer-events:none}
+.card:hover{transform:translateY(-8px);border-color:rgba(216,180,138,.4);box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px rgba(216,180,138,.08)}.card:hover:before{opacity:1}
+.thumb{position:relative;aspect-ratio:4/3;border-radius:20px;margin-bottom:1rem;display:grid;place-items:center;font-family:var(--serif);font-size:3.4rem;color:var(--bronze);background:radial-gradient(circle at 35% 30%,rgba(236,207,166,.3),rgba(58,40,31,.6));overflow:hidden}.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}.card:hover .thumb img{transform:scale(1.06)}
+.card h3{font-size:1.25rem;line-height:1.2}.price{color:var(--bronze);font-weight:600}.row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.8rem}
+.heart{position:absolute;top:.8rem;right:.8rem;z-index:2;width:40px;height:40px;border-radius:50%;border:var(--line);background:rgba(15,9,7,.6);cursor:pointer;display:grid;place-items:center;color:var(--cream);transition:transform .6s var(--ease)}.heart:hover{transform:scale(1.12)}.heart svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}.heart.on{color:var(--bronze)}.heart.on svg{fill:var(--bronze);animation:pop2 .7s var(--ease)}
+@keyframes pop2{40%{transform:scale(1.5)}}
+.chips{display:flex;gap:.5rem;flex-wrap:wrap}.chip{border:var(--line);background:none;border-radius:999px;padding:.45rem 1rem;color:var(--muted);cursor:pointer;font-size:.85rem;transition:all .6s var(--ease)}.chip.on,.chip:hover{color:#1A110D;background:var(--bronze);border-color:var(--bronze)}
+.tools{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-bottom:1.6rem}.tools input{max-width:300px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1rem;margin-bottom:1.4rem}.stat{border-radius:26px;padding:1.3rem}.stat small{color:var(--muted)}.stat b{display:block;font-family:var(--serif);font-weight:400;font-size:2.2rem;color:var(--bronze);line-height:1.2}
+.bars{display:flex;align-items:flex-end;gap:.8rem;height:180px;margin-top:1rem}.bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:.4rem;font-size:.75rem;color:var(--muted)}.bars i{display:block;width:100%;max-width:54px;border-radius:12px 12px 4px 4px;background:linear-gradient(180deg,#ECCFA6,#B07F4E);height:0;animation:grow 1.2s var(--ease) forwards;animation-delay:calc(var(--i)*.1s + .2s)}
+@keyframes grow{to{height:var(--h)}}
+.tbl{overflow:auto;border-radius:26px}.tbl table{width:100%;border-collapse:collapse;min-width:640px}.tbl th{text-align:left;font-weight:500;font-size:.78rem;color:var(--muted);padding:.9rem 1rem;border-bottom:var(--line)}.tbl td{padding:.85rem 1rem;border-bottom:1px solid rgba(216,180,138,.07);font-size:.9rem;vertical-align:middle}.tbl tr{transition:background .5s}.tbl tbody tr:hover{background:rgba(216,180,138,.06)}
+.tag{display:inline-block;padding:.15rem .7rem;border-radius:999px;font-size:.75rem;border:var(--line);color:var(--muted)}.tag.ok{color:var(--ok);border-color:rgba(159,192,138,.4)}.tag.bad{color:var(--danger);border-color:rgba(224,131,107,.4)}.tag.gold{color:var(--bronze)}
+.tl{display:flex;gap:0;margin-top:1rem}.tl div{flex:1;position:relative;font-size:.75rem;color:var(--muted);text-align:center;padding-top:1.4rem}.tl div:before{content:"";position:absolute;top:4px;left:0;right:0;height:2px;background:rgba(244,237,228,.12)}.tl div:after{content:"";position:absolute;top:0;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:var(--roast);border:2px solid rgba(244,237,228,.25)}
+.tl .d{color:var(--cream)}.tl .d:before{background:var(--bronze);transform-origin:left;animation:line 1s var(--ease) both;animation-delay:calc(var(--i)*.2s)}.tl .d:after{background:var(--bronze);border-color:var(--bronze);box-shadow:0 0 12px var(--bronze)}
+@keyframes line{from{transform:scaleX(0)}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.stack{display:grid;gap:1rem}.pad{padding:1.5rem;border-radius:28px}
+.sw{position:relative;width:48px;height:28px;flex:none;border-radius:14px;background:rgba(244,237,228,.15);border:0;cursor:pointer;transition:background .6s var(--ease)}.sw:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--cream);transition:transform .7s var(--ease)}.sw.on{background:var(--bronze)}.sw.on:after{transform:translateX(20px);background:#1A110D}
+.line{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 0;border-bottom:1px solid rgba(216,180,138,.08)}.line:last-child{border:0}
+details{border-bottom:1px solid rgba(216,180,138,.1);padding:1rem 0}summary{cursor:pointer;font-family:var(--serif);font-size:1.2rem;list-style:none;display:flex;justify-content:space-between}summary:after{content:"+";color:var(--bronze);transition:transform .6s var(--ease)}details[open] summary:after{transform:rotate(45deg)}details p{color:var(--muted);margin-top:.6rem;animation:in .8s var(--ease) both}
+.note{border-radius:20px;padding:.9rem 1.1rem;font-size:.85rem;color:var(--muted);border:1px dashed rgba(216,180,138,.3);margin-bottom:1.4rem}.note b{color:var(--bronze)}
+pre{white-space:pre-wrap;word-break:break-all;font-size:.78rem;background:rgba(0,0,0,.35);border:var(--line);border-radius:16px;padding:1rem;color:var(--cream)}
+.empty{text-align:center;padding:3rem 1rem;color:var(--muted)}.empty b{display:block;font-family:var(--serif);font-weight:400;font-size:1.6rem;color:var(--cream);margin-bottom:.4rem}
+#toasts{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:200;display:grid;gap:.5rem;justify-items:center;width:min(440px,100% - 2rem);pointer-events:none}
+.toast{padding:.8rem 1.3rem;border-radius:999px;background:rgba(26,17,13,.95);border:1px solid rgba(216,180,138,.4);font-size:.9rem;animation:toast .7s var(--ease) both}.toast.bad{border-color:rgba(224,131,107,.6)}.toast.out{animation:toast .5s reverse both}
+@keyframes toast{from{opacity:0;transform:translateY(30px) scale(.9)}}
+@media(max-width:820px){.two{grid-template-columns:1fr}.top .logo span{display:none}main{padding-top:6rem}}
+@media print{.top,.drawer,.drawer-veil,#aura,#toasts{display:none!important}body{background:#fff;color:#000}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.rv,.load{opacity:1;transform:none;filter:none}}
+</style>
+</head>
+<body>
+<div id="aura"><div class="aura a1"></div><div class="aura a2"></div><div class="aura a3"></div></div>
+<div id="root"></div>
+<div id="ceremony" role="status" aria-live="polite"></div>
+<div id="toasts" aria-live="polite"></div>
+
+<!-- ================= CORE: settings, security, data. Kept free of page code so it can be tested on its own. ================= -->
+<script id="core">
+"use strict";
+/* ---------------------------------------------------------------
+   1. CONFIG: the only part you normally edit
+---------------------------------------------------------------- */
+const CONFIG = {
+  STORE_NAME: "Mizuki Stores",
+  OWNER_EMAIL: "zian.xi.005@gmail.com",
+  // Owner password check. Leave null, open  YOURSITE/#owner-setup , type your password,
+  // copy the line it shows and paste it here instead of null. Then redeploy.
+  OWNER_HASH: null,
+  // Add these when you have the keys (see the guide). Empty = the button shows a notice.
+  GOOGLE_CLIENT_ID: "",
+  APPLE_CLIENT_ID: "",
+  APPLE_REDIRECT_URI: "",
+  // Products every visitor sees. Edit in the owner console, then use API > Copy catalog snippet to paste here.
+  SEED_PRODUCTS: [
+    { id: "p1", name: "Handloom cotton scarf", price: 699, stock: 24, cat: "Fashion", desc: "Soft block-printed scarf, woven by hand.", img: "" },
+    { id: "p2", name: "Blue pottery mug", price: 449, stock: 40, cat: "Home", desc: "Hand-painted ceramic, made to be used daily.", img: "" },
+    { id: "p3", name: "Brass desk lamp", price: 2199, stock: 6, cat: "Home", desc: "Warm light and solid brass.", img: "" },
+    { id: "p4", name: "Linen throw", price: 1499, stock: 12, cat: "Home", desc: "Washed linen that softens with every wash.", img: "" },
+    { id: "p5", name: "Leather card holder", price: 899, stock: 30, cat: "Fashion", desc: "Vegetable-tanned leather, hand stitched.", img: "" },
+    { id: "p6", name: "Stoneware planter", price: 1199, stock: 0, cat: "Home", desc: "Matte glaze, with a drainage hole.", img: "" }
+  ]
+};
+
+/* ---------------------------------------------------------------
+   2. Small helpers. Everything shown on screen goes through T`` which escapes it.
+---------------------------------------------------------------- */
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const raw = s => ({ __raw: String(s) });
+const part = v => v && v.__raw !== undefined ? v.__raw : Array.isArray(v) ? v.map(part).join("") : esc(v);
+const T = (st, ...v) => raw(st.reduce((a, s, i) => a + s + (i < v.length ? part(v[i]) : ""), ""));
+const now = () => Date.now(), DAY = 864e5;
+const money = n => "₹" + Number(n || 0).toLocaleString("en-IN");
+const safeUrl = u => /^(https:\/\/|data:image\/(png|jpe?g|webp|gif);base64,)/i.test(String(u || "")) ? String(u) : "";
+const ls = {
+  get(k, d) { try { const v = localStorage.getItem("mz." + k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem("mz." + k, JSON.stringify(v)); return true; } catch { return false; } },
+  del(k) { try { localStorage.removeItem("mz." + k); } catch {} }
+};
+class AppError extends Error { constructor(code, msg) { super(msg); this.code = code; } }
+
+/* ---------------------------------------------------------------
+   3. Passwords: PBKDF2-SHA256, 310,000 rounds, random salt. The password itself is never stored.
+---------------------------------------------------------------- */
+const enc = new TextEncoder();
+const b64 = u => btoa(String.fromCharCode(...u));
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function pbkdf2(pw, salt, iter) {
+  const k = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveBits"]);
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: iter }, k, 256));
+}
+async function hashPw(pw, iter = 310000) {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  return { s: b64(salt), i: iter, h: b64(await pbkdf2(pw, salt, iter)) };
+}
+async function checkPw(pw, rec) {
+  const h = await pbkdf2(pw, unb64(rec.s), rec.i), e = unb64(rec.h);
+  let d = h.length ^ e.length;
+  for (let i = 0; i < h.length; i++) d |= h[i] ^ (e[i] || 0);   // constant-time compare
+  return d === 0;
+}
+const DUMMY = { s: b64(new Uint8Array(16)), i: 310000, h: b64(new Uint8Array(32)) };   // keeps timing equal when an email does not exist
+const strength = p => { p = String(p || ""); return Math.min(4, (p.length >= 8) + (p.length >= 12) + (/[a-z]/.test(p) && /[A-Z]/.test(p)) + (/\d/.test(p) && /[^A-Za-z0-9]/.test(p))); };
+const validEmail = e => e.length <= 254 && /^[^@\s]{1,64}@[^@\s]{1,190}\.[^@\s]{2,}$/.test(e);
+
+/* ---------------------------------------------------------------
+   4. Settings, audit log, login throttle
+---------------------------------------------------------------- */
+const Settings = {
+  get: () => ({ name: CONFIG.STORE_NAME, open: true, days: 30, freeShip: 999, shipFee: 60, carriers: {}, ...ls.get("settings", {}) }),
+  set: p => ls.set("settings", { ...Settings.get(), ...p })
+};
+const audit = (type, uid, msg) => { const a = ls.get("audit", []); a.unshift({ t: now(), type, uid, msg }); ls.set("audit", a.slice(0, 300)); };
+const Throttle = {
+  check(e) { const t = ls.get("throttle", {})[e]; if (t && t.until > now()) throw new AppError("locked", "Too many attempts. Try again in " + Math.ceil((t.until - now()) / 1000) + " seconds."); },
+  fail(e) { const all = ls.get("throttle", {}), t = all[e] || { n: 0, until: 0 }; t.n++; if (t.n >= 5) t.until = now() + Math.min(900000, 30000 * 2 ** (t.n - 5)); all[e] = t; ls.set("throttle", all); },
+  clear(e) { const all = ls.get("throttle", {}); delete all[e]; ls.set("throttle", all); }
+};
+
+/* ---------------------------------------------------------------
+   5. Accounts and sessions. The session is kept, so people do not log in again and again.
+---------------------------------------------------------------- */
+const Auth = {
+  users: () => ls.get("users", []),
+  byId: uid => Auth.users().find(u => u.uid === uid),
+  byEmail: e => Auth.users().find(u => u.email === e),
+  put(u) { const all = Auth.users(), i = all.findIndex(x => x.uid === u.uid); i < 0 ? all.push(u) : all[i] = u; ls.set("users", all); return u; },
+  memberId() {
+    const al = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+    for (;;) { const s = [...crypto.getRandomValues(new Uint8Array(8))].map(x => al[x % al.length]).join(""), id = "MZ-" + s.slice(0, 4) + "-" + s.slice(4); if (!Auth.users().some(u => u.id === id)) return id; }
+  },
+  session() {
+    const s = ls.get("session", null);
+    if (!s || s.exp < now()) return null;
+    if (s.role === "owner") return s;
+    const u = Auth.byId(s.uid);
+    return !u || u.banned || u.sv !== s.sv ? null : s;
+  },
+  start(u, role) {
+    const s = role === "owner" ? { uid: "owner", role: "owner", exp: now() + 12 * 36e5 } : { uid: u.uid, role: "user", sv: u.sv, exp: now() + Settings.get().days * DAY };
+    ls.set("session", s); return s;
+  },
+  end() { ls.del("session"); },
+  user() { const s = Auth.session(); return s && s.role === "user" ? Auth.byId(s.uid) : null; },
+  touch(uid) { const u = Auth.byId(uid); if (u) { u.seen = now(); Auth.put(u); } },
+  async signup({ name, email, password }) {
+    name = String(name || "").trim().slice(0, 60); email = String(email || "").trim().toLowerCase(); password = String(password || "");
+    if (!name) throw new AppError("name", "Please enter your name.");
+    if (!validEmail(email)) throw new AppError("email", "Enter a valid email address.");
+    if (email === CONFIG.OWNER_EMAIL) throw new AppError("reserved", "This email is reserved. Please use Log in.");
+    if (password.length < 8) throw new AppError("password", "Use at least 8 characters.");
+    if (password.length > 128) throw new AppError("password", "That password is too long.");
+    if (!Settings.get().open) throw new AppError("closed", "New sign-ups are paused right now.");
+    if (Auth.byEmail(email)) throw new AppError("exists", "An account with this email already exists. Try logging in.");
+    const u = Auth.put({ uid: crypto.randomUUID(), id: Auth.memberId(), name, email, pw: await hashPw(password), provider: "email", created: now(), last: now(), seen: now(), logins: 1, banned: false, sv: 1, wish: [], idShown: false });
+    audit("signup", u.uid, "New account " + u.id);
+    return { user: u, session: Auth.start(u) };
+  },
+  async login(email, password) {
+    email = String(email || "").trim().toLowerCase(); password = String(password || "");
+    if (!validEmail(email)) throw new AppError("email", "Enter a valid email address.");
+    Throttle.check(email);
+    if (email === CONFIG.OWNER_EMAIL) {
+      if (!CONFIG.OWNER_HASH) throw new AppError("owner_setup", "Owner password is not set up yet. Open this site with #owner-setup.");
+      if (!(await checkPw(password, CONFIG.OWNER_HASH))) { Throttle.fail(email); audit("owner_fail", "owner", "Wrong owner password"); throw new AppError("bad", "Wrong email or password."); }
+      Throttle.clear(email); audit("owner_login", "owner", "Owner signed in");
+      return { owner: true, session: Auth.start(null, "owner") };
+    }
+    const u = Auth.byEmail(email), ok = await checkPw(password, u && u.pw ? u.pw : DUMMY);
+    if (!u || !u.pw || !ok) { Throttle.fail(email); throw new AppError("bad", "Wrong email or password."); }
+    if (u.banned) throw new AppError("banned", "This account has been suspended. Please contact support.");
+    Throttle.clear(email); u.last = u.seen = now(); u.logins++; Auth.put(u); audit("login", u.uid, "Signed in");
+    return { user: u, session: Auth.start(u) };
+  },
+  /* Google / Apple. The token is only decoded here. For real security, verify it on a server before trusting it. */
+  social({ provider, email, name }) {
+    email = String(email || "").trim().toLowerCase();
+    if (!validEmail(email)) throw new AppError("email", "That account has no usable email.");
+    if (email === CONFIG.OWNER_EMAIL) throw new AppError("reserved", "The owner signs in with email and password.");
+    let u = Auth.byEmail(email);
+    if (u && u.banned) throw new AppError("banned", "This account has been suspended. Please contact support.");
+    if (!u) { if (!Settings.get().open) throw new AppError("closed", "New sign-ups are paused right now."); u = { uid: crypto.randomUUID(), id: Auth.memberId(), name: String(name || email.split("@")[0]).slice(0, 60), email, pw: null, provider, created: now(), logins: 0, banned: false, sv: 1, wish: [], idShown: false }; audit("signup", u.uid, "New " + provider + " account"); }
+    u.last = u.seen = now(); u.logins++; Auth.put(u); audit("login", u.uid, "Signed in with " + provider);
+    return { user: u, session: Auth.start(u) };
+  },
+  async changePassword(uid, oldPw, newPw) {
+    const u = Auth.byId(uid); if (!u || !u.pw) throw new AppError("nopw", "This account signs in with " + (u ? u.provider : "a provider") + ".");
+    if (!(await checkPw(String(oldPw || ""), u.pw))) throw new AppError("bad", "Current password is wrong.");
+    if (String(newPw).length < 8) throw new AppError("password", "Use at least 8 characters.");
+    u.pw = await hashPw(String(newPw)); u.sv++; Auth.put(u); audit("password", uid, "Password changed"); return Auth.start(u);
+  },
+  signOutEverywhere(uid) { const u = Auth.byId(uid); u.sv++; Auth.put(u); audit("signout_all", uid, "Signed out of all devices"); return Auth.start(u); }
+};
+
+/* ---------------------------------------------------------------
+   6. Shop data (products, wishlist, cart, orders)
+---------------------------------------------------------------- */
+const Shop = {
+  products: () => ls.get("products", null) || JSON.parse(JSON.stringify(CONFIG.SEED_PRODUCTS)),
+  saveProducts: p => ls.set("products", p),
+  orders: () => ls.get("orders", []),
+  cart: uid => ls.get("cart." + uid, []),
+  saveCart: (uid, c) => ls.set("cart." + uid, c),
+  toggleWish(uid, pid) { const u = Auth.byId(uid), i = u.wish.indexOf(pid); i < 0 ? u.wish.push(pid) : u.wish.splice(i, 1); Auth.put(u); return i < 0; },
+  addToCart(uid, pid) {
+    const p = Shop.products().find(x => x.id === pid), c = Shop.cart(uid), l = c.find(x => x.pid === pid);
+    if (!p || p.stock < 1) throw new AppError("stock", "Sorry, that item is sold out.");
+    if (l && l.q >= p.stock) throw new AppError("stock", "Only " + p.stock + " in stock.");
+    l ? l.q++ : c.push({ pid, q: 1 }); Shop.saveCart(uid, c); return c;
+  },
+  totals(c) {
+    const s = Settings.get(), prods = Shop.products();
+    const items = c.map(l => { const p = prods.find(x => x.id === l.pid); return p ? { pid: p.id, name: p.name, price: p.price, q: l.q } : null; }).filter(Boolean);
+    const sub = items.reduce((a, i) => a + i.price * i.q, 0), ship = !sub || sub >= s.freeShip ? 0 : s.shipFee;
+    return { items, sub, ship, total: sub + ship };
+  },
+  place(uid) {
+    const prods = Shop.products(), t = Shop.totals(Shop.cart(uid));
+    if (!t.items.length) throw new AppError("empty", "Your cart is empty.");
+    for (const i of t.items) { const p = prods.find(x => x.id === i.pid); if (!p || p.stock < i.q) throw new AppError("stock", i.name + " is no longer available in that quantity."); }
+    t.items.forEach(i => { prods.find(x => x.id === i.pid).stock -= i.q; });
+    Shop.saveProducts(prods);
+    const o = { id: "O-" + now().toString(36).toUpperCase(), uid, items: t.items, sub: t.sub, ship: t.ship, total: t.total, status: "Placed", t: now(), history: [{ s: "Placed", t: now() }] };
+    ls.set("orders", [o, ...Shop.orders()]); Shop.saveCart(uid, []); audit("order", uid, o.id + " " + money(o.total)); return o;
+  }
+};
+
+/* ---------------------------------------------------------------
+   7. Owner controls. Every call re-checks the owner session. Password data never leaves this file.
+---------------------------------------------------------------- */
+const Admin = {
+  guard() { const s = Auth.session(); if (!s || s.role !== "owner") throw new AppError("forbidden", "Owner access required."); },
+  users() { Admin.guard(); const o = Shop.orders(); return Auth.users().map(({ pw, wish, sv, ...u }) => ({ ...u, wishCount: wish.length, orders: o.filter(x => x.uid === u.uid).length })); },
+  ban(uid, v) { Admin.guard(); const u = Auth.byId(uid); if (!u) return; u.banned = !!v; if (v) u.sv++; Auth.put(u); audit(v ? "ban" : "unban", uid, u.id); },
+  kick(uid) { Admin.guard(); const u = Auth.byId(uid); if (!u) return; u.sv++; Auth.put(u); audit("kick", uid, u.id + " signed out"); },
+  setStatus(oid, s) { Admin.guard(); const all = Shop.orders(), o = all.find(x => x.id === oid); if (!o) return; o.status = s; o.history.push({ s, t: now() }); ls.set("orders", all); audit("order_status", o.uid, oid + " " + s); },
+  stats() {
+    Admin.guard(); const u = Auth.users(), o = Shop.orders(), a = ls.get("audit", []), t0 = new Date().setHours(0, 0, 0, 0);
+    return { accounts: u.length, online: u.filter(x => x.seen > now() - 3e5).length, today: a.filter(x => x.type === "login" && x.t >= t0).length, week: u.filter(x => x.created > now() - 7 * DAY).length,
+             banned: u.filter(x => x.banned).length, orders: o.length, revenue: o.filter(x => x.status !== "Cancelled").reduce((s, x) => s + x.total, 0), products: Shop.products().length };
+  }
+};
+</script>
+
+<!-- ================= INTERFACE ================= -->
+<script id="ui">
+"use strict";
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches, wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+const mount = (el, t) => { el.innerHTML = t.__raw; };
+const storeName = () => Settings.get().name;
+const IC = {
+  user: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>',
+  heart: '<svg viewBox="0 0 24 24"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg>',
+  box: '<svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4zM3 7v10l9 4 9-4V7M12 11v10"/></svg>',
+  chart: '<svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  card: '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg>',
+  shield: '<svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/></svg>',
+  help: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg>',
+  shop: '<svg viewBox="0 0 24 24"><path d="M4 8h16l-1 12H5L4 8zM8 8a4 4 0 0 1 8 0"/></svg>',
+  bag: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 8h14l-1 12H6L5 8zM9 8a3 3 0 0 1 6 0"/></svg>',
+  out: '<svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>',
+  users: '<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c.7-3.5 3.2-5 7-5s6.300 1.500 7 5M17 4.500a3.500 3.500 0 0 1 0 7M22 20c-.3-2-1.300-3.400-3-4.200"/></svg>',
+  truck: '<svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 10h4l3 3v3h-7M6 19a2 2 0 1 0 0-.01M17 19a2 2 0 1 0 0-.01"/></svg>',
+  api: '<svg viewBox="0 0 24 24"><path d="M8 8l-5 4 5 4M16 8l5 4-5 4M14 5l-4 14"/></svg>',
+  gear: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>',
+  log: '<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM9 9h6M9 13h6M9 17h3"/></svg>'
+};
+
+/* ---------- toast, ripple, magnetic buttons, spotlight cards, count-up, reveal ---------- */
+function toast(msg, bad) {
+  const el = document.createElement("div"); el.className = "toast" + (bad ? " bad" : ""); el.textContent = msg; $("#toasts").appendChild(el);
+  setTimeout(() => { el.classList.add("out"); setTimeout(() => el.remove(), 500); }, 3200);
+}
+document.addEventListener("pointerdown", e => {
+  const b = e.target.closest(".btn"); if (!b || reduce) return; const r = b.getBoundingClientRect(), s = document.createElement("span");
+  const d = Math.max(r.width, r.height); s.className = "ripple"; s.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px`; b.appendChild(s); setTimeout(() => s.remove(), 700);
+});
+document.addEventListener("pointermove", e => {
+  const m = e.target.closest(".mag"); $$(".mag").forEach(x => { if (x !== m) x.style.transform = ""; });
+  if (m && !reduce) { const r = m.getBoundingClientRect(); m.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .18}px,${(e.clientY - r.top - r.height / 2) * .28}px)`; }
+  const c = e.target.closest(".card"); if (c) { const r = c.getBoundingClientRect(); c.style.setProperty("--mx", (e.clientX - r.left) + "px"); c.style.setProperty("--my", (e.clientY - r.top) + "px"); }
+});
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("on"); io.unobserve(e.target); } }), { threshold: .1 });
+function afterMount(root = document) {
+  $$(".rv", root).forEach(n => io.observe(n));
+  $$("[data-count]", root).forEach(n => {
+    const to = +n.dataset.count, money_ = n.dataset.fmt === "money", fmt = v => money_ ? money(v) : Math.round(v).toLocaleString("en-IN"), t0 = performance.now();
+    if (reduce) { n.textContent = fmt(to); return; }
+    (function tick(t) { const p = Math.min(1, (t - t0) / 1100), e = 1 - Math.pow(1 - p, 4); n.textContent = fmt(to * e); if (p < 1) requestAnimationFrame(tick); })(t0);
+  });
+}
+function modal(content, wide) {
+  const v = document.createElement("div"); v.className = "veil"; v.innerHTML = `<div class="sheet${wide ? " wide" : ""}" role="dialog" aria-modal="true"><button class="x" aria-label="Close" data-act="close">×</button>${content.__raw}</div>`;
+  document.body.appendChild(v); document.body.classList.add("lock"); afterMount(v);
+  v.addEventListener("click", e => { if (e.target === v) closeModal(v); });
+  const f = $("input,button:not(.x)", v); if (f) setTimeout(() => f.focus(), 350); return v;
+}
+function closeModal(v = $(".veil")) { if (!v) return; v.classList.add("out"); setTimeout(() => { v.remove(); if (!$(".veil")) document.body.classList.remove("lock"); }, 350); }
+addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closeDrawer(); } });
+
+/* ---------- login / sign up ---------- */
+function gate() {
+  document.body.classList.remove("lock"); $("#root").innerHTML = "";
+  mount($("#root"), T`<section class="gate"><div class="wrap center"><span class="pill glass load">${storeName()}</span><h1 class="load">Welcome to <span>${storeName()}</span></h1><p class="lead load">Log in to keep your wishlist, follow your orders and check out faster. You stay signed in on this device.</p><div class="cta-row load"><button class="btn mag" data-act="auth" data-m="login">Log in</button><button class="btn ghost mag" data-act="auth" data-m="signup">Sign up</button></div><p class="fine load" style="margin-top:2rem">Your details are kept safely in your own browser.</p></div></section>`);
+}
+function authSheet(mode) {
+  closeModal();
+  const v = modal(T`<h2 id="atitle"></h2><p class="muted" id="asub"></p>
+    <div class="tabs" id="atabs"><button data-act="amode" data-m="login">Log in</button><button data-act="amode" data-m="signup">Sign up</button><i></i></div>
+    <div class="social"><button class="btn ghost" data-act="google"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 10.2v3.9h5.500c-.2 1.300-1.600 3.900-5.500 3.900a6 6 0 0 1 0-12c1.900 0 3.100.8 3.800 1.500l2.600-2.500A9.600 9.600 0 0 0 12 2.400a9.600 9.600 0 1 0 0 19.200c5.500 0 9.200-3.900 9.200-9.300 0-.6-.1-1.100-.2-1.600H12z"/></svg>Continue with Google</button><button class="btn ghost" data-act="apple"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.400 12.600c0-2.400 2-3.500 2.100-3.600-1.200-1.700-3-1.900-3.600-2-1.500-.2-3 .9-3.800.9s-2-.9-3.200-.9c-1.700 0-3.200 1-4.100 2.500-1.700 3-.4 7.500 1.300 10 .8 1.200 1.800 2.500 3.100 2.500 1.200 0 1.700-.8 3.200-.8s1.900.8 3.200.8c1.300 0 2.200-1.200 3-2.400.9-1.400 1.300-2.700 1.300-2.800-.1 0-2.500-1-2.500-3.800zM14 5.400c.7-.8 1.100-1.900 1-3-1 0-2.100.7-2.800 1.500-.6.700-1.200 1.800-1 2.900 1.100.1 2.100-.6 2.800-1.400z"/></svg>Continue with Apple</button></div>
+    <div class="or">or with email</div>
+    <form id="aform" novalidate autocomplete="on"><div id="nameRow"><label for="an">Your name</label><input id="an" autocomplete="name" maxlength="60"></div>
+      <label for="ae">Email</label><input id="ae" type="email" autocomplete="email" inputmode="email" maxlength="254">
+      <label for="ap">Password</label><div class="pw"><input id="ap" type="password" autocomplete="current-password" maxlength="128"><button type="button" data-act="eye">Show</button></div>
+      <div class="meter" id="meter"><i></i><i></i><i></i><i></i></div>
+      <div class="err" id="aerr" role="alert"></div>
+      <button class="btn block" id="asub2" type="submit" style="margin-top:.6rem"><span></span></button></form>
+    <p class="fine center" style="margin-top:1rem">Passwords are scrambled in your browser and can never be read back.</p>`);
+  v.dataset.mode = mode; setMode(mode, v); return v;
+}
+function setMode(mode, v = $(".veil")) {
+  v.dataset.mode = mode; const s = mode === "signup";
+  $("#atitle", v).textContent = s ? "Create your account" : "Welcome back"; $("#asub", v).textContent = s ? "It takes less than a minute." : "Log in to continue.";
+  $("#atabs", v).classList.toggle("s", s); $$("#atabs button", v).forEach(b => b.classList.toggle("on", b.dataset.m === mode));
+  $("#nameRow", v).style.display = s ? "" : "none"; $("#meter", v).style.display = s ? "" : "none"; $("#ap", v).autocomplete = s ? "new-password" : "current-password";
+  $("#asub2 span", v).textContent = s ? "Create account" : "Log in"; $("#aerr", v).textContent = "";
+}
+function formError(msg) { const e = $("#aerr"); if (!e) return toast(msg, true); e.textContent = msg; const s = $(".sheet"); s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); }
+addEventListener("input", e => { if (e.target.id === "ap") { const n = strength(e.target.value); $$("#meter i").forEach((i, k) => i.classList.toggle("on", k < n)); } });
+addEventListener("submit", async e => {
+  if (e.target.id !== "aform") return; e.preventDefault();
+  const v = $(".veil"), mode = v.dataset.mode, btn = $("#asub2"), label = $("span", btn).textContent; btn.disabled = true; $("span", btn).innerHTML = '<i class="spin"></i>'; $("#aerr").textContent = "";
+  try {
+    const r = mode === "signup" ? await Auth.signup({ name: $("#an").value, email: $("#ae").value, password: $("#ap").value }) : await Auth.login($("#ae").value, $("#ap").value);
+    closeModal(); await enter(r.session, true);
+  } catch (err) { if (!(err instanceof AppError)) console.error(err); formError(err instanceof AppError ? err.message : "Something went wrong. Please try again."); btn.disabled = false; $("span", btn).textContent = label; }
+});
+
+/* ---------- Google and Apple (light up when the keys are in CONFIG) ---------- */
+const jwt = t => JSON.parse(decodeURIComponent(atob(t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")).split("").map(c => "%" + c.charCodeAt(0).toString(16).padStart(2, "0")).join("")));
+const loadScript = src => new Promise((ok, no) => { if ($(`script[src="${src}"]`)) return ok(); const s = document.createElement("script"); s.src = src; s.async = true; s.onload = ok; s.onerror = () => no(new Error("Could not load the sign-in script.")); document.head.appendChild(s); });
+async function viaToken(provider, token, aud, issuers) {
+  const c = jwt(token);
+  if (c.aud !== aud || !issuers.includes(c.iss) || c.exp * 1000 < now() || String(c.email_verified) === "false") throw new AppError("token", "Sign-in could not be verified.");
+  closeModal(); await enter(Auth.social({ provider, email: c.email, name: c.name }).session, true);
+}
+async function googleLogin() {
+  if (!CONFIG.GOOGLE_CLIENT_ID) return formError("Google sign-in will be available soon.");
+  try { await loadScript("https://accounts.google.com/gsi/client");
+    google.accounts.id.initialize({ client_id: CONFIG.GOOGLE_CLIENT_ID, callback: r => viaToken("google", r.credential, CONFIG.GOOGLE_CLIENT_ID, ["accounts.google.com", "https://accounts.google.com"]).catch(e => formError(e.message)) });
+    google.accounts.id.prompt(); } catch (e) { formError(e.message); }
+}
+async function appleLogin() {
+  if (!CONFIG.APPLE_CLIENT_ID || !CONFIG.APPLE_REDIRECT_URI) return formError("Apple sign-in will be available soon.");
+  try { await loadScript("https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js");
+    AppleID.auth.init({ clientId: CONFIG.APPLE_CLIENT_ID, scope: "name email", redirectURI: CONFIG.APPLE_REDIRECT_URI, usePopup: true });
+    const r = await AppleID.auth.signIn(); const n = r.user && r.user.name ? r.user.name.firstName : "";
+    const c = jwt(r.authorization.id_token); if (n) c.name = n;
+    if (c.aud !== CONFIG.APPLE_CLIENT_ID || c.iss !== "https://appleid.apple.com" || c.exp * 1000 < now()) throw new AppError("token", "Sign-in could not be verified.");
+    closeModal(); await enter(Auth.social({ provider: "apple", email: c.email, name: c.name }).session, true);
+  } catch (e) { if (e && e.error !== "popup_closed_by_user") formError(e.message || "Apple sign-in was cancelled."); }
+}
+
+/* ---------- the "preparing your ID" moment ---------- */
+async function ceremony(kind, user) {
+  const el = $("#ceremony"), owner = kind === "owner", first = !owner && user && !user.idShown, ms = first ? 1100 : 700;
+  const steps = owner ? ["Checking your owner key", "Unlocking the console", "Loading your store"] : ["Checking your details", first ? "Creating your Mizuki ID" : "Finding your Mizuki ID", "Securing your vault"];
+  const since = user ? new Date(user.created).toLocaleDateString("en", { month: "short", year: "numeric" }) : "";
+  mount(el, T`<div class="cer"><div class="rings"><i></i><i></i><i></i></div><h2>${owner ? "Opening your console" : first ? "We’re preparing your ID" : "Welcome back, " + (user.name.split(" ")[0])}</h2><p class="muted">Just a few seconds.</p>
+    <ul class="steps">${steps.map((s, i) => T`<li style="--i:${i}"><span class="tick"></span>${s}</li>`)}</ul><div class="prog"><b></b></div>
+    <div class="idcard"><div><small>${storeName()}</small></div><div><small>${owner ? "Owner" : "Member ID"}</small><br><b>${owner ? "FULL ACCESS" : user.id}</b></div><div style="display:flex;justify-content:space-between"><span>${owner ? "Owner" : user.name}</span><small>${owner ? "" : "Since " + since}</small></div></div></div>`);
+  el.className = "on"; document.body.classList.add("lock");
+  const li = $$("li", el), bar = $(".prog b", el);
+  for (let i = 0; i < li.length; i++) { await wait(ms); li[i].classList.add("done"); bar.style.width = Math.round((i + 1) / (li.length + 1) * 100) + "%"; }
+  await wait(450); bar.style.width = "100%"; $(".idcard", el).classList.add("show"); await wait(first || owner ? 2300 : 1500);
+  el.classList.add("out"); await wait(600); el.className = ""; el.innerHTML = ""; document.body.classList.remove("lock");
+}
+
+/* ---------- entering the app ---------- */
+async function enter(session, fresh) {
+  if (session.role === "owner") { if (fresh) await ceremony("owner"); if (!/^#\/o-/.test(location.hash)) location.hash = "#/o-overview"; return shell(); }
+  const u = Auth.byId(session.uid); if (fresh) { await ceremony("user", u); u.idShown = true; Auth.put(u); } else toast("Welcome back, " + u.name.split(" ")[0]);
+  if (!/^#\/(?!o-)/.test(location.hash)) location.hash = "#/shop"; shell();
+}
+function logout(msg) { Auth.end(); closeDrawer(); closeModal(); location.hash = ""; gate(); if (msg) toast(msg); }
+
+/* ---------- shell: top bar + left drawer (the 3 lines) ---------- */
+const USER_NAV = [["shop", "Shop", "shop"], ["account", "My account", "user"], ["wishlist", "Wishlist", "heart"], ["orders", "Orders", "box"], ["analytics", "Analytics", "chart"], ["billing", "Billing", "card"], ["security", "Security", "shield"], ["help", "Help", "help"]];
+const OWNER_NAV = [["o-overview", "Overview", "chart"], ["o-users", "People", "users"], ["o-products", "Products", "box"], ["o-orders", "Orders", "bag"], ["o-shipping", "Shipping", "truck"], ["o-api", "API and export", "api"], ["o-settings", "Settings", "gear"], ["o-log", "Activity log", "log"]];
+function shell() {
+  const s = Auth.session(); if (!s) return gate(); const owner = s.role === "owner", u = owner ? null : Auth.byId(s.uid), nav = owner ? OWNER_NAV : USER_NAV;
+  const cart = owner ? 0 : Shop.cart(u.uid).reduce((a, l) => a + l.q, 0);
+  mount($("#root"), T`<header class="top glass"><button class="burger" data-act="drawer" aria-label="Open menu" aria-expanded="false"><i></i><i></i><i></i></button>
+      <button class="logo" data-act="go" data-p="${owner ? "o-overview" : "shop"}"><i></i><span>${storeName()}</span></button><span class="sp"></span>
+      ${owner ? T`<span class="tag gold">Owner</span><button class="iconbtn" data-act="go" data-p="shop" aria-label="View storefront" title="View storefront">${raw(IC.shop)}</button>` : T`<button class="iconbtn" data-act="go" data-p="cart" aria-label="Cart">${raw(IC.bag)}<span class="badge" id="cartBadge">${cart || ""}</span></button><button class="iconbtn" data-act="go" data-p="account" aria-label="My account">${raw(IC.user)}</button>`}</header>
+    <div class="drawer-veil" data-act="drawer"></div>
+    <aside class="drawer" id="drawer" aria-label="Menu"><div class="me glass"><div class="av">${(owner ? "O" : u.name[0] || "?").toUpperCase()}</div><div><b>${owner ? "Store owner" : u.name}</b><small>${owner ? CONFIG.OWNER_EMAIL : u.id}</small></div></div>
+      ${nav.map(([p, l, i], k) => T`<button class="nav" style="--i:${k}" data-act="go" data-p="${p}">${raw(IC[i])}${l}${p === "wishlist" && u ? T`<em>${u.wish.length || ""}</em>` : ""}</button>`)}
+      <div class="hr"></div>
+      ${owner ? T`<button class="nav" style="--i:9" data-act="go" data-p="shop">${raw(IC.shop)}View storefront</button>` : ""}
+      <button class="nav" style="--i:10" data-act="logout">${raw(IC.out)}Sign out</button></aside>
+    <main><div class="wrap" id="page"></div></main>`);
+  render();
+}
+function openDrawer(on) { $("#drawer").classList.toggle("on", on); $(".drawer-veil").classList.toggle("on", on); const b = $(".burger"); b.classList.toggle("open", on); b.setAttribute("aria-expanded", on); }
+const closeDrawer = () => { if ($("#drawer")) openDrawer(false); };
+
+/* ---------- router ---------- */
+function render() {
+  const s = Auth.session(); if (!s) return gate(); if (!$("#page")) return shell();
+  const owner = s.role === "owner", p = (location.hash.match(/^#\/([\w-]+)/) || [])[1] || (owner ? "o-overview" : "shop");
+  if (p.startsWith("o-") && !owner) { location.hash = "#/shop"; return; }
+  if (owner && !p.startsWith("o-") && p !== "shop") { location.hash = "#/o-overview"; return; }
+  const fn = PAGES[p] || PAGES[owner ? "o-overview" : "shop"], el = $("#page");
+  el.className = "wrap pg"; el.style.animation = "none"; void el.offsetWidth; el.style.animation = "";
+  mount(el, fn(owner ? null : Auth.byId(s.uid))); afterMount(el); scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  $$(".nav").forEach(n => n.classList.toggle("on", n.dataset.p === p));
+}
+addEventListener("hashchange", () => { if (location.hash === "#owner-setup") return ownerSetup(); if (Auth.session()) render(); });
+addEventListener("storage", e => { if (e.key === "mz.session" && !Auth.session()) logout(); });
+setInterval(() => { const raw_ = ls.get("session", null); if (!raw_) return; const s = Auth.session(); if (!s) { const u = Auth.byId(raw_.uid); logout(u && u.banned ? "This account has been suspended." : "Your session ended. Please log in again."); } else if (s.role === "user") Auth.touch(s.uid); }, 20000);
+
+/* ---------- storefront pages ---------- */
+const stat = (l, n, f) => T`<div class="stat glass rv"><small>${l}</small><b data-count="${n}" data-fmt="${f || ""}">0</b></div>`;
+const thumb = p => T`<div class="thumb">${safeUrl(p.img) ? raw(`<img src="${esc(safeUrl(p.img))}" alt="${esc(p.name)}" loading="lazy">`) : p.name[0]}</div>`;
+let shopCat = "All", shopQ = "";
+function productCard(p, u) {
+  return T`<article class="card glass rv"><button class="heart ${u.wish.includes(p.id) ? "on" : ""}" data-act="wish" data-id="${p.id}" aria-label="Wishlist">${raw(IC.heart.replace("<svg", "<svg"))}</button>${thumb(p)}<h3>${p.name}</h3><p class="muted" style="font-size:.9rem">${p.desc}</p>
+    <div class="row"><span class="price">${money(p.price)}</span>${p.stock > 0 ? T`<button class="btn sm" data-act="add" data-id="${p.id}">Add to cart</button>` : T`<span class="tag">Sold out</span>`}</div></article>`;
+}
+function shopGrid(u) {
+  const list = Shop.products().filter(p => (shopCat === "All" || p.cat === shopCat) && p.name.toLowerCase().includes(shopQ.toLowerCase()));
+  return list.length ? T`<div class="grid">${list.map(p => u ? productCard(p, u) : T`<article class="card glass rv">${thumb(p)}<h3>${p.name}</h3><div class="row"><span class="price">${money(p.price)}</span><span class="tag">Preview</span></div></article>`)}</div>` : T`<div class="empty"><b>Nothing found</b>Try a different search.</div>`;
+}
+const PAGES = {
+  shop(u) {
+    const all = Shop.products(), cats = ["All", ...new Set(all.map(p => p.cat).filter(Boolean))];
+    return T`<div class="ph"><div><h1 class="sheen">The collection</h1><p>Considered pieces, chosen for their craft.</p></div></div>
+      <div class="tools"><input id="q" placeholder="Search" aria-label="Search products" value="${shopQ}"><div class="chips">${cats.map(c => T`<button class="chip ${c === shopCat ? "on" : ""}" data-act="cat" data-c="${c}">${c}</button>`)}</div></div>
+      <div id="shopgrid">${shopGrid(u)}</div>`;
+  },
+  cart(u) {
+    const t = Shop.totals(Shop.cart(u.uid)), s = Settings.get();
+    return T`<div class="ph"><div><h1>Your cart</h1></div></div>${t.items.length ? T`<div class="two"><div class="stack">${t.items.map(i => T`<div class="card glass pad rv"><div class="row" style="margin:0"><div><h3>${i.name}</h3><span class="price">${money(i.price)}</span></div>
+      <div class="row" style="margin:0"><button class="btn ghost sm" data-act="qty" data-id="${i.pid}" data-d="-1" aria-label="Less">−</button><b>${i.q}</b><button class="btn ghost sm" data-act="qty" data-id="${i.pid}" data-d="1" aria-label="More">+</button></div></div></div>`)}</div>
+      <div class="card glass pad rv" style="align-self:start"><div class="line"><span>Subtotal</span><b>${money(t.sub)}</b></div><div class="line"><span>Delivery</span><b>${t.ship ? money(t.ship) : "Free"}</b></div><div class="line"><span>Total</span><b class="price">${money(t.total)}</b></div>
+      <p class="fine" style="margin:.6rem 0">${t.ship ? "Free delivery above " + money(s.freeShip) + "." : "You get free delivery."}</p><button class="btn block" data-act="place">Place order</button>
+      <p class="fine" style="margin-top:.8rem">Payment gateway is not connected yet, so this records a demo order.</p></div></div>` : T`<div class="empty"><b>Your cart is empty</b><button class="btn" data-act="go" data-p="shop" style="margin-top:1rem">Browse the collection</button></div>`}`;
+  },
+  account(u) {
+    return T`<div class="ph"><div><h1>My account</h1><p>Your details and your Mizuki ID.</p></div></div><div class="two"><div class="card glass pad rv"><h3>Profile</h3><label for="pn">Name</label><input id="pn" value="${u.name}" maxlength="60"><label>Email</label><input value="${u.email}" disabled><label>Signed up with</label><input value="${u.provider}" disabled>
+      <button class="btn" data-act="saveName" style="margin-top:1rem">Save changes</button></div>
+      <div class="idcard show rv" style="aspect-ratio:1.7;opacity:1"><div><small>${storeName()}</small></div><div><small>Member ID</small><br><b>${u.id}</b></div><div style="display:flex;justify-content:space-between"><span>${u.name}</span><small>Since ${new Date(u.created).toLocaleDateString("en", { month: "short", year: "numeric" })}</small></div></div></div>`;
+  },
+  wishlist(u) {
+    const l = Shop.products().filter(p => u.wish.includes(p.id));
+    return T`<div class="ph"><div><h1>Wishlist</h1><p>${l.length} saved</p></div></div>${l.length ? T`<div class="grid">${l.map(p => productCard(p, u))}</div>` : T`<div class="empty"><b>Nothing saved yet</b>Tap the heart on any product.</div>`}`;
+  },
+  orders(u) {
+    const l = Shop.orders().filter(o => o.uid === u.uid), St = ["Placed", "Packed", "Shipped", "Delivered"];
+    return T`<div class="ph"><div><h1>Orders</h1><p>${l.length} in total</p></div></div>${l.length ? T`<div class="stack">${l.map(o => T`<div class="card glass pad rv"><div class="row" style="margin:0"><div><h3>${o.id}</h3><span class="muted">${new Date(o.t).toLocaleDateString("en", { day: "numeric", month: "short", year: "numeric" })}</span></div><div><span class="price">${money(o.total)}</span> <span class="tag ${o.status === "Delivered" ? "ok" : o.status === "Cancelled" ? "bad" : "gold"}">${o.status}</span></div></div>
+      <p class="muted" style="margin-top:.6rem">${o.items.map(i => i.name + " × " + i.q).join(", ")}</p>${o.status === "Cancelled" ? "" : T`<div class="tl">${St.map((s, i) => T`<div class="${St.indexOf(o.status) >= i ? "d" : ""}" style="--i:${i}">${s}</div>`)}</div>`}</div>`)}</div>` : T`<div class="empty"><b>No orders yet</b>Your orders will appear here.</div>`}`;
+  },
+  analytics(u) {
+    const o = Shop.orders().filter(x => x.uid === u.uid && x.status !== "Cancelled"), spent = o.reduce((a, x) => a + x.total, 0), d = new Date(), months = [];
+    for (let i = 5; i >= 0; i--) { const m = new Date(d.getFullYear(), d.getMonth() - i, 1), n = new Date(m.getFullYear(), m.getMonth() + 1, 1); months.push({ l: m.toLocaleDateString("en", { month: "short" }), v: o.filter(x => x.t >= m && x.t < n).reduce((a, x) => a + x.total, 0) }); }
+    const mx = Math.max(1, ...months.map(m => m.v));
+    return T`<div class="ph"><div><h1>Analytics</h1><p>Your activity with ${storeName()}.</p></div></div><div class="stats">${stat("Orders", o.length)}${stat("Total spent", spent, "money")}${stat("Wishlist", u.wish.length)}${stat("Days as member", Math.max(1, Math.floor((now() - u.created) / DAY)))}</div>
+      <div class="card glass pad rv"><h3>Spending, last 6 months</h3><div class="bars">${months.map((m, i) => T`<div style="--i:${i}"><i style="--h:${Math.max(3, Math.round(m.v / mx * 100))}%;--i:${i}" title="${money(m.v)}"></i>${m.l}</div>`)}</div></div>`;
+  },
+  billing(u) {
+    const o = Shop.orders().filter(x => x.uid === u.uid);
+    return T`<div class="ph"><div><h1>Billing</h1><p>Invoices and payment methods.</p></div></div><div class="stats">${stat("Invoices", o.length)}${stat("Total billed", o.filter(x => x.status !== "Cancelled").reduce((a, x) => a + x.total, 0), "money")}</div>
+      <div class="note rv"><b>Payment methods</b> Cards and UPI will appear here once the payment gateway is connected. Nothing sensitive is ever stored on this device.</div>
+      <div class="tbl glass rv"><table><thead><tr><th>Invoice</th><th>Date</th><th>Items</th><th>Amount</th><th>Status</th></tr></thead><tbody>${o.length ? o.map(x => T`<tr><td>${x.id}</td><td>${new Date(x.t).toLocaleDateString("en")}</td><td>${x.items.length}</td><td>${money(x.total)}</td><td><span class="tag">${x.status}</span></td></tr>`) : T`<tr><td colspan="5" class="muted">No invoices yet.</td></tr>`}</tbody></table></div>`;
+  },
+  security(u) {
+    const a = ls.get("audit", []).filter(x => x.uid === u.uid).slice(0, 8);
+    return T`<div class="ph"><div><h1>Security</h1><p>Keep your account safe.</p></div></div><div class="two"><div class="card glass pad rv"><h3>Change password</h3>${u.pw ? T`<label for="op">Current password</label><input id="op" type="password" autocomplete="current-password"><label for="np">New password</label><input id="np" type="password" autocomplete="new-password"><div class="err" id="perr"></div><button class="btn" data-act="changePw">Update password</button>` : T`<p class="muted" style="margin-top:.6rem">You sign in with ${u.provider}, so there is no password to change.</p>`}</div>
+      <div class="card glass pad rv"><h3>Devices</h3><p class="muted" style="margin:.6rem 0 1rem">Signed in somewhere you do not recognise? Sign out everywhere, this device stays signed in.</p><button class="btn ghost" data-act="outAll">Sign out of all devices</button></div></div>
+      <div class="card glass pad rv" style="margin-top:1rem"><h3>Recent activity</h3>${a.map(x => T`<div class="line"><span>${x.msg}</span><span class="muted">${new Date(x.t).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" })}</span></div>`)}</div>`;
+  },
+  help() {
+    const q = [["How do I track my order?", "Open Orders from the menu. The line under each order shows where it is."], ["Is my password safe?", "Your password is scrambled in your browser before it is saved. Nobody, including the store owner, can read it."], ["How do I stay signed in?", "You stay signed in on this device. Use Sign out in the menu when you are on a shared computer."], ["How do I delete my account?", "Contact the store and we will remove it."]];
+    return T`<div class="ph"><div><h1>Help</h1></div></div><div class="card glass pad rv">${q.map(([a, b]) => T`<details><summary>${a}</summary><p>${b}</p></details>`)}</div>`;
+  },
+
+  /* ---------- owner console ---------- */
+  "o-overview"() {
+    const s = Admin.stats(), a = ls.get("audit", []).slice(0, 8);
+    return T`<div class="ph"><div><h1 class="sheen">Owner console</h1><p>Everything about your store in one place.</p></div></div>
+      <div class="note rv"><b>Local mode.</b> This console shows the accounts and orders saved in this browser. To see every customer from every device, connect an online database (see the guide).</div>
+      <div class="stats">${stat("Accounts", s.accounts)}${stat("Online now", s.online)}${stat("Logins today", s.today)}${stat("New this week", s.week)}${stat("Orders", s.orders)}${stat("Revenue", s.revenue, "money")}${stat("Products", s.products)}${stat("Suspended", s.banned)}</div>
+      <div class="card glass pad rv"><h3>Recent activity</h3>${a.length ? a.map(x => T`<div class="line"><span>${x.msg}</span><span class="muted">${new Date(x.t).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" })}</span></div>`) : T`<p class="muted">Nothing yet.</p>`}</div>`;
+  },
+  "o-users"() {
+    const l = Admin.users().sort((a, b) => b.created - a.created);
+    return T`<div class="ph"><div><h1>People</h1><p>${l.length} accounts. Passwords are never shown, by design.</p></div></div>
+      <div class="tools"><input id="uq" placeholder="Search name, email or ID" aria-label="Search people"></div>
+      <div class="tbl glass rv"><table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Via</th><th>Joined</th><th>Last login</th><th>Logins</th><th>Orders</th><th>Status</th><th></th></tr></thead><tbody id="ut">${l.length ? l.map(u => T`<tr data-s="${(u.id + u.name + u.email).toLowerCase()}"><td><b>${u.id}</b></td><td>${u.name}</td><td>${u.email}</td><td>${u.provider}</td><td>${new Date(u.created).toLocaleDateString("en")}</td><td>${new Date(u.last).toLocaleDateString("en")}</td><td>${u.logins}</td><td>${u.orders}</td>
+        <td><span class="tag ${u.banned ? "bad" : "ok"}">${u.banned ? "Suspended" : "Active"}</span></td><td style="white-space:nowrap"><button class="btn ${u.banned ? "ghost" : "danger"} sm" data-act="ban" data-id="${u.uid}" data-v="${u.banned ? 0 : 1}">${u.banned ? "Restore" : "Suspend"}</button> <button class="btn ghost sm" data-act="kick" data-id="${u.uid}">Sign out</button></td></tr>`) : T`<tr><td colspan="10" class="muted">No accounts yet.</td></tr>`}</tbody></table></div>`;
+  },
+  "o-products"() {
+    const l = Shop.products();
+    return T`<div class="ph"><div><h1>Products</h1><p>${l.length} in the store</p></div><button class="btn mag" data-act="editProd" data-id="">Add product</button></div>
+      <div class="tbl glass rv"><table><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th></th></tr></thead><tbody>${l.map(p => T`<tr><td>${p.name}</td><td>${p.cat}</td><td>${money(p.price)}</td><td>${p.stock < 1 ? T`<span class="tag bad">Sold out</span>` : p.stock <= 5 ? T`<span class="tag gold">${p.stock} left</span>` : p.stock}</td><td style="white-space:nowrap"><button class="btn ghost sm" data-act="editProd" data-id="${p.id}">Edit</button> <button class="btn danger sm" data-act="delProd" data-id="${p.id}">Delete</button></td></tr>`)}</tbody></table></div>`;
+  },
+  "o-orders"() {
+    const l = Shop.orders(), users = Auth.users(), St = ["Placed", "Packed", "Shipped", "Delivered", "Cancelled"];
+    return T`<div class="ph"><div><h1>Orders</h1><p>${l.length} in total</p></div></div><div class="tbl glass rv"><table><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody>${l.length ? l.map(o => { const c = users.find(u => u.uid === o.uid); return T`<tr><td>${o.id}<br><small class="muted">${new Date(o.t).toLocaleDateString("en")}</small></td><td>${c ? c.name + " (" + c.id + ")" : "Unknown"}</td><td>${o.items.map(i => i.name + " × " + i.q).join(", ")}</td><td>${money(o.total)}</td><td><select data-act="status" data-id="${o.id}" aria-label="Status">${St.map(s => T`<option ${s === o.status ? "selected" : ""}>${s}</option>`)}</select></td></tr>`; }) : T`<tr><td colspan="5" class="muted">No orders yet.</td></tr>`}</tbody></table></div>`;
+  },
+  "o-shipping"() {
+    const s = Settings.get(), C = ["Shiprocket", "Delhivery", "Blue Dart", "DTDC", "India Post"];
+    return T`<div class="ph"><div><h1>Shipping</h1><p>Delivery partners and delivery charges.</p></div></div><div class="note rv"><b>Live rates and labels</b> need your courier keys and a backend. Switch on the partners you use now, and they will be connected later.</div>
+      <div class="two"><div class="card glass pad rv"><h3>Partners</h3>${C.map(c => T`<div class="line"><span>${c}</span><button class="sw ${s.carriers[c] ? "on" : ""}" data-act="carrier" data-c="${c}" role="switch" aria-checked="${!!s.carriers[c]}" aria-label="${c}"></button></div>`)}</div>
+      <div class="card glass pad rv"><h3>Charges</h3><label for="fs">Free delivery above (₹)</label><input id="fs" type="number" min="0" value="${s.freeShip}"><label for="sf">Delivery fee (₹)</label><input id="sf" type="number" min="0" value="${s.shipFee}"><button class="btn" data-act="saveShip" style="margin-top:1rem">Save</button></div></div>`;
+  },
+  "o-api"() {
+    const snip = "SEED_PRODUCTS: " + JSON.stringify(Shop.products());
+    return T`<div class="ph"><div><h1>API and export</h1><p>Move your data in and out.</p></div></div>
+      <div class="two"><div class="card glass pad rv"><h3>Publish your products</h3><p class="muted" style="margin:.6rem 0 1rem">Visitors see the products written in the file. After editing products here, copy this snippet, replace SEED_PRODUCTS in CONFIG, and redeploy.</p><button class="btn" data-act="copy" data-w="catalog">Copy catalog snippet</button></div>
+      <div class="card glass pad rv"><h3>Download</h3><p class="muted" style="margin:.6rem 0 1rem">People are exported without passwords.</p><div class="cta-row" style="justify-content:flex-start"><button class="btn ghost sm" data-act="dl" data-w="products">Products</button><button class="btn ghost sm" data-act="dl" data-w="people">People</button><button class="btn ghost sm" data-act="dl" data-w="orders">Orders</button></div></div></div>
+      <div class="card glass pad rv" style="margin-top:1rem"><h3>Online backend</h3><p class="muted" style="margin:.6rem 0">Status: <span class="tag">Not connected</span> Connecting a database gives you every customer, shared wishlists and orders, and real security.</p><pre>${snip.slice(0, 300)}${snip.length > 300 ? "…" : ""}</pre></div>`;
+  },
+  "o-settings"() {
+    const s = Settings.get();
+    return T`<div class="ph"><div><h1>Settings</h1></div></div><div class="two"><div class="card glass pad rv"><h3>Store</h3><label for="sn">Store name</label><input id="sn" value="${s.name}" maxlength="40"><label for="sd">Stay signed in for</label><select id="sd">${[7, 30, 90].map(d => T`<option value="${d}" ${d === s.days ? "selected" : ""}>${d} days</option>`)}</select>
+      <div class="line" style="margin-top:.6rem"><span>Accept new sign-ups</span><button class="sw ${s.open ? "on" : ""}" id="so" data-act="toggleOpen" role="switch" aria-checked="${s.open}" aria-label="Accept new sign-ups"></button></div><button class="btn" data-act="saveSettings" style="margin-top:1rem">Save</button></div>
+      <div class="card glass pad rv"><h3>Danger zone</h3><p class="muted" style="margin:.6rem 0 1rem">Removes every account, order and setting saved in this browser.</p><button class="btn danger" data-act="reset">Erase local data</button></div></div>`;
+  },
+  "o-log"() {
+    const a = ls.get("audit", []);
+    return T`<div class="ph"><div><h1>Activity log</h1><p>Sign-ins, bans and orders.</p></div></div><div class="card glass pad rv">${a.length ? a.slice(0, 100).map(x => T`<div class="line"><span><span class="tag">${x.type}</span> ${x.msg}</span><span class="muted">${new Date(x.t).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" })}</span></div>`) : T`<p class="muted">Nothing yet.</p>`}</div>`;
+  }
+};
+
+/* ---------- actions (one place for every click) ---------- */
+const need = fn => (...a) => { try { return fn(...a); } catch (e) { if (e instanceof AppError) toast(e.message, true); else { console.error(e); toast("Something went wrong.", true); } } };
+const download = (name, data) => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); };
+function bump() { const u = Auth.user(); const b = $("#cartBadge"); if (!u || !b) return; b.textContent = Shop.cart(u.uid).reduce((a, l) => a + l.q, 0) || ""; b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }
+function prodForm(p) {
+  const v = modal(T`<h2>${p ? "Edit product" : "Add product"}</h2><label for="fn">Name</label><input id="fn" value="${p ? p.name : ""}" maxlength="80"><div class="two"><div><label for="fp">Price (₹)</label><input id="fp" type="number" min="0" value="${p ? p.price : ""}"></div><div><label for="fk">Stock</label><input id="fk" type="number" min="0" value="${p ? p.stock : ""}"></div></div>
+    <label for="fc">Category</label><input id="fc" value="${p ? p.cat : ""}" maxlength="40"><label for="fd">Description</label><textarea id="fd" rows="3" maxlength="300">${p ? p.desc : ""}</textarea><label for="fi">Image link (https only, optional)</label><input id="fi" value="${p ? p.img : ""}" maxlength="500">
+    <div class="err" id="ferr"></div><button class="btn block" data-act="saveProd" data-id="${p ? p.id : ""}">Save product</button>`);
+}
+const ACT = {
+  close: () => closeModal(), drawer: () => openDrawer(!$("#drawer").classList.contains("on")), logout: () => logout("Signed out."),
+  go: a => { closeDrawer(); const p = a.dataset.p; if (location.hash === "#/" + p) render(); else location.hash = "#/" + p; },
+  auth: a => authSheet(a.dataset.m), amode: a => setMode(a.dataset.m), google: googleLogin, apple: appleLogin,
+  eye: a => { const i = $("#ap"); i.type = i.type === "password" ? "text" : "password"; a.textContent = i.type === "password" ? "Show" : "Hide"; },
+  cat: a => { shopCat = a.dataset.c; render(); }, wish: need(a => { const u = Auth.user(); const on = Shop.toggleWish(u.uid, a.dataset.id); a.classList.toggle("on", on); toast(on ? "Saved to wishlist" : "Removed from wishlist"); const e = $(".nav em"); if (e) e.textContent = Auth.byId(u.uid).wish.length || ""; if (/wishlist/.test(location.hash)) setTimeout(render, 450); }),
+  add: need(a => { Shop.addToCart(Auth.user().uid, a.dataset.id); bump(); toast("Added to cart"); }),
+  qty: need(a => { const u = Auth.user(), c = Shop.cart(u.uid), l = c.find(x => x.pid === a.dataset.id), d = +a.dataset.d; if (d > 0) Shop.addToCart(u.uid, l.pid); else { l.q--; Shop.saveCart(u.uid, c.filter(x => x.q > 0)); } bump(); render(); }),
+  place: need(() => { const o = Shop.place(Auth.user().uid); toast("Order " + o.id + " placed"); bump(); location.hash = "#/orders"; }),
+  saveName: need(() => { const n = $("#pn").value.trim().slice(0, 60); if (!n) throw new AppError("n", "Please enter your name."); const u = Auth.user(); u.name = n; Auth.put(u); toast("Saved"); shell(); }),
+  changePw: need(async () => { const e = $("#perr"); e.textContent = ""; try { await Auth.changePassword(Auth.user().uid, $("#op").value, $("#np").value); toast("Password updated"); render(); } catch (x) { e.textContent = x.message; } }),
+  outAll: need(() => { Auth.signOutEverywhere(Auth.user().uid); toast("Signed out of all other devices"); }),
+  ban: need(a => { Admin.ban(a.dataset.id, +a.dataset.v); toast(+a.dataset.v ? "Account suspended" : "Account restored"); render(); }), kick: need(a => { Admin.kick(a.dataset.id); toast("Signed out"); }),
+  status: need(a => { Admin.setStatus(a.dataset.id, a.value); toast("Order updated"); }),
+  editProd: a => prodForm(Shop.products().find(p => p.id === a.dataset.id)),
+  saveProd: need(a => { Admin.guard(); const g = i => $(i).value.trim(), name = g("#fn"), price = +g("#fp"), stock = +g("#fk"), img = g("#fi");
+    if (!name || !(price >= 0) || !(stock >= 0) || g("#fp") === "" || g("#fk") === "") return $("#ferr").textContent = "Add a name, price and stock.";
+    if (img && !safeUrl(img)) return $("#ferr").textContent = "Image link must start with https://";
+    const l = Shop.products().slice(), id = a.dataset.id, rec = { id: id || "p" + now().toString(36), name, price, stock: Math.floor(stock), cat: g("#fc"), desc: g("#fd"), img };
+    id ? l[l.findIndex(p => p.id === id)] = rec : l.push(rec); Shop.saveProducts(l); audit("product", "owner", name + " saved"); closeModal(); toast("Product saved"); render(); }),
+  delProd: need(a => { Admin.guard(); if (!confirm("Delete this product?")) return; Shop.saveProducts(Shop.products().filter(p => p.id !== a.dataset.id)); toast("Product deleted"); render(); }),
+  carrier: need(a => { Admin.guard(); const c = Settings.get().carriers; c[a.dataset.c] = !c[a.dataset.c]; Settings.set({ carriers: c }); a.classList.toggle("on", c[a.dataset.c]); a.setAttribute("aria-checked", !!c[a.dataset.c]); }),
+  saveShip: need(() => { Admin.guard(); Settings.set({ freeShip: Math.max(0, +$("#fs").value || 0), shipFee: Math.max(0, +$("#sf").value || 0) }); toast("Saved"); }),
+  toggleOpen: a => { a.classList.toggle("on"); a.setAttribute("aria-checked", a.classList.contains("on")); },
+  saveSettings: need(() => { Admin.guard(); Settings.set({ name: $("#sn").value.trim().slice(0, 40) || CONFIG.STORE_NAME, days: +$("#sd").value, open: $("#so").classList.contains("on") }); toast("Saved"); shell(); }),
+  copy: need(async () => { Admin.guard(); try { await navigator.clipboard.writeText("SEED_PRODUCTS: " + JSON.stringify(Shop.products(), null, 2)); toast("Copied. Paste it into CONFIG."); } catch { toast("Copy was blocked. Use Download instead.", true); } }),
+  dl: need(a => { Admin.guard(); const w = a.dataset.w; download("mizuki-" + w + ".json", w === "products" ? Shop.products() : w === "people" ? Admin.users() : Shop.orders()); }),
+  reset: need(() => { Admin.guard(); if (!confirm("Erase ALL local accounts, orders and settings?") ) return; Object.keys(localStorage).filter(k => k.startsWith("mz.")).forEach(k => localStorage.removeItem(k)); logout("Local data erased."); })
+};
+document.addEventListener("click", e => { const a = e.target.closest("[data-act]"); if (a && ACT[a.dataset.act] && a.tagName !== "SELECT") ACT[a.dataset.act](a, e); });
+document.addEventListener("change", e => { const a = e.target.closest("select[data-act]"); if (a) ACT[a.dataset.act](a, e); });
+document.addEventListener("input", e => {
+  if (e.target.id === "q") { shopQ = e.target.value; const g = $("#shopgrid"); mount(g, shopGrid(Auth.user())); afterMount(g); }
+  if (e.target.id === "uq") { const t = e.target.value.toLowerCase(); $$("#ut tr").forEach(r => { r.style.display = !t || (r.dataset.s || "").includes(t) ? "" : "none"; }); }
+});
+
+/* ---------- owner password setup page (#owner-setup) ---------- */
+function ownerSetup() {
+  closeModal(); $("#ceremony").className = "";
+  mount($("#root"), T`<section class="gate"><div class="wrap" style="max-width:640px"><div class="sheet wide glass" style="margin:auto"><h2>Owner password setup</h2><p class="muted">Type the password you want to use as owner. This page scrambles it on your device and shows one line. Paste that line into <b>CONFIG → OWNER_HASH</b>, then redeploy. Your password is not sent anywhere.</p>
+    <label for="op1">Owner password (12+ characters)</label><input id="op1" type="password" autocomplete="new-password"><button class="btn" id="mk" style="margin-top:1rem">Create line</button><div class="err" id="oerr"></div><pre id="oout" style="display:none"></pre>
+    <p class="fine" style="margin-top:1rem"><a href="#" onclick="location.hash='';location.reload();return false">Back to the site</a></p></div></div></section>`);
+  $("#mk").onclick = async () => { const p = $("#op1").value; if (p.length < 12) return $("#oerr").textContent = "Use at least 12 characters."; $("#oerr").textContent = ""; $("#mk").disabled = true; const h = await hashPw(p); $("#oout").style.display = "block"; $("#oout").textContent = "OWNER_HASH: " + JSON.stringify(h) + ","; $("#mk").disabled = false; };
+}
+
+/* ---------- start ---------- */
+(function boot() {
+  if (location.hash === "#owner-setup") return ownerSetup();
+  const had = ls.get("session", null), s = Auth.session();
+  if (s) return enter(s, false);
+  gate(); if (had) { const u = had.uid && Auth.byId(had.uid); toast(u && u.banned ? "This account has been suspended." : "Your session ended. Please log in again.", true); Auth.end(); }
+})();
+</script>
+</body>
+</html>
