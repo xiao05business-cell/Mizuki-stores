@@ -6,8 +6,9 @@
 <title>Mizuki Stores</title>
 <meta name="description" content="Mizuki Stores. Sign in to save your wishlist, track orders and check out faster.">
 <meta name="theme-color" content="#0F0907">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://appleid.cdn-apple.com; connect-src 'self' https://accounts.google.com https://appleid.apple.com; frame-src https://accounts.google.com https://appleid.apple.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://appleid.cdn-apple.com https://checkout.razorpay.com; connect-src 'self' https://*.supabase.co https://accounts.google.com https://appleid.apple.com https://api.razorpay.com https://lumberjack.razorpay.com; frame-src https://accounts.google.com https://appleid.apple.com https://api.razorpay.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; object-src 'none'; base-uri 'none'; form-action 'none'">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23D8B48A'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the Mizuki Stores return and replacement policy?", "acceptedAnswer": {"@type": "Answer", "text": "Orders are prepaid. Items that arrive damaged in transit, defective or wrong are covered by a free 7-day replacement when reported within 48 hours of delivery with an uncut 360-degree unboxing video. Used, worn or unsealed items cannot be returned."}}, {"@type": "Question", "name": "What if my item arrives damaged or defective?", "acceptedAnswer": {"@type": "Answer", "text": "Report it within 48 hours of delivery with one uncut video of you opening the parcel, from the sealed label to the defect. We send a free replacement within the 7-day window."}}, {"@type": "Question", "name": "Can I return a used or opened item?", "acceptedAnswer": {"@type": "Answer", "text": "No. Used, worn, unsealed and personal-use items are not returnable or refundable for a change of mind, so every customer receives a brand-new, untouched product."}}, {"@type": "Question", "name": "What happens if the courier loses my parcel?", "acceptedAnswer": {"@type": "Answer", "text": "You receive a full refund or a replacement."}}, {"@type": "Question", "name": "How long does shipping take and how can I pay?", "acceptedAnswer": {"@type": "Answer", "text": "Orders are dispatched within 24 to 48 hours with an AWB tracking number. Payment is prepaid by UPI, cards or netbanking through Razorpay. Cash on delivery is not offered."}}]}</script>
 <style>
 :root{--espresso:#0F0907;--roast:#1A110D;--mocha:rgba(58,40,31,.38);--bronze:#D8B48A;--cream:#F4EDE4;--muted:rgba(244,237,228,.62);--line:1px solid rgba(216,180,138,.15);--ease:cubic-bezier(.16,1,.3,1);--danger:#E0836B;--ok:#9FC08A;
 --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;--sans:ui-sans-serif,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif}
@@ -91,6 +92,7 @@ select option{background:#1A110D}
 .burger.open i:nth-child(1){transform:translateY(7px) rotate(45deg)}.burger.open i:nth-child(2){opacity:0}.burger.open i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .logo{font-family:var(--serif);font-size:1.15rem;display:flex;align-items:center;gap:.55rem;cursor:pointer;background:none;border:0}.logo i{width:10px;height:10px;border-radius:50%;background:var(--bronze);box-shadow:0 0 14px var(--bronze)}
 .sp{flex:1}.iconbtn{position:relative;width:44px;height:44px;border-radius:50%;border:var(--line);background:rgba(216,180,138,.06);cursor:pointer;display:grid;place-items:center;transition:background .5s,transform .7s var(--ease)}.iconbtn:hover{background:rgba(216,180,138,.14);transform:translateY(-2px)}
+body.busy::after{content:"";position:fixed;top:0;left:0;width:100%;height:3px;z-index:300;background:linear-gradient(90deg,transparent,var(--bronze),transparent);animation:ld 1s linear infinite}@keyframes ld{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
 .iconbtn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.tbl td:first-child b{white-space:nowrap}
 .badge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:var(--bronze);color:#1A110D;font-size:.72rem;font-weight:700;display:grid;place-items:center}.badge.bump{animation:bump .6s var(--ease)}.badge:empty{display:none}
 @keyframes bump{40%{transform:scale(1.5)}}
@@ -136,6 +138,79 @@ pre{white-space:pre-wrap;word-break:break-all;font-size:.78rem;background:rgba(0
 @media(max-width:820px){.two{grid-template-columns:1fr}.top .logo span{display:none}main{padding-top:6rem}}
 @media print{.top,.drawer,.drawer-veil,#aura,#toasts{display:none!important}body{background:#fff;color:#000}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.rv,.load{opacity:1;transform:none;filter:none}}
+/* ===== Mizuki Reserve: Apple-style showcase, Mizuki AI, bag, legal ===== */
+:root{--gold:#D9B68C;--gold2:#9E764B;--cream:#F5EFE6;--ease2:cubic-bezier(.16,1,.3,1)}
+.nav2{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(1100px,100% - 1.4rem);z-index:50;display:flex;align-items:center;gap:1rem;padding:.55rem .7rem .55rem 1.2rem;border-radius:999px;animation:down 1s var(--ease2) both}
+.nav2 .logo{margin-right:auto}.nav2 a,.nav2 .lnk{background:none;border:0;color:var(--muted);font-size:.88rem;cursor:pointer;padding:.4rem .7rem;border-radius:999px;transition:color .5s,background .5s}.nav2 .lnk:hover{color:var(--cream);background:rgba(217,182,140,.08)}
+.pillbtn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.7rem;border-radius:999px;border:1px solid rgba(217,182,140,.35);background:transparent;color:var(--cream);font-weight:600;font-size:.95rem;cursor:pointer;transition:transform .8s var(--ease2),background .6s,box-shadow .8s var(--ease2),border-color .6s}
+.pillbtn:hover{background:rgba(217,182,140,.1);box-shadow:0 0 40px rgba(217,182,140,.18);border-color:var(--gold);transform:translateY(-2px)}
+.pillbtn.fill{background:linear-gradient(135deg,#ECCFA6,#D9B68C 60%,#B58A58);color:#1A110D;border-color:transparent}.pillbtn.fill:hover{box-shadow:0 12px 50px rgba(217,182,140,.4)}
+.pillbtn:active{transform:scale(.96)}
+.chapter{position:relative;min-height:92vh;display:grid;align-content:center;justify-items:center;text-align:center;padding:7rem 1.2rem 4rem;overflow:hidden;isolation:isolate}
+.chapter+.chapter{border-top:1px solid rgba(217,182,140,.07)}
+.chapter:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60vmax 40vmax at 50% 62%,rgba(217,182,140,.16),transparent 70%)}
+.chapter.alt:before{background:radial-gradient(60vmax 40vmax at 50% 62%,rgba(158,118,75,.22),transparent 70%)}
+.eyebrow{letter-spacing:.28em;text-transform:uppercase;font-size:.72rem;color:var(--gold);margin-bottom:1rem}
+.chapter h2,.chapter h1{font-family:var(--sans);font-weight:600;letter-spacing:-.045em;line-height:1;font-size:clamp(2.6rem,9vw,7rem);max-width:14ch}
+.hero h1{background:linear-gradient(100deg,#F5EFE6 25%,#D9B68C 60%,#F5EFE6 95%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 9s ease-in-out infinite;max-width:12ch}
+.chapter .tag2{max-width:36ch;color:var(--muted);font-size:clamp(1rem,2.2vw,1.35rem);margin:1.2rem auto 1.6rem}
+.chapter .price2{font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.2rem);color:var(--gold);display:flex;gap:.8rem;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:1.4rem}
+.lowpill{font-family:var(--sans);font-size:.78rem;color:var(--gold);border:1px solid rgba(217,182,140,.4);border-radius:999px;padding:.15rem .7rem}
+.cta2{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.stage{position:relative;width:min(560px,86vw);aspect-ratio:1.15;margin:2.4rem auto 0;border-radius:44px;display:grid;place-items:center;background:radial-gradient(circle at 50% 38%,rgba(245,239,230,.1),rgba(58,40,31,.55) 62%,rgba(11,8,7,.9));border:1px solid rgba(217,182,140,.18);box-shadow:0 60px 140px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08);will-change:transform;transition:box-shadow 1s var(--ease2)}
+.stage:hover{box-shadow:0 60px 160px rgba(217,182,140,.12),inset 0 1px 0 rgba(255,255,255,.12)}
+.stage svg.art{width:58%;height:auto;stroke:url(#mzGold);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 18px rgba(217,182,140,.35));animation:floaty 7s ease-in-out infinite}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.stage .ph2{position:absolute;bottom:.9rem;left:0;right:0;font-size:.72rem;color:rgba(245,239,230,.35)}
+@keyframes floaty{50%{transform:translateY(-12px)}}
+.bento2{display:grid;grid-template-columns:1.4fr 1fr;grid-auto-rows:minmax(220px,auto);gap:1rem;width:min(1100px,100% - 2.4rem);margin:0 auto}
+.bento2 .b{border-radius:36px;padding:2rem;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;gap:.5rem;min-height:240px;transition:transform 1s var(--ease2),border-color 1s,box-shadow 1s}
+.bento2 .b:first-child{grid-row:span 2}.bento2 .b:hover{transform:translateY(-8px);border-color:rgba(217,182,140,.45);box-shadow:0 40px 100px rgba(0,0,0,.5),0 0 60px rgba(217,182,140,.08)}
+.bento2 h3{font-family:var(--sans);font-weight:600;font-size:clamp(1.4rem,3vw,2.2rem);letter-spacing:-.03em;color:var(--cream)}.bento2 p{color:var(--muted)}.bento2 .big{font-family:var(--serif);font-size:clamp(3rem,8vw,6rem);color:var(--gold);line-height:1}
+.legalf{border-top:1px solid rgba(217,182,140,.12);padding:3rem 0 4rem;margin-top:4rem;color:var(--muted);font-size:.85rem}
+.legalf .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2rem}.legalf h4{font-family:var(--serif);font-weight:400;font-size:1.1rem;color:var(--gold);margin-bottom:.6rem}.legalf p{margin:.25rem 0}.legalf a{color:var(--cream);border-bottom:1px solid rgba(217,182,140,.3)}.legalf .lk{display:block;padding:.15rem 0;text-align:left}
+.legalbody h3{font-family:var(--serif);font-weight:400;font-size:1.15rem;margin:1.1rem 0 .3rem;color:var(--gold)}.legalbody p,.legalbody li{color:var(--muted);font-size:.92rem;margin:.3rem 0}.legalbody ul{padding-left:1.2rem}
+/* orb + sidebar */
+.mzorb{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));width:76px;height:76px;border-radius:50%;z-index:70;cursor:pointer;border:1px solid rgba(217,182,140,.6);background:radial-gradient(circle at 35% 28%,rgba(245,239,230,.22),rgba(58,40,31,.75) 70%);box-shadow:0 0 0 0 rgba(217,182,140,.45),0 18px 50px rgba(0,0,0,.6);animation:orbf 6s ease-in-out infinite,orbp 3.5s infinite;transition:transform .8s var(--ease2)}
+.mzorb:hover{transform:scale(1.1)}.mzorb svg{width:100%;height:100%;display:block}
+@keyframes orbf{50%{transform:translateY(-8px)}}@keyframes orbp{70%{box-shadow:0 0 0 18px rgba(217,182,140,0),0 18px 50px rgba(0,0,0,.6)}}
+.mzorb.bounce,.face.bounce{animation:bounce .9s var(--ease2)}@keyframes bounce{0%{transform:scale(1)}25%{transform:translateY(-22px) scale(1.12,.94)}50%{transform:translateY(0) scale(.94,1.08)}75%{transform:translateY(-8px)}100%{transform:none}}
+.orbsay{position:fixed;right:20px;bottom:calc(108px + env(safe-area-inset-bottom,0px));z-index:70;max-width:260px;padding:.8rem 1rem;border-radius:20px 20px 6px 20px;font-size:.88rem;background:rgba(26,17,13,.94);border:1px solid rgba(217,182,140,.4);color:var(--cream);opacity:0;transform:translateY(14px) scale(.94);pointer-events:none;transition:opacity .6s var(--ease2),transform .8s var(--ease2)}.orbsay.on{opacity:1;transform:none}
+.burst{position:fixed;z-index:71;width:8px;height:8px;pointer-events:none;background:var(--gold);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:burst 1s var(--ease2) forwards}
+@keyframes burst{from{opacity:1;transform:translate(0,0) scale(.4)}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.6) rotate(90deg)}}
+.face .spark,.face .tw{animation:tw 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}@keyframes tw{50%{opacity:.35;transform:scale(.7) rotate(20deg)}}
+.face .dots circle{animation:dt 1s infinite;fill:var(--gold)}.face .dots circle:nth-child(2){animation-delay:.18s}.face .dots circle:nth-child(3){animation-delay:.36s}@keyframes dt{50%{opacity:.25;transform:translateY(-2px)}}
+.mzside{position:fixed;top:0;bottom:0;left:0;z-index:75;width:min(380px,100vw);display:flex;flex-direction:column;background:rgba(11,8,7,.9);border-right:1px solid rgba(217,182,140,.2);backdrop-filter:blur(30px) saturate(140%);-webkit-backdrop-filter:blur(30px) saturate(140%);transform:translateX(-105%);transition:transform 1s var(--ease2);padding-top:env(safe-area-inset-top,0px)}.mzside.on{transform:none;box-shadow:30px 0 120px rgba(0,0,0,.6)}
+.mzhead{display:flex;gap:.9rem;align-items:center;padding:1.1rem 1.2rem;border-bottom:1px solid rgba(217,182,140,.14)}.mzhead .face{width:72px;height:72px;flex:none;border-radius:50%;border:1px solid rgba(217,182,140,.5);background:radial-gradient(circle at 35% 28%,rgba(245,239,230,.2),rgba(58,40,31,.8) 70%)}
+.mzhead b{display:block;font-family:var(--serif);font-weight:400;font-size:1.15rem;line-height:1.2}.live{display:flex;align-items:center;gap:.45rem;font-size:.75rem;color:var(--ok);margin-top:.2rem}.live i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 12px var(--ok);animation:livep 2s infinite}@keyframes livep{50%{opacity:.4}}
+.mzx{margin-left:auto;align-self:flex-start;background:none;border:0;color:var(--muted);font-size:1.7rem;cursor:pointer;line-height:1;transition:transform .6s var(--ease2),color .4s}.mzx:hover{transform:rotate(90deg);color:var(--cream)}
+.mztabs{display:flex;position:relative;border-bottom:1px solid rgba(217,182,140,.14)}.mztabs button{flex:1;padding:.85rem;background:none;border:0;color:var(--muted);cursor:pointer;transition:color .5s}.mztabs button.on{color:var(--gold)}.mztabs i{position:absolute;bottom:-1px;left:0;width:50%;height:2px;background:var(--gold);transition:transform .8s var(--ease2)}.mztabs.s i{transform:translateX(100%)}
+.mzpanel{flex:1;overflow:auto;padding:1rem 1.2rem;display:none}.mzpanel.on{display:flex;flex-direction:column;gap:.7rem;animation:pg .8s var(--ease2) both}
+.msg{max-width:88%;padding:.7rem .95rem;border-radius:18px;font-size:.9rem;line-height:1.5;animation:in .7s var(--ease2) both}.msg.bot{background:rgba(245,239,230,.07);border:1px solid rgba(217,182,140,.18);align-self:flex-start;border-bottom-left-radius:6px}.msg.me{background:linear-gradient(135deg,#ECCFA6,#D9B68C);color:#1A110D;align-self:flex-end;border-bottom-right-radius:6px}
+.qchips{display:flex;flex-wrap:wrap;gap:.45rem;padding:.2rem 1.2rem .7rem}.qchips button{border:1px solid rgba(217,182,140,.3);background:none;color:var(--cream);border-radius:999px;padding:.4rem .85rem;font-size:.78rem;cursor:pointer;transition:all .5s var(--ease2)}.qchips button:hover{background:var(--gold);color:#1A110D}
+.mzform{display:flex;gap:.5rem;padding:.8rem 1.2rem calc(.8rem + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(217,182,140,.14)}.mzform input{flex:1}
+.acard2{display:flex;justify-content:space-between;align-items:center;gap:.6rem;border:1px solid rgba(217,182,140,.2);border-radius:14px;padding:.55rem .75rem;font-size:.82rem}
+.ins{border:1px solid rgba(217,182,140,.2);border-radius:22px;padding:1rem;background:rgba(245,239,230,.04)}.ins h4{font-family:var(--serif);font-weight:400;color:var(--gold);margin-bottom:.6rem}.ins .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;text-align:center}.ins .row3 b{display:block;font-family:var(--serif);font-weight:400;font-size:1.6rem;color:var(--cream)}.ins .row3 small{color:var(--muted);font-size:.7rem}
+.pbars{display:grid;gap:.55rem}.pbars div{display:grid;grid-template-columns:96px 1fr 34px;gap:.5rem;align-items:center;font-size:.75rem;color:var(--muted)}.pbars i{display:block;height:7px;border-radius:7px;background:rgba(245,239,230,.08);position:relative;overflow:hidden}.pbars i:after{content:"";position:absolute;inset:0;width:var(--w,0%);background:linear-gradient(90deg,#9E764B,#ECCFA6);border-radius:7px;animation:wgrow 1.2s var(--ease2) both}@keyframes wgrow{from{width:0}}
+.skel i:after{width:100%;animation:shim 1.6s infinite;background:linear-gradient(90deg,transparent,rgba(217,182,140,.25),transparent)}@keyframes shim{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+/* auth page */
+.authwrap{min-height:100svh;display:grid;place-items:center;padding:6rem 1rem 3rem}.authgrid{width:min(980px,100%);display:grid;grid-template-columns:1fr 1.05fr;gap:2rem;align-items:center}
+.emblem{width:min(300px,70vw);margin:0 auto;display:block;filter:drop-shadow(0 0 30px rgba(217,182,140,.35))}.emblem .halo{transform-origin:60px 60px;animation:spin 40s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.authbox{border-radius:34px;padding:1.8rem;background:rgba(20,12,9,.88);position:relative;animation:pop .9s var(--ease2) both}.authbox h2{font-size:1.7rem;margin:.2rem 0}.authbox .mini{width:84px;height:84px;margin:0 auto .4rem;border-radius:50%;display:block;border:1px solid rgba(217,182,140,.5);background:radial-gradient(circle at 35% 28%,rgba(245,239,230,.2),rgba(58,40,31,.8) 70%)}
+.backbtn{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:14px;z-index:60}
+.prefpills{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.4rem}.prefpills button{border:1px solid rgba(217,182,140,.3);background:none;color:var(--cream);border-radius:999px;padding:.4rem .85rem;font-size:.8rem;cursor:pointer;transition:all .5s var(--ease2)}.prefpills button.on{background:var(--gold);color:#1A110D}
+/* bag */
+.bagveil{position:fixed;inset:0;z-index:78;background:rgba(8,4,2,.55);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .7s var(--ease2)}.bagveil.on{opacity:1;pointer-events:auto}
+.bag{position:fixed;top:0;bottom:0;right:0;z-index:79;width:min(440px,100vw);display:flex;flex-direction:column;background:rgba(14,9,7,.95);border-left:1px solid rgba(217,182,140,.2);transform:translateX(105%);transition:transform 1s var(--ease2);padding-top:env(safe-area-inset-top,0px)}.bag.on{transform:none}
+.bag .bhead{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.3rem;border-bottom:1px solid rgba(217,182,140,.14)}.bagitems{flex:1;overflow:auto;padding:1rem 1.3rem}.bagrow{display:flex;gap:.8rem;align-items:center;padding:.8rem 0;border-bottom:1px solid rgba(217,182,140,.08);animation:in .7s var(--ease2) both}
+.bagfoot{padding:1rem 1.3rem calc(1rem + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(217,182,140,.14)}.agree{display:flex;gap:.7rem;align-items:flex-start;font-size:.78rem;color:var(--muted);margin:.8rem 0;cursor:pointer}.agree input{width:20px;height:20px;flex:none;margin-top:2px;accent-color:#D9B68C}
+.payb{width:100%;transition:opacity .5s,transform .8s var(--ease2)}.payb[disabled]{opacity:.4;pointer-events:none}
+.trustnote{border:1px solid rgba(217,182,140,.25);border-radius:16px;padding:.7rem .9rem;font-size:.8rem;color:var(--muted);margin:.8rem 0}.trustnote b{color:var(--gold)}
+@media(max-width:860px){.authgrid{grid-template-columns:1fr}.bento2{grid-template-columns:1fr}.bento2 .b:first-child{grid-row:auto}.legalf .cols{grid-template-columns:1fr}.nav2 .lnk.hide{display:none}}
+@media(max-width:760px){.mzorb{width:64px;height:64px}}
+@media(max-width:560px){.mzside{width:100vw}.bag{width:100vw}}
+.nav2 .badge{position:static;display:inline-grid;margin-left:.3rem;vertical-align:middle}.nav2 .badge:empty{display:none}
+.legalf .lk{background:none;border:0;color:var(--muted);cursor:pointer;font:inherit;font-size:.85rem;padding:.2rem 0;text-align:left;transition:color .4s}.legalf .lk:hover{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -155,21 +230,32 @@ const CONFIG = {
   OWNER_EMAIL: "zian.xi.005@gmail.com",
   // Owner password check. Leave null, open  YOURSITE/#owner-setup , type your password,
   // copy the line it shows and paste it here instead of null. Then redeploy.
-  OWNER_HASH: {"s":"JcOcqLrTQX5iD1SZJZuGQw==","i":310000,"h":"3NoIfKuqzwNY9n8sGijXMtq7fM7r2P0Wsm6X5LRVfzk="},
+  OWNER_HASH: null,
   // Add these when you have the keys (see the guide). Empty = the button shows a notice.
   GOOGLE_CLIENT_ID: "",
   APPLE_CLIENT_ID: "",
   APPLE_REDIRECT_URI: "",
+  // ONLINE MODE: fill both lines (see SETUP-SUPABASE.md) and every customer from every device appears in the owner console.
+  // Leave them empty to keep everything in each visitor's own browser.
+  SUPABASE_URL: "",
+  SUPABASE_ANON_KEY: "",
+  HEARTBEAT_MS: 20000,
   // Products every visitor sees. Edit in the owner console, then use API > Copy catalog snippet to paste here.
   SEED_PRODUCTS: [
-    { id: "p1", name: "Handloom cotton scarf", price: 699, stock: 24, cat: "Fashion", desc: "Soft block-printed scarf, woven by hand.", img: "" },
-    { id: "p2", name: "Blue pottery mug", price: 449, stock: 40, cat: "Home", desc: "Hand-painted ceramic, made to be used daily.", img: "" },
-    { id: "p3", name: "Brass desk lamp", price: 2199, stock: 6, cat: "Home", desc: "Warm light and solid brass.", img: "" },
-    { id: "p4", name: "Linen throw", price: 1499, stock: 12, cat: "Home", desc: "Washed linen that softens with every wash.", img: "" },
-    { id: "p5", name: "Leather card holder", price: 899, stock: 30, cat: "Fashion", desc: "Vegetable-tanned leather, hand stitched.", img: "" },
-    { id: "p6", name: "Stoneware planter", price: 1199, stock: 0, cat: "Home", desc: "Matte glaze, with a drainage hole.", img: "" }
-  ]
+    { id: "p1", name: "Mizuki Studio ANC Headphones", price: 6999, stock: 25, cat: "Tech & Audio", art: "headphones", origin: "India", headline: "Silence, Perfected.", tagline: "Adaptive noise cancelling in a champagne-brushed frame.", desc: "Adaptive noise cancelling in a champagne-brushed frame.", img: "" },
+    { id: "p2", name: "Chrono Espresso Edition", price: 8499, stock: 12, cat: "Fashion & Carry", art: "watch", origin: "India", headline: "Time, Roasted Slow.", tagline: "A bronze-dial chronograph on a deep espresso strap.", desc: "A bronze-dial chronograph on a deep espresso strap.", img: "" },
+    { id: "p3", name: "Artisan Pour-Over Vessel", price: 2299, stock: 30, cat: "Home & Living", art: "vessel", origin: "India", headline: "Pour. Pause. Savour.", tagline: "Hand-finished ceramic and brushed brass.", desc: "Hand-finished ceramic and brushed brass.", img: "" },
+    { id: "p4", name: "Obsidian Leather Weekender", price: 9999, stock: 8, cat: "Fashion & Carry", art: "bag", origin: "India", headline: "Carry Everything. Quietly.", tagline: "Full-grain leather with a quiet champagne zip.", desc: "Full-grain leather with a quiet champagne zip.", img: "" },
+    { id: "p5", name: "Washed linen throw", price: 1499, stock: 20, cat: "Home & Living", art: "", origin: "India", headline: "", tagline: "", desc: "Washed linen that softens with every wash.", img: "" },
+    { id: "p6", name: "Leather card holder", price: 899, stock: 40, cat: "Fashion & Carry", art: "", origin: "India", headline: "", tagline: "", desc: "Vegetable-tanned leather, hand stitched.", img: "" }
+  ],
+  // Razorpay Key ID (starts with rzp_test_ or rzp_live_). Empty = checkout offers a clearly marked DEMO order.
+  RAZORPAY_KEY_ID: "",
+  // Shown in the footer. Required by India's Consumer Protection (E-Commerce) Rules, 2020.
+  BUSINESS: { name: "Mizuki Stores", region: "Rajasthan, India", email: "zian.xi.005@gmail.com", whatsapp: "7688874076", grievance: "xiao" }
 };
+
+const CLOUD = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
 
 /* ---------------------------------------------------------------
    2. Small helpers. Everything shown on screen goes through T`` which escapes it.
@@ -219,7 +305,8 @@ const Settings = {
   get: () => ({ name: CONFIG.STORE_NAME, open: true, days: 30, freeShip: 999, shipFee: 60, carriers: {}, ...ls.get("settings", {}) }),
   set: p => ls.set("settings", { ...Settings.get(), ...p })
 };
-const audit = (type, uid, msg) => { const a = ls.get("audit", []); a.unshift({ t: now(), type, uid, msg }); ls.set("audit", a.slice(0, 300)); };
+let audit = (type, uid, msg) => { const a = ls.get("audit", []); a.unshift({ t: now(), type, uid, msg }); ls.set("audit", a.slice(0, 300)); };
+const Audit = { list: () => ls.get("audit", []) };
 const Throttle = {
   check(e) { const t = ls.get("throttle", {})[e]; if (t && t.until > now()) throw new AppError("locked", "Too many attempts. Try again in " + Math.ceil((t.until - now()) / 1000) + " seconds."); },
   fail(e) { const all = ls.get("throttle", {}), t = all[e] || { n: 0, until: 0 }; t.n++; if (t.n >= 5) t.until = now() + Math.min(900000, 30000 * 2 ** (t.n - 5)); all[e] = t; ls.set("throttle", all); },
@@ -252,7 +339,7 @@ const Auth = {
   end() { ls.del("session"); },
   user() { const s = Auth.session(); return s && s.role === "user" ? Auth.byId(s.uid) : null; },
   touch(uid) { const u = Auth.byId(uid); if (u) { u.seen = now(); Auth.put(u); } },
-  async signup({ name, email, password }) {
+  async signup({ name, email, password, prefs }) {
     name = String(name || "").trim().slice(0, 60); email = String(email || "").trim().toLowerCase(); password = String(password || "");
     if (!name) throw new AppError("name", "Please enter your name.");
     if (!validEmail(email)) throw new AppError("email", "Enter a valid email address.");
@@ -261,7 +348,7 @@ const Auth = {
     if (password.length > 128) throw new AppError("password", "That password is too long.");
     if (!Settings.get().open) throw new AppError("closed", "New sign-ups are paused right now.");
     if (Auth.byEmail(email)) throw new AppError("exists", "An account with this email already exists. Try logging in.");
-    const u = Auth.put({ uid: crypto.randomUUID(), id: Auth.memberId(), name, email, pw: await hashPw(password), provider: "email", created: now(), last: now(), seen: now(), logins: 1, banned: false, sv: 1, wish: [], idShown: false });
+    const u = Auth.put({ uid: crypto.randomUUID(), id: Auth.memberId(), name, email, pw: await hashPw(password), provider: "email", created: now(), last: now(), seen: now(), logins: 1, banned: false, sv: 1, wish: [], idShown: false, prefs: (Array.isArray(prefs) ? prefs : []).filter(x => ["Tech & Audio", "Fashion & Carry", "Home & Living", "Smart Deals"].includes(x)).slice(0, 4) });
     audit("signup", u.uid, "New account " + u.id);
     return { user: u, session: Auth.start(u) };
   },
@@ -291,6 +378,19 @@ const Auth = {
     if (!u) { if (!Settings.get().open) throw new AppError("closed", "New sign-ups are paused right now."); u = { uid: crypto.randomUUID(), id: Auth.memberId(), name: String(name || email.split("@")[0]).slice(0, 60), email, pw: null, provider, created: now(), logins: 0, banned: false, sv: 1, wish: [], idShown: false }; audit("signup", u.uid, "New " + provider + " account"); }
     u.last = u.seen = now(); u.logins++; Auth.put(u); audit("login", u.uid, "Signed in with " + provider);
     return { user: u, session: Auth.start(u) };
+  },
+  /* Mobile code sign-in. On-device mode has no SMS service, so the code is shown on screen (demo only). */
+  demoOtp: "",
+  normPhone(v) { const d = String(v || "").replace(/\D/g, "").replace(/^91(?=\d{10}$)/, ""); if (!/^[6-9]\d{9}$/.test(d)) throw new AppError("phone", "Enter a valid 10-digit mobile number."); return d; },
+  async phoneRequest(phone) { const d = Auth.normPhone(phone); Throttle.check("ph:" + d); Throttle.fail("ph:" + d); Auth._otp = { phone: d, code: String(1000 + crypto.getRandomValues(new Uint32Array(1))[0] % 9000), exp: now() + 3e5, tries: 0 }; Auth.demoOtp = Auth._otp.code; return true; },
+  async phoneVerify(phone, code, o = {}) {
+    const d = Auth.normPhone(phone), p = Auth._otp;
+    if (!p || p.phone !== d || p.exp < now() || p.tries >= 5) throw new AppError("otp", "That code has expired. Please ask for a new one.");
+    p.tries++; if (String(code || "").trim() !== p.code) throw new AppError("otp", "That code is not correct."); Auth._otp = null; Auth.demoOtp = ""; Throttle.clear("ph:" + d);
+    let u = Auth.users().find(x => x.phone === d);
+    if (u && u.banned) throw new AppError("banned", "This account has been suspended. Please contact support.");
+    if (!u) { if (!Settings.get().open) throw new AppError("closed", "New sign-ups are paused right now."); u = { uid: crypto.randomUUID(), id: Auth.memberId(), name: String(o.name || "Member").trim().slice(0, 60) || "Member", email: "", phone: d, pw: null, provider: "phone", created: now(), logins: 0, banned: false, sv: 1, wish: [], idShown: false, prefs: (Array.isArray(o.prefs) ? o.prefs : []).slice(0, 4) }; audit("signup", u.uid, "New phone account"); }
+    u.last = u.seen = now(); u.logins++; Auth.put(u); audit("login", u.uid, "Signed in with phone"); return { user: u, session: Auth.start(u) };
   },
   async changePassword(uid, oldPw, newPw) {
     const u = Auth.byId(uid); if (!u || !u.pw) throw new AppError("nopw", "This account signs in with " + (u ? u.provider : "a provider") + ".");
@@ -323,13 +423,14 @@ const Shop = {
     const sub = items.reduce((a, i) => a + i.price * i.q, 0), ship = !sub || sub >= s.freeShip ? 0 : s.shipFee;
     return { items, sub, ship, total: sub + ship };
   },
-  place(uid) {
+  place(uid, opt = {}) {
     const prods = Shop.products(), t = Shop.totals(Shop.cart(uid));
     if (!t.items.length) throw new AppError("empty", "Your cart is empty.");
+    if (!(opt.policy && opt.policy.accepted)) throw new AppError("policy", "Please accept the Fair Replacement Policy to continue.");
     for (const i of t.items) { const p = prods.find(x => x.id === i.pid); if (!p || p.stock < i.q) throw new AppError("stock", i.name + " is no longer available in that quantity."); }
     t.items.forEach(i => { prods.find(x => x.id === i.pid).stock -= i.q; });
     Shop.saveProducts(prods);
-    const o = { id: "O-" + now().toString(36).toUpperCase(), uid, items: t.items, sub: t.sub, ship: t.ship, total: t.total, status: "Placed", t: now(), history: [{ s: "Placed", t: now() }] };
+    const o = { id: "O-" + now().toString(36).toUpperCase(), uid, items: t.items, sub: t.sub, ship: t.ship, total: t.total, status: "Placed", t: now(), history: [{ s: "Placed", t: now() }], policy_accepted: !!(opt.policy && opt.policy.accepted), policy_accepted_at: opt.policy && opt.policy.at || null, pay_ref: opt.payId || "DEMO" };
     ls.set("orders", [o, ...Shop.orders()]); Shop.saveCart(uid, []); audit("order", uid, o.id + " " + money(o.total)); return o;
   }
 };
@@ -349,6 +450,544 @@ const Admin = {
              banned: u.filter(x => x.banned).length, orders: o.length, revenue: o.filter(x => x.status !== "Cancelled").reduce((s, x) => s + x.total, 0), products: Shop.products().length };
   }
 };
+</script>
+
+<!-- ================= CLOUD MODE: used only when SUPABASE_URL and SUPABASE_ANON_KEY are filled in CONFIG ================= -->
+<script id="cloud">
+"use strict";
+const Cloud = { on: CLOUD, base: String(CONFIG.SUPABASE_URL || "").replace(/\/+$/, ""), key: CONFIG.SUPABASE_ANON_KEY || "",
+  tok: null, sess: null, me: null, products: [], settings: {}, users: [], orders: [], audit: [], recovery: false, fresh: false, notice: "", external: null };
+if (Cloud.on) {
+  /* ---------- talking to Supabase (plain fetch, no library) ---------- */
+  Cloud.err = (j, status) => {
+    const m = String((j && (j.msg || j.error_description || j.message)) || "").toLowerCase(), c = String((j && (j.error_code || j.code)) || ""), mc = m + " " + c.toLowerCase();
+    if (/invalid login|invalid_credentials/.test(mc)) return "Wrong email or password.";
+    if (/already registered|user_already_exists|already been registered/.test(mc)) return "An account with this email already exists. Try logging in.";
+    if (/not confirmed|email_not_confirmed/.test(mc)) return "Please confirm your email first. Check your inbox.";
+    if (/rate limit|over_.*rate|too many/.test(mc)) return "Too many attempts. Please wait a minute and try again.";
+    if (/weak_password|password should|at least/.test(mc)) return "Choose a stronger password (at least 8 characters).";
+    if (/sms|otp|twilio|phone/.test(mc) && !/invalid login/.test(mc)) return "Phone sign-in is not set up yet.";
+    if (/database error saving new user|paused/.test(mc)) return "New sign-ups are paused or unavailable right now.";
+    if (c === "P0001" && j.message) return j.message;
+    if (status === 401 || /jwt/.test(m)) return "Your session ended. Please log in again.";
+    return "Something went wrong. Please try again.";
+  };
+  Cloud.api = async (path, o = {}) => {
+    if (o.auth !== false && !o.token && Cloud.tok) await Cloud.ensure();
+    const token = o.token || (o.auth === false ? null : Cloud.tok && Cloud.tok.access_token), h = { apikey: Cloud.key, "Content-Type": "application/json", Authorization: "Bearer " + (token || Cloud.key) };
+    if (o.prefer) h.Prefer = o.prefer;
+    let r; try { r = await fetch(Cloud.base + path, { method: o.method || "GET", headers: h, body: o.body === undefined ? undefined : JSON.stringify(o.body) }); } catch { throw new AppError("net", "Can't reach the store. Check your internet connection."); }
+    const t = await r.text(); let j = null; try { j = t ? JSON.parse(t) : null; } catch {}
+    if (!r.ok) throw new AppError("api", Cloud.err(j, r.status));
+    return j;
+  };
+  Cloud.setTok = j => { Cloud.tok = { access_token: j.access_token, refresh_token: j.refresh_token, expires_at: j.expires_at || Math.floor(now() / 1000) + (j.expires_in || 3600) }; ls.set("cs", Cloud.tok); };
+  Cloud.clear = () => { Cloud.tok = null; Cloud.sess = null; Cloud.me = null; Cloud.users = []; Cloud.orders = []; Cloud.audit = []; ls.del("cs"); };
+  Cloud.ensure = async () => {
+    const t = Cloud.tok; if (!t || t.expires_at - 60 > now() / 1000) return;
+    try { Cloud.setTok(await Cloud.api("/auth/v1/token?grant_type=refresh_token", { method: "POST", auth: false, body: { refresh_token: t.refresh_token } })); } catch (e) { if (e.code !== "net") Cloud.clear(); throw e; }
+  };
+  Cloud.signOutRemote = async scope => { const t = Cloud.tok && Cloud.tok.access_token; if (!t) return; try { await Cloud.api("/auth/v1/logout" + (scope ? "?scope=" + scope : ""), { method: "POST", body: {}, token: t }); } catch {} };
+
+  /* ---------- turning database rows into what the pages expect ---------- */
+  Cloud.mapUser = p => ({ uid: p.id, id: p.member_id, name: p.name || "", email: p.email || "", provider: p.provider || "email", pw: p.provider === "email" ? true : null,
+    created: Date.parse(p.created_at), last: Date.parse(p.last_login), seen: Date.parse(p.last_seen), logins: p.logins, banned: !!p.banned, wish: Array.isArray(p.wish) ? p.wish : [], idShown: !!p.id_shown, prefs: Array.isArray(p.prefs) ? p.prefs : [] });
+  Cloud.mapOrder = o => ({ policy_accepted: o.policy_accepted, policy_accepted_at: o.policy_accepted_at, pay_ref: o.pay_ref, id: o.id, uid: o.user_id, items: o.items, sub: o.sub, ship: o.ship, total: o.total, status: o.status, t: Date.parse(o.created_at), history: o.history || [] });
+  Cloud.mapProduct = p => ({ id: p.id, name: p.name, price: p.price, stock: p.stock, cat: p.cat, desc: p.descr, img: p.img, headline: p.headline, tagline: p.tagline, art: p.art, origin: p.origin });
+  Cloud.loadPublic = async () => { const [pr, st] = await Promise.all([Cloud.api("/rest/v1/products?select=*&order=name.asc"), Cloud.api("/rest/v1/settings?key=eq.store&select=value")]); Cloud.products = pr.map(Cloud.mapProduct); Cloud.settings = st[0] ? st[0].value : {}; };
+  Cloud.loadMe = async uid => { const r = await Cloud.api("/rest/v1/profiles?id=eq." + uid + "&select=*"); Cloud.me = r[0] ? Cloud.mapUser(r[0]) : null; };
+  Cloud.loadUsers = async () => { Cloud.users = (await Cloud.api("/rest/v1/profiles?select=*&order=created_at.desc&limit=1000")).map(Cloud.mapUser); };
+  Cloud.loadOrders = async () => { Cloud.orders = (await Cloud.api("/rest/v1/orders?select=*&order=created_at.desc&limit=500")).map(Cloud.mapOrder); };
+  Cloud.loadAudit = async () => { const f = Cloud.sess && Cloud.sess.role === "user" ? "&user_id=eq." + Cloud.me.uid : ""; Cloud.audit = (await Cloud.api("/rest/v1/audit?select=*&order=at.desc&limit=200" + f)).map(a => ({ t: Date.parse(a.at), type: a.type, uid: a.user_id, msg: a.msg })); };
+  Cloud.saveMe = () => Cloud.api("/rest/v1/profiles?id=eq." + Cloud.me.uid, { method: "PATCH", prefer: "return=minimal", body: { name: Cloud.me.name, wish: Cloud.me.wish, id_shown: Cloud.me.idShown, prefs: Cloud.me.prefs || [] } });
+  Cloud.prefetch = async page => {
+    if (!Cloud.sess) return; const jobs = [Cloud.loadPublic()];
+    if (Cloud.sess.role === "owner") {
+      if (/^o-(overview|users|orders|api)$/.test(page)) jobs.push(Cloud.loadUsers(), Cloud.loadOrders());
+      if (/^o-(overview|log)$/.test(page)) jobs.push(Cloud.loadAudit());
+    } else {
+      if (/^(orders|analytics|billing)$/.test(page)) jobs.push(Cloud.loadOrders());
+      if (page === "security") jobs.push(Cloud.loadAudit());
+      if (page === "account") jobs.push(Cloud.loadMe(Cloud.me.uid));
+    }
+    await Promise.all(jobs);
+  };
+
+  /* ---------- signing in: owner is recognised by the database, not by this file ---------- */
+  Cloud.establish = async j => {
+    Cloud.setTok(j);
+    const uid = j.user ? j.user.id : (await Cloud.api("/auth/v1/user")).id;
+    if (await Cloud.api("/rest/v1/rpc/is_owner", { method: "POST", body: {} }) === true) {
+      Cloud.me = null; Cloud.sess = { uid: "owner", role: "owner", exp: now() + 36e5 };
+      await Promise.all([Cloud.loadPublic(), Cloud.loadUsers(), Cloud.loadOrders(), Cloud.loadAudit()]); return;
+    }
+    await Cloud.loadMe(uid);
+    if (!Cloud.me) { Cloud.clear(); throw new AppError("noprofile", "We could not load your account. Please try again."); }
+    if (Cloud.me.banned) { await Cloud.signOutRemote(); Cloud.clear(); throw new AppError("banned", "This account has been suspended. Please contact support."); }
+    Cloud.sess = { uid, role: "user", exp: now() + 36e5 }; await Cloud.loadPublic();
+  };
+  Cloud.recordLogin = async () => { if (Cloud.sess && Cloud.sess.role === "user") { try { await Cloud.api("/rest/v1/rpc/record_login", { method: "POST", body: {} }); await Cloud.loadMe(Cloud.me.uid); } catch {} } };
+  Cloud.oauth = async provider => {
+    if (Cloud.external === null) { try { Cloud.external = (await Cloud.api("/auth/v1/settings", { auth: false })).external || {}; } catch { Cloud.external = {}; } }
+    if (!Cloud.external[provider]) throw new AppError("provider", (provider === "google" ? "Google" : "Apple") + " sign-in is not turned on yet.");
+    location.href = Cloud.base + "/auth/v1/authorize?provider=" + provider + "&redirect_to=" + encodeURIComponent(location.origin + location.pathname);
+  };
+  Cloud.recover = email => Cloud.api("/auth/v1/recover?redirect_to=" + encodeURIComponent(location.origin + location.pathname), { method: "POST", auth: false, body: { email } });
+  Cloud.heartbeat = async () => {
+    if (!Cloud.sess) return;
+    try {
+      await Cloud.ensure();
+      if (Cloud.sess.role === "user") {
+        const r = await Cloud.api("/rest/v1/profiles?id=eq." + Cloud.me.uid + "&select=banned");
+        if (!r[0] || r[0].banned) return "banned";
+        await Cloud.api("/rest/v1/profiles?id=eq." + Cloud.me.uid, { method: "PATCH", prefer: "return=minimal", body: { last_seen: new Date().toISOString() } });
+      }
+    } catch (e) { if (e.code !== "net") return "expired"; }
+  };
+  Cloud.init = async () => {
+    const h = new URLSearchParams(location.hash.slice(1));
+    if (h.get("error_description")) { Cloud.notice = h.get("error_description").replace(/\+/g, " "); history.replaceState(null, "", location.pathname + location.search); }
+    else if (h.get("access_token")) {
+      const j = { access_token: h.get("access_token"), refresh_token: h.get("refresh_token"), expires_in: +h.get("expires_in") || 3600 }, type = h.get("type");
+      history.replaceState(null, "", location.pathname + location.search);
+      if (type === "recovery") { Cloud.setTok(j); Cloud.recovery = true; return; }
+      await Cloud.establish(j); Cloud.fresh = true; await Cloud.recordLogin(); return;
+    } else if (ls.get("cs", null)) {
+      try { await Cloud.establish(ls.get("cs", null)); return; }
+      catch (e) { Cloud.notice = e.code === "banned" ? e.message : e.code === "net" ? e.message : "Your session ended. Please log in again."; Cloud.clear(); }
+    }
+    try { await Cloud.loadPublic(); } catch (e) { Cloud.notice = e.message; }
+  };
+
+  /* ---------- swap the on-device services for online ones ---------- */
+  audit = (type, uid, msg) => { if (Cloud.sess && Cloud.sess.role === "owner") Cloud.api("/rest/v1/audit", { method: "POST", prefer: "return=minimal", body: { type, user_id: uid && uid !== "owner" ? uid : null, msg } }).catch(() => {}); };
+  Audit.list = () => Cloud.audit;
+  Settings.get = () => ({ name: CONFIG.STORE_NAME, open: true, days: 30, freeShip: 999, shipFee: 60, carriers: {}, ...Cloud.settings });
+  Settings.set = async p => { Admin.guard(); const next = { ...Settings.get(), ...p }; delete next.days; await Cloud.api("/rest/v1/settings?on_conflict=key", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: { key: "store", value: next } }); Cloud.settings = next; };
+  Auth.session = () => Cloud.sess;
+  Auth.byId = uid => Cloud.me && Cloud.me.uid === uid ? Cloud.me : Cloud.users.find(u => u.uid === uid);
+  Auth.users = () => Cloud.users;
+  Auth.put = u => { if (Cloud.me && u.uid === Cloud.me.uid) Cloud.saveMe().catch(e => toast(e.message, true)); return u; };
+  Auth.end = () => { const p = Cloud.signOutRemote(); Cloud.clear(); return p; };
+  Auth.touch = () => {};
+  Auth.signup = async ({ name, email, password, prefs }) => {
+    name = String(name || "").trim().slice(0, 60); email = String(email || "").trim().toLowerCase(); password = String(password || "");
+    if (!name) throw new AppError("name", "Please enter your name.");
+    if (!validEmail(email)) throw new AppError("email", "Enter a valid email address.");
+    if (email === CONFIG.OWNER_EMAIL) throw new AppError("reserved", "This email is reserved. Please use Log in.");
+    if (password.length < 8) throw new AppError("password", "Use at least 8 characters.");
+    if (password.length > 128) throw new AppError("password", "That password is too long.");
+    const j = await Cloud.api("/auth/v1/signup", { method: "POST", auth: false, body: { email, password, data: { name } } });
+    if (!j || !j.access_token) throw new AppError("confirm", "Almost there. We sent a confirmation link to " + email + ". Open it, then log in.");
+    await Cloud.establish(j); if (Cloud.me && prefs && prefs.length) { Cloud.me.prefs = prefs.slice(0, 4); Cloud.saveMe().catch(() => {}); } await Cloud.recordLogin(); return { user: Cloud.me, session: Cloud.sess };
+  };
+  Auth.login = async (email, password) => {
+    email = String(email || "").trim().toLowerCase(); password = String(password || "");
+    if (!validEmail(email)) throw new AppError("email", "Enter a valid email address.");
+    Throttle.check(email); let j;
+    try { j = await Cloud.api("/auth/v1/token?grant_type=password", { method: "POST", auth: false, body: { email, password } }); }
+    catch (e) { if (e.code === "api" && /Wrong email/.test(e.message)) Throttle.fail(email); throw e; }
+    await Cloud.establish(j); Throttle.clear(email); await Cloud.recordLogin();
+    return Cloud.sess.role === "owner" ? { owner: true, session: Cloud.sess } : { user: Cloud.me, session: Cloud.sess };
+  };
+  Auth.changePassword = async (uid, oldPw, newPw) => {
+    if (!Cloud.me || !Cloud.me.pw) throw new AppError("nopw", "This account signs in with " + (Cloud.me ? Cloud.me.provider : "a provider") + ".");
+    if (String(newPw).length < 8) throw new AppError("password", "Use at least 8 characters.");
+    try { await Cloud.api("/auth/v1/token?grant_type=password", { method: "POST", auth: false, body: { email: Cloud.me.email, password: String(oldPw || "") } }); } catch (e) { throw new AppError("bad", "Current password is wrong."); }
+    await Cloud.api("/auth/v1/user", { method: "PUT", body: { password: String(newPw) } }); return Cloud.sess;
+  };
+  Auth.phoneRequest = async phone => { const d = Auth.normPhone(phone); await Cloud.api("/auth/v1/otp", { method: "POST", auth: false, body: { phone: "+91" + d } }); return true; };
+  Auth.phoneVerify = async (phone, code, o = {}) => {
+    const d = Auth.normPhone(phone), j = await Cloud.api("/auth/v1/verify", { method: "POST", auth: false, body: { type: "sms", phone: "+91" + d, token: String(code || "").trim() } });
+    await Cloud.establish(j); if (Cloud.me && (o.name || (o.prefs || []).length)) { if (o.name && !Cloud.me.idShown) Cloud.me.name = String(o.name).slice(0, 60); Cloud.me.prefs = (o.prefs || []).slice(0, 4); Cloud.saveMe().catch(() => {}); }
+    await Cloud.recordLogin(); return { user: Cloud.me, session: Cloud.sess };
+  };
+  Auth.signOutEverywhere = async () => { await Cloud.signOutRemote("others"); return Cloud.sess; };
+  Shop.products = () => Cloud.products;
+  Shop.orders = () => Cloud.orders;
+  Shop.toggleWish = (uid, pid) => { const u = Cloud.me, i = u.wish.indexOf(pid); i < 0 ? u.wish.push(pid) : u.wish.splice(i, 1); Cloud.saveMe().catch(e => toast(e.message, true)); return i < 0; };
+  Shop.place = async (uid, opt = {}) => {
+    const c = Shop.cart(uid); if (!c.length) throw new AppError("empty", "Your cart is empty.");
+    const r = await Cloud.api("/rest/v1/rpc/place_order", { method: "POST", body: { p_items: c.map(l => ({ pid: l.pid, q: l.q })), p_policy: !!(opt.policy && opt.policy.accepted), p_pay_ref: opt.payId || "DEMO" } });
+    Shop.saveCart(uid, []); await Promise.all([Cloud.loadPublic(), Cloud.loadOrders()]); return Cloud.orders.find(o => o.id === r.id) || { id: r.id, total: r.total };
+  };
+  Shop.saveProducts = async list => {
+    Admin.guard(); const old = Cloud.products, ids = new Set(list.map(p => p.id)), keys = ["name", "price", "stock", "cat", "desc", "img", "headline", "tagline", "art", "origin"];
+    const changed = list.filter(p => { const o = old.find(x => x.id === p.id); return !o || keys.some(k => o[k] !== p[k]); }), removed = old.filter(p => !ids.has(p.id)); Cloud.products = list;
+    try {
+      if (changed.length) await Cloud.api("/rest/v1/products?on_conflict=id", { method: "POST", prefer: "resolution=merge-duplicates,return=minimal", body: changed.map(p => ({ id: p.id, name: p.name, price: p.price, stock: p.stock, cat: p.cat, descr: p.desc, img: p.img, headline: p.headline || "", tagline: p.tagline || "", art: p.art || "", origin: p.origin || "India", updated_at: new Date().toISOString() })) });
+      for (const p of removed) await Cloud.api("/rest/v1/products?id=eq." + encodeURIComponent(p.id), { method: "DELETE", prefer: "return=minimal" });
+    } catch (e) { Cloud.products = old; throw e; }
+  };
+  Admin.users = () => { Admin.guard(); const o = Cloud.orders; return Cloud.users.map(({ pw, wish, ...u }) => ({ ...u, wishCount: wish.length, orders: o.filter(x => x.uid === u.uid).length })); };
+  Admin.ban = async (uid, v) => {
+    Admin.guard(); const u = Cloud.users.find(x => x.uid === uid); if (!u) return; const prev = u.banned; u.banned = !!v;
+    try { await Cloud.api("/rest/v1/profiles?id=eq." + uid, { method: "PATCH", prefer: "return=minimal", body: { banned: !!v } }); audit(v ? "ban" : "unban", uid, u.id); } catch (e) { u.banned = prev; throw e; }
+  };
+  Admin.kick = async () => { throw new AppError("nosup", "Suspend the account instead. Remote sign-out is not available online."); };
+  Admin.setStatus = async (oid, s) => {
+    Admin.guard(); const o = Cloud.orders.find(x => x.id === oid); if (!o) return; const hist = [...o.history, { s, t: now() }];
+    await Cloud.api("/rest/v1/orders?id=eq." + encodeURIComponent(oid), { method: "PATCH", prefer: "return=minimal", body: { status: s, history: hist } }); o.status = s; o.history = hist; audit("order_status", o.uid, oid + " " + s);
+  };
+  Admin.stats = () => {
+    Admin.guard(); const u = Cloud.users, o = Cloud.orders, t0 = new Date().setHours(0, 0, 0, 0);
+    return { accounts: u.length, online: u.filter(x => x.seen > now() - 3e5).length, today: u.filter(x => x.last >= t0).length, week: u.filter(x => x.created > now() - 7 * DAY).length, banned: u.filter(x => x.banned).length,
+             orders: o.length, revenue: o.filter(x => x.status !== "Cancelled").reduce((s, x) => s + x.total, 0), products: Cloud.products.length };
+  };
+}
+</script>
+
+<script id="home">
+/* =====================================================================
+   MIZUKI AI: animated face, floating orb, left sidebar, concierge
+   (pure SVG and JavaScript, no images, no libraries)
+===================================================================== */
+const Face = (() => {
+  const MOODS = {
+    happy:    { w: 8,   tT: 7.5, tB: -3.5, y: 47, tilt: 0,  mw: 13, my: 61, mc: 9,   cheek: .18, spark: 0, dots: 0, look: 1,  stroke: 3.4 },
+    excited:  { w: 9,   tT: 9.5, tB: 7,    y: 46, tilt: 0,  mw: 15, my: 60, mc: 15,  cheek: .4,  spark: 1, dots: 0, look: .4, stroke: 4 },
+    sad:      { w: 8,   tT: 6.5, tB: 6.5,  y: 49, tilt: 13, mw: 9,  my: 65, mc: -9,  cheek: 0,   spark: 0, dots: 0, look: .2, stroke: 3.2 },
+    thinking: { w: 8,   tT: 8,   tB: 8,    y: 43, tilt: 0,  mw: 6,  my: 63, mc: 0,   cheek: 0,   spark: 0, dots: 1, look: 0,  stroke: 3.2 }
+  };
+  const cur = { ...MOODS.happy, blink: 1 }, tgt = { ...MOODS.happy, blink: 1 };
+  let mood = "happy", inst = [], raf = 0;
+  const STAR = "M0-4L1.1-1.1 4 0 1.1 1.1 0 4-1.1 1.1-4 0-1.1-1.1Z";
+  const markup = () => `<svg viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="49" fill="url(#mzGlass)"/>
+    <rect x="13" y="27" width="74" height="48" rx="23" fill="#0B0807" stroke="url(#mzGold)" stroke-opacity=".55" stroke-width="1.2"/>
+    <ellipse cx="38" cy="33" rx="15" ry="3.6" fill="#fff" opacity=".07"/>
+    <g class="gz"><path class="eL" fill="url(#mzGold)"/><path class="eR" fill="url(#mzGold)"/>
+      <path class="sL" d="${STAR}" fill="#F5EFE6"/><path class="sR" d="${STAR}" fill="#F5EFE6"/></g>
+    <circle class="cL" cx="26" cy="58" r="5" fill="#D9B68C"/><circle class="cR" cx="74" cy="58" r="5" fill="#D9B68C"/>
+    <path class="mo" fill="none" stroke="url(#mzGold)" stroke-linecap="round"/>
+    <g class="dots"><circle cx="43" cy="64" r="2.3"/><circle cx="50" cy="64" r="2.3"/><circle cx="57" cy="64" r="2.3"/></g>
+    <path class="spark" d="M82 14l1.8 4.9 4.9 1.8-4.9 1.8L82 27.400l-1.800-4.900-4.900-1.800 4.900-1.800z" fill="#F5EFE6"/>
+    <path class="tw" d="M90 30l.9 2.400 2.400.9-2.400.9-.9 2.400-.9-2.400-2.400-.9 2.400-.9z" fill="#D9B68C"/></svg>`;
+  const eyePath = (cx, p, b) => { const a = p.tT * b, c = p.tB * b; return `M${cx - p.w} ${p.y}Q${cx} ${p.y - 2 * a} ${cx + p.w} ${p.y}Q${cx} ${p.y + 2 * c} ${cx - p.w} ${p.y}Z`; };
+  function paint(f) {
+    const p = cur, q = f.q;
+    q.gz.setAttribute("transform", `translate(${(f.look.x * p.look).toFixed(2)} ${(f.look.y * p.look).toFixed(2)})`);
+    q.eL.setAttribute("d", eyePath(36, p, p.blink)); q.eR.setAttribute("d", eyePath(64, p, p.blink));
+    q.eL.setAttribute("transform", `rotate(${-p.tilt} 36 ${p.y})`); q.eR.setAttribute("transform", `rotate(${p.tilt} 64 ${p.y})`);
+    q.mo.setAttribute("d", `M${50 - p.mw} ${p.my}Q50 ${p.my + 2 * p.mc} ${50 + p.mw} ${p.my}`); q.mo.setAttribute("stroke-width", p.stroke); q.mo.style.opacity = 1 - p.dots;
+    q.dots.style.opacity = p.dots; q.cL.style.opacity = q.cR.style.opacity = p.cheek;
+    const s = .3 + .9 * p.spark; q.sL.setAttribute("transform", `translate(40 ${p.y - 3}) scale(${s})`); q.sR.setAttribute("transform", `translate(68 ${p.y - 3}) scale(${s})`); q.sL.style.opacity = q.sR.style.opacity = p.spark;
+  }
+  function tick() {
+    let moving = false;
+    for (const k in tgt) { const d = tgt[k] - cur[k], r = k === "blink" ? .5 : .16; if (Math.abs(d) > .003) { cur[k] += d * r; moving = true; } else cur[k] = tgt[k]; }
+    inst.forEach(f => { const dx = f.lt.x - f.look.x, dy = f.lt.y - f.look.y; if (Math.abs(dx) + Math.abs(dy) > .01) { f.look.x += dx * .2; f.look.y += dy * .2; moving = true; } paint(f); });
+    raf = moving ? requestAnimationFrame(tick) : 0;
+  }
+  const start = () => { if (!raf) raf = requestAnimationFrame(tick); };
+  return {
+    mount(el) {
+      el.classList.add("face"); el.innerHTML = markup(); el.dataset.mood = mood;
+      const q = {}; ["gz", "eL", "eR", "sL", "sR", "cL", "cR", "mo", "dots"].forEach(c => q[c] = el.querySelector("." + c));
+      const f = { el, q, look: { x: 0, y: 0 }, lt: { x: 0, y: 0 } }; inst.push(f); paint(f); return f;
+    },
+    unmount(el) { inst = inst.filter(f => f.el !== el && document.contains(f.el)); },
+    set(name) { if (!MOODS[name]) return; mood = name; Object.assign(tgt, MOODS[name]); inst.forEach(f => f.el.dataset.mood = name); start(); },
+    get mood() { return mood; },
+    lookAt(x, y) { inst = inst.filter(f => document.contains(f.el)); inst.forEach(f => { const r = f.el.getBoundingClientRect(); if (!r.width) return; f.lt.x = Math.max(-1, Math.min(1, (x - r.left - r.width / 2) / 260)) * 3.6; f.lt.y = Math.max(-1, Math.min(1, (y - r.top - r.height / 2) / 260)) * 2.6; }); start(); },
+    blinkLoop() { setTimeout(() => { if (!document.hidden && mood !== "thinking") { tgt.blink = .08; start(); setTimeout(() => { tgt.blink = 1; start(); }, 130); } Face.blinkLoop(); }, 2400 + Math.random() * 3200); }
+  };
+})();
+
+const Mizuki = {
+  timer: 0, sayT: 0, opened: false, tab: "chat", hist: [], ctx: { pid: null },
+  who() { const u = typeof Auth !== "undefined" && Auth.user ? Auth.user() : null; return u ? u.name.split(" ")[0] : ""; },
+  mood(name, o = {}) {
+    clearTimeout(this.timer); Face.set(name);
+    if (o.say) this.say(o.say, o.sayMs);
+    if (name === "excited") { this.bounce(); this.burst(); }
+    const ms = o.ms ?? (name === "thinking" ? 0 : 3000); if (ms) this.timer = setTimeout(() => Face.set("happy"), ms);
+  },
+  say(t, ms = 4800) { const el = $("#orbsay"); if (!el || this.opened) return; el.textContent = t; el.classList.add("on"); clearTimeout(this.sayT); this.sayT = setTimeout(() => el.classList.remove("on"), ms); },
+  bounce() { $$(".mzorb,.mzside .face").forEach(e => { e.classList.remove("bounce"); void e.offsetWidth; e.classList.add("bounce"); }); },
+  burst(el) {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const o = el || $("#mzorb"); if (!o) return; const r = o.getBoundingClientRect();
+    for (let i = 0; i < 10; i++) { const s = document.createElement("span"), a = i / 10 * Math.PI * 2, d = 50 + Math.random() * 40; s.className = "burst"; s.style.left = r.left + r.width / 2 - 4 + "px"; s.style.top = r.top + r.height / 2 - 4 + "px"; s.style.setProperty("--dx", Math.cos(a) * d + "px"); s.style.setProperty("--dy", Math.sin(a) * d + "px"); document.body.appendChild(s); setTimeout(() => s.remove(), 1000); }
+  },
+  init() {
+    if ($("#mzorb")) return;
+    document.body.insertAdjacentHTML("beforeend", `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+      <linearGradient id="mzGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ECCFA6"/><stop offset=".55" stop-color="#D9B68C"/><stop offset="1" stop-color="#9E764B"/></linearGradient>
+      <radialGradient id="mzGlass" cx=".35" cy=".28" r=".9"><stop offset="0" stop-color="#F5EFE6" stop-opacity=".25"/><stop offset=".6" stop-color="#3A281F" stop-opacity=".75"/><stop offset="1" stop-color="#0B0807"/></radialGradient></defs></svg>
+      <div class="orbsay" id="orbsay" role="status"></div><button class="mzorb" id="mzorb" aria-label="Open Mizuki AI, your personal concierge"></button>
+      <aside class="mzside" id="mzside" aria-label="Mizuki AI" aria-hidden="true"><div class="mzhead"><div id="mzface" class="big"></div><div><b>Mizuki AI<br>Your Personal Concierge</b><span class="live"><i></i>Online</span></div><button class="mzx" id="mzx" aria-label="Close">×</button></div>
+        <div class="mztabs" id="mztabs"><button class="on" data-t="chat">Mizuki AI Chat</button><button data-t="ins">Insights</button><i></i></div>
+        <div class="mzpanel on" id="pchat" aria-live="polite"></div><div class="qchips" id="qchips"><button>Recommend a bestseller</button><button>Gift ideas</button><button>Track my order</button><button>Delivery &amp; UPI info</button><button>My member perks</button><button>Is this a good price?</button><button>Make me smile</button></div>
+        <form class="mzform" id="mzform"><input id="mzin" placeholder="Ask Mizuki anything" maxlength="300" autocomplete="off" aria-label="Message"><button class="btn sm">Send</button></form>
+        <div class="mzpanel" id="pins"></div></aside>`);
+    Face.mount($("#mzorb")); Face.mount($("#mzface")); $("#mzface").classList.add("mzfaceh");
+    Face.blinkLoop(); addEventListener("pointermove", e => Face.lookAt(e.clientX, e.clientY), { passive: true });
+    $("#mzorb").onclick = () => this.opened ? this.close() : this.open();
+    $("#mzx").onclick = () => this.close();
+    $("#mztabs").onclick = e => { const t = e.target.dataset.t; if (t) this.setTab(t); };
+    $("#qchips").onclick = e => { if (e.target.tagName === "BUTTON") this.send(e.target.textContent); };
+    $("#mzform").onsubmit = e => { e.preventDefault(); const i = $("#mzin"), v = i.value; i.value = ""; this.send(v); };
+    addEventListener("keydown", e => { if (e.key === "Escape" && this.opened) this.close(); });
+  },
+  open(tab) {
+    this.opened = true; $("#mzside").classList.add("on"); $("#mzside").setAttribute("aria-hidden", "false"); $("#orbsay").classList.remove("on");
+    if (!$("#pchat").children.length) { const n = this.who(); this.add("bot", n ? `Welcome back, ${esc(n)}! I'm Mizuki, your personal concierge. What can I help you find today?` : "Hi, I'm Mizuki, your personal concierge. Ask me about gifts, delivery, payments or your order."); this.mood("excited", { ms: 2200 }); const u = Auth.user && Auth.user(); if (u && u.prefs && u.prefs.length) { const pref = u.prefs[0], P = Shop.products().filter(p => p.stock > 0), pick = (pref === "Smart Deals" ? [...P].sort((a, b) => a.price - b.price) : P.filter(p => p.cat === pref)).slice(0, 2); if (pick.length) { this.add("bot", `Since you love ${esc(pref)}, you might like these:`); this.cards(pick.map(p => p.id)); } } } else this.mood("happy");
+    this.setTab(tab || this.tab); setTimeout(() => $("#mzin") && this.tab === "chat" && $("#mzin").focus(), 600);
+  },
+  close() { this.opened = false; $("#mzside").classList.remove("on"); $("#mzside").setAttribute("aria-hidden", "true"); },
+  setTab(t) {
+    this.tab = t; $("#mztabs").classList.toggle("s", t === "ins"); $$("#mztabs button").forEach(b => b.classList.toggle("on", b.dataset.t === t));
+    $("#pchat").classList.toggle("on", t === "chat"); $("#pins").classList.toggle("on", t === "ins"); $("#qchips").style.display = $("#mzform").style.display = t === "chat" ? "" : "none";
+    if (t === "ins") this.insights();
+  },
+  add(cls, html) { const d = document.createElement("div"); d.className = "msg " + cls; d.innerHTML = html; const p = $("#pchat"); p.appendChild(d); p.scrollTop = p.scrollHeight; return d; },
+  cards(ids) { ids.map(id => Shop.products().find(p => p.id === id)).filter(Boolean).forEach(p => { const c = document.createElement("div"); c.className = "acard2"; c.innerHTML = `<span>${esc(p.name)}<br><small class="muted">${money(p.price)}</small></span><span class="row" style="gap:.4rem;margin:0"><button class="pillbtn" style="padding:.35rem .9rem;font-size:.78rem" data-qv="${esc(p.id)}">View</button><button class="pillbtn fill" style="padding:.35rem .9rem;font-size:.78rem" data-bag="${esc(p.id)}">Add</button></span>`; $("#pchat").appendChild(c); }); },
+  async send(text) {
+    text = String(text || "").trim().slice(0, 300); if (!text) return; if (!this.opened) this.open("chat"); this.setTab("chat");
+    this.add("me", esc(text)); this.hist.push(text); this.mood("thinking");
+    const wait_ = ms => new Promise(r => setTimeout(r, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : ms)), typing = this.add("bot", "<span class='dots2'>•••</span>");
+    await wait_(650 + Math.random() * 350); const r = this.reply(text); typing.innerHTML = esc(r.text).replace(/\n/g, "<br>");
+    this.cards(r.products || []);
+    $("#pchat").scrollTop = $("#pchat").scrollHeight; this.mood(r.mood || "happy", { ms: 2600 });
+  },
+  reply(text) {
+    const q = text.toLowerCase(), P = Shop.products().filter(p => p.stock > 0), n = this.who(), T_ = (t, o = {}) => ({ text: t, ...o });
+    if (/^\W*(hi|hello|hey|namaste|hii+)\W*$/.test(q)) return T_(n ? `Hi ${n}! What are you shopping for today?` : "Hi! Tell me what you're looking for, or ask about delivery, payments and returns.", { mood: "excited" });
+    if (/return|refund|exchange|damag|defect|wrong item|broken|replace/.test(q)) return T_("Used or opened items aren't eligible for return or a cash refund, so every customer receives 100% untouched, brand-new products.\n\nIf something arrives damaged, defective or wrong, it's covered by a free 7-day instant replacement. Please report it within 48 hours of delivery with one uncut video of you opening the parcel.");
+    if (/track|where.*order|order status|my order/.test(q)) { const u = Auth.user && Auth.user(), o = u ? Shop.orders().filter(x => x.uid === u.uid)[0] : null; return T_(o ? `Your latest order ${o.id} is "${o.status}". Open Orders from the menu to see the full timeline.` : u ? "You don't have any orders yet. Once you place one, it appears under Orders with a live timeline." : "Sign in, then open Orders from the menu. Each order shows where it is, and you get an AWB number once it ships."); }
+    if (/deliver|ship|dispatch|upi|cod|cash on|pay|razorpay|card/.test(q)) return T_("We dispatch within 24–48 hours and share an AWB tracking number. Orders are prepaid: UPI, cards and netbanking through Razorpay. Delivery is across India. Cash on delivery isn't offered.");
+    if (/perk|loyalty|member|credit|reward/.test(q)) return T_("Members get a Mizuki member pass, saved favourites, order tracking and saved delivery details. More perks are on the way, and I'll tell you the moment they land.");
+    if (/good price|best price|worth|cheap|deal/.test(q)) return T_("Open any product and tap Price History. I only compare against prices we've really recorded, never invented discounts. If there isn't enough history yet, I'll say so.");
+    if (/smile|joke|cheer|sad|bored/.test(q)) return T_(["Fun fact: champagne gold looks good on everyone. You included.", "I'm only an AI, but this smile is 100% hand-drawn SVG.", "You've got great taste. I can tell from how you browse."][Math.floor(Math.random() * 3)], { mood: "excited" });
+    if (/gift|present|birthday|anniversary/.test(q)) { const g = [...P].sort((a, b) => a.price - b.price); const pick = [g[Math.floor(g.length / 3)], g[Math.floor(g.length * .75)]].filter(Boolean); return T_("Two gift ideas at different budgets. Tap View for details.", { products: pick.map(p => p.id), mood: "excited" }); }
+    if (/best.?sell|popular|recommend|trending|top/.test(q)) { const c = {}; Shop.orders().forEach(o => o.items.forEach(i => c[i.pid] = (c[i.pid] || 0) + i.q)); const top = Object.entries(c).sort((a, b) => b[1] - a[1]).map(x => x[0]).filter(id => P.some(p => p.id === id)).slice(0, 2); return top.length ? T_("Here are the pieces ordered most so far.", { products: top }) : T_("I don't have enough orders yet to call anything a bestseller, so here are our featured pieces.", { products: P.slice(0, 2).map(p => p.id) }); }
+    const words = q.match(/[a-z0-9]{3,}/g) || [], hit = P.map(p => [words.reduce((s, w) => s + 3 * p.name.toLowerCase().includes(w) + 2 * (p.cat || "").toLowerCase().includes(w) + (p.desc || "").toLowerCase().includes(w), 0), p]).filter(x => x[0]).sort((a, b) => b[0] - a[0]).slice(0, 3).map(x => x[1].id);
+    return hit.length ? T_("These might be what you mean.", { products: hit }) : T_("I can help with gift ideas, delivery and payments, returns and replacements, or tracking an order. Try one of the buttons below.");
+  },
+  insights() {
+    const u = Auth.user && Auth.user(), orders = Shop.orders(), bag = typeof Bag !== "undefined" ? Bag.count() : 0, wish = u ? u.wish.length : 0, since = now() - 7 * DAY, cat = {};
+    orders.filter(o => o.t >= since).forEach(o => o.items.forEach(i => { const p = Shop.products().find(x => x.id === i.pid); if (p) cat[p.cat || "Other"] = (cat[p.cat || "Other"] || 0) + i.q; }));
+    const rows = Object.entries(cat).sort((a, b) => b[1] - a[1]).slice(0, 4), mx = Math.max(1, ...rows.map(r => r[1]));
+    mount($("#pins"), T`<div class="ins"><h4>Your personal stats</h4><div class="row3"><div><b data-count="${bag}">0</b><small>Items in bag</small></div><div><b data-count="${wish}">0</b><small>Favourites</small></div><div><b data-count="${u && u.credits ? u.credits : 0}" data-fmt="money">0</b><small>Member credits</small></div></div>
+      <div style="margin-top:.9rem"><small class="muted">Taste profile: ${Math.min(5, wish)} of 5 favourites</small><div class="pbars"><div style="grid-template-columns:1fr"><i style="--w:${Math.min(5, wish) * 20}%"></i></div></div><small class="muted">Tap the heart on pieces you love and I'll learn your taste.</small></div></div>
+      <div class="ins"><h4>Store pulse</h4><small class="muted">Trending this week, from real orders</small><div class="pbars ${rows.length ? "" : "skel"}" style="margin-top:.6rem">${rows.length ? rows.map(([k, v]) => T`<div><span>${k}</span><i style="--w:${Math.round(v / mx * 100)}%"></i><span>${v}</span></div>`) : [1, 2, 3].map(() => T`<div><span>&nbsp;</span><i></i><span></span></div>`)}</div>${rows.length ? "" : T`<small class="muted">Trends appear as soon as orders come in.</small>`}
+      <div class="line"><span>Dispatch</span><b class="price">24–48 hr express</b></div><div class="line"><span>Customer rating</span><span class="muted">Shows after verified reviews</span></div></div>`);
+    afterMount($("#pins"));
+  }
+};
+document.addEventListener("click", e => {
+  const v = e.target.closest("[data-qv]"), b = e.target.closest("[data-bag]");
+  if (v && typeof quickView === "function") quickView(v.dataset.qv); if (b && typeof Bag !== "undefined") Bag.add(b.dataset.bag, { open: !!b.dataset.open });
+});
+
+/* =====================================================================
+   BAG (slide-out, with the Fair Replacement checkbox), QUICK VIEW, LEGAL
+===================================================================== */
+const POLICY_TEXT = "I agree to Mizuki Stores' Fair Replacement Policy: Prepaid orders only; 7-day replacement strictly for transit damage or manufacturing defects with an uncut 360° unboxing video. Used, worn, or unsealed items are non-returnable.";
+const BUYER_NOTE = "Prepaid UPI Secured • 7-Day Replacement for Transit Damage/Defects (Uncut Unboxing Video Required) • No Returns on Used Goods.";
+const isMonthlyLow = p => false;   // Step 3 replaces this with real recorded price history
+const lowPill = p => isMonthlyLow(p) ? T`<span class="lowpill">↓ Monthly Low</span>` : "";
+const ART = {
+  headphones: '<path d="M40 120v-20a60 60 0 0 1 120 0v20"/><rect x="28" y="118" width="30" height="52" rx="14"/><rect x="142" y="118" width="30" height="52" rx="14"/>',
+  watch: '<circle cx="100" cy="100" r="46"/><circle cx="100" cy="100" r="36" opacity=".5"/><path d="M100 100V74M100 100l20 12"/><path d="M80 54l6-24h28l6 24M80 146l6 24h28l6-24"/>',
+  vessel: '<path d="M60 58h80l-14 46H74z"/><path d="M74 104v14h52v-14"/><path d="M70 118h60v38a12 12 0 0 1-12 12H82a12 12 0 0 1-12-12z"/><path d="M130 130h14a12 12 0 0 1 0 24h-14"/>',
+  bag: '<path d="M48 84h104l12 78a8 8 0 0 1-8 9H44a8 8 0 0 1-8-9z"/><path d="M76 84V70a24 24 0 0 1 48 0v14"/><path d="M36 118h128"/><rect x="92" y="108" width="16" height="20" rx="4"/>',
+  monogram: '<path d="M52 150V58l48 52 48-52v92"/>'
+};
+const art = p => safeUrl(p.img) ? raw(`<img src="${esc(safeUrl(p.img))}" alt="${esc(p.name)}" loading="lazy">`) : T`<svg class="art" viewBox="0 0 200 200" role="img" aria-label="${p.name}">${raw(ART[p.art] || ART.monogram)}</svg><span class="ph2">Studio photo coming soon</span>`;
+const emblem = () => `<svg class="emblem" viewBox="0 0 120 120" role="img" aria-label="Mizuki emblem: an M whose last stem curves into a smile beneath an S">
+  <circle class="halo" cx="60" cy="60" r="56" fill="none" stroke="url(#mzGold)" stroke-width="1" stroke-dasharray="1.5 5" opacity=".75"/>
+  <circle cx="60" cy="60" r="51" fill="none" stroke="url(#mzGold)" stroke-width=".7" opacity=".4"/><circle cx="60" cy="60" r="47" fill="#0B0807"/>
+  <g fill="none" stroke="url(#mzGold)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 82V38L42 62 60 38V64C60 83 82 91 96 79 99 76 101 72 101 67" stroke-width="8"/>
+    <path d="M91 46C91 40 70 40 70 49 70 58 91 55 91 64 91 72 69 71 69 66" stroke-width="4.4"/></g>
+  <path class="tw" d="M99 33l1.800 4.800 4.800 1.800-4.800 1.800-1.800 4.800-1.800-4.800-4.800-1.800 4.800-1.800z" fill="#F5EFE6"/><path class="tw" style="animation-delay:.9s" d="M108 48l1 2.600 2.600 1-2.600 1-1 2.600-1-2.600-2.600-1 2.600-1z" fill="#D9B68C"/></svg>`;
+
+const Bag = {
+  key() { const u = Auth.user && Auth.user(); return u ? u.uid : "guest"; },
+  items() { return Shop.cart(Bag.key()); },
+  count() { return Bag.items().reduce((a, l) => a + l.q, 0); },
+  isOpen() { const b = $("#bag"); return !!b && b.classList.contains("on"); },
+  badge(bump) { const n = Bag.count(); ["#bagCount", "#cartBadge"].forEach(s => { const b = $(s); if (b) { b.textContent = n || ""; if (bump) { b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); } } }); },
+  mergeGuest() { const g = Shop.cart("guest"), u = Auth.user && Auth.user(); if (!g.length || !u) return; g.forEach(l => { for (let i = 0; i < l.q; i++) { try { Shop.addToCart(u.uid, l.pid); } catch {} } }); Shop.saveCart("guest", []); },
+  add(pid, o = {}) {
+    try { Shop.addToCart(Bag.key(), pid); } catch (e) { toast(e.message, true); Mizuki.mood("sad", { say: "That one is sold out, I'm sorry." }); return; }
+    const p = Shop.products().find(x => x.id === pid); Bag.badge(true); Mizuki.mood("excited", { say: p ? `${p.name} is in your bag!` : "Added to your bag!" });
+    if (o.open) Bag.open(); else if (Bag.isOpen()) Bag.render();
+  },
+  change(pid, d) {
+    const c = Bag.items(), l = c.find(x => x.pid === pid); if (!l) return;
+    if (d > 0) { try { Shop.addToCart(Bag.key(), pid); } catch (e) { return toast(e.message, true); } Mizuki.mood("excited", { ms: 1400 }); }
+    else { l.q--; Shop.saveCart(Bag.key(), c.filter(x => x.q > 0)); if (l.q < 1) Mizuki.mood("sad", { say: "Oh no, leaving so soon? I saved your favorites just in case!" }); }
+    Bag.badge(); Bag.render();
+  },
+  ensure() {
+    if ($("#bag")) return;
+    document.body.insertAdjacentHTML("beforeend", `<div class="bagveil" id="bagveil"></div><aside class="bag" id="bag" aria-label="Shopping bag" aria-hidden="true"></aside>`);
+    $("#bagveil").onclick = () => Bag.close(true);
+    $("#bag").addEventListener("click", e => {
+      const a = e.target.closest("[data-bg]"); if (!a) return; const k = a.dataset.bg, id = a.dataset.id;
+      if (k === "x") Bag.close(true); if (k === "plus") Bag.change(id, 1); if (k === "minus") Bag.change(id, -1); if (k === "pay") Bag.checkout(); if (k === "policy") policyModal("return"); if (k === "go") { Bag.close(); }
+    });
+    $("#bag").addEventListener("change", e => { if (e.target.id === "agree") $("#payb").disabled = !e.target.checked; });
+  },
+  open() { Bag.ensure(); Bag.render(); $("#bag").classList.add("on"); $("#bagveil").classList.add("on"); $("#bag").setAttribute("aria-hidden", "false"); document.body.classList.add("lock"); if (!Bag.count()) Mizuki.mood("sad", { say: "Your bag is empty. Shall I find something lovely?" }); },
+  close(byUser) {
+    const b = $("#bag"); if (!b || !b.classList.contains("on")) return; b.classList.remove("on"); $("#bagveil").classList.remove("on"); b.setAttribute("aria-hidden", "true"); if (!$(".veil")) document.body.classList.remove("lock");
+    if (byUser) Mizuki.mood("sad", { say: Bag.count() ? "Oh no, leaving so soon? I saved your favorites just in case!" : "Your bag is empty. I'm here if you'd like ideas." });
+  },
+  render() {
+    const t = Shop.totals(Bag.items()), s = Settings.get();
+    mount($("#bag"), T`<div class="bhead"><b style="font-family:var(--serif);font-weight:400;font-size:1.4rem">Your bag</b><button class="mzx" data-bg="x" aria-label="Close bag">×</button></div>
+      <div class="bagitems">${t.items.length ? t.items.map(i => T`<div class="bagrow"><div style="flex:1"><div>${i.name}</div><small class="muted">${money(i.price)}</small></div><div class="row" style="margin:0;gap:.4rem"><button class="pillbtn" style="padding:.25rem .8rem" data-bg="minus" data-id="${i.pid}" aria-label="Less">−</button><b>${i.q}</b><button class="pillbtn" style="padding:.25rem .8rem" data-bg="plus" data-id="${i.pid}" aria-label="More">+</button></div></div>`) : T`<div class="empty"><b>Your bag is empty</b><button class="pillbtn fill" data-bg="go" style="margin-top:1rem">Continue exploring</button></div>`}</div>
+      ${t.items.length ? T`<div class="bagfoot"><div class="line"><span>Subtotal</span><b>${money(t.sub)}</b></div><div class="line"><span>Delivery</span><b>${t.ship ? money(t.ship) : "Free"}</b></div><div class="line"><span>Total</span><b class="price">${money(t.total)}</b></div>
+        <div class="trustnote"><b>Buyer protection.</b> ${BUYER_NOTE}</div>
+        <label class="agree"><input type="checkbox" id="agree"><span>${POLICY_TEXT} <button type="button" data-bg="policy" style="background:none;border:0;color:var(--gold);text-decoration:underline;cursor:pointer;font-size:inherit">Read the full policy</button></span></label>
+        <button class="pillbtn fill payb" id="payb" data-bg="pay" disabled>Pay with Razorpay / UPI</button></div>` : ""}`);
+  },
+  async checkout() {
+    const u = Auth.user && Auth.user();
+    if (!u) { Bag.pending = true; Bag.close(); Mizuki.mood("happy", { say: "Almost there! Sign in and your bag will be waiting." }); toast("Sign in to complete your order"); return ACT.auth({ dataset: { m: "login" } }); }
+    if (!$("#agree") || !$("#agree").checked) return;
+    const t = Shop.totals(Bag.items()); if (!t.items.length) return; const policy = { accepted: true, at: new Date().toISOString() };
+    try {
+      if (!CONFIG.RAZORPAY_KEY_ID) return Bag.demo(policy);
+      await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+      new Razorpay({ key: CONFIG.RAZORPAY_KEY_ID, amount: t.total * 100, currency: "INR", name: storeName(), description: "Your order", prefill: { name: u.name, email: u.email, contact: u.phone || "" }, theme: { color: "#D9B68C" },
+        handler: r => Bag.finish(policy, r.razorpay_payment_id), modal: { ondismiss: () => Mizuki.mood("sad", { say: "Checkout closed. Your bag is safe, take your time." }) } }).open();
+    } catch (e) { toast(e.message || "Could not open payment.", true); }
+  },
+  demo(policy) {
+    const v = modal(T`<h2>Payment is not connected yet</h2><p class="muted" style="margin:.6rem 0 1rem">Razorpay is not set up on this site, so no money can be taken. You can place a <b>demo order</b> to see how everything works. It is marked DEMO and nothing is charged.</p><button class="btn block" id="dgo">Place demo order</button>`);
+    $("#dgo").onclick = () => { closeModal(v); Bag.finish(policy, "DEMO"); };
+  },
+  async finish(policy, payId) {
+    try { const u = Auth.user(), o = await Shop.place(u.uid, { policy, payId }); Bag.badge(); Bag.close(); closeModal(); Mizuki.mood("excited", { say: `Order placed! Thank you, ${u.name.split(" ")[0]}.`, ms: 3600 }); toast("Order " + o.id + " placed"); location.hash = "#/orders"; }
+    catch (e) { toast(e.message || "Could not place the order.", true); Mizuki.mood("sad", { say: "Something went wrong. Your bag is still saved." }); }
+  }
+};
+
+function quickView(pid) {
+  const p = Shop.products().find(x => x.id === pid); if (!p) return; Mizuki.ctx.pid = pid;
+  const v = modal(T`<div class="stage" style="width:100%;margin:0 0 1rem;aspect-ratio:1.5">${art(p)}</div><p class="eyebrow">${p.cat || "Mizuki"}</p><h2 style="font-family:var(--sans);font-weight:600;letter-spacing:-.03em">${p.name}</h2>
+    <p class="muted" style="margin:.4rem 0">${p.desc}</p><div class="price2" style="justify-content:flex-start;margin:.8rem 0">${money(p.price)}${lowPill(p)}</div>
+    <div class="trustnote"><b>Country of Origin: ${p.origin || "India"}</b><br>${BUYER_NOTE}</div>
+    <div class="ins" id="phx" style="margin:.8rem 0"><h4>Price history and transparency</h4><p class="muted" style="font-size:.85rem">History is recorded from real price changes, so there is nothing to show yet. We never invent past prices or fake discounts.</p></div>
+    <div class="cta2" style="justify-content:flex-start"><button class="pillbtn fill" id="qvbuy" ${p.stock < 1 ? "disabled" : ""}>Buy Now</button><button class="pillbtn" id="qvadd" ${p.stock < 1 ? "disabled" : ""}>Add to bag</button></div>`, true);
+  $("#qvbuy", v).onclick = () => { closeModal(v); Bag.add(pid, { open: true }); }; $("#qvadd", v).onclick = () => { Bag.add(pid); closeModal(v); };
+}
+
+/* ---------- legal footer and the three policy windows ---------- */
+const BIZ = () => CONFIG.BUSINESS;
+const legalFooter = () => T`<footer class="legalf"><div class="wrap cols"><div><h4>${BIZ().name}</h4><p>Operated from: ${BIZ().region}</p><p>Support email: <a href="mailto:${BIZ().email}">${BIZ().email}</a></p><p>Support WhatsApp: <a href="https://wa.me/91${BIZ().whatsapp}" target="_blank" rel="noopener">${BIZ().whatsapp}</a></p></div>
+  <div><h4>Grievance Officer</h4><p>${BIZ().grievance}</p><p>Complaints acknowledged within 48 hours and resolved within 30 days, under the Consumer Protection (E-Commerce) Rules, 2020.</p></div>
+  <div><h4>Policies</h4><button class="lk lnk" data-policy="return">Fair Return &amp; Replacement Policy</button><button class="lk lnk" data-policy="ship">Shipping &amp; Delivery Policy</button><button class="lk lnk" data-policy="privacy">Privacy Policy &amp; Terms of Service</button></div></div>
+  <div class="wrap" style="margin-top:1.6rem;font-size:.75rem">© ${new Date().getFullYear()} ${BIZ().name}. All prices are in Indian rupees.</div></footer>`;
+function policyModal(k) {
+  const b = BIZ(), P = {
+    return: ["Fair Return & Replacement Policy", T`<h3>Prepaid orders only</h3><p>All orders are paid in advance by UPI, card or netbanking.</p>
+      <h3>When we replace an item</h3><p>You are covered by a free 7-day replacement if your item arrives damaged in transit, has a manufacturing defect, or is the wrong item. Please report it within 48 hours of delivery.</p>
+      <h3>What we need from you</h3><ul><li>An uncut 360° unboxing video, starting from the sealed parcel and label and continuing until the damage or defect is clearly shown.</li><li>Your order number, sent to ${b.email} or WhatsApp ${b.whatsapp}.</li></ul>
+      <h3>Not returnable</h3><p>Used, worn or unsealed items, and personal-use items, cannot be returned or refunded for a change of mind. This is how we make sure every customer receives a 100% untouched, brand-new product.</p>
+      <h3>Lost parcels</h3><p>If the courier loses your parcel, you receive a full refund or a replacement, your choice.</p>
+      <h3>Your rights</h3><p>Nothing in this policy limits the rights you have under Indian consumer law.</p>`],
+    ship: ["Shipping & Delivery Policy", T`<h3>Dispatch</h3><p>Orders are dispatched within 24–48 hours of payment.</p><h3>Tracking</h3><p>Once your parcel ships you receive an AWB tracking number to follow it with the courier.</p>
+      <h3>Where we deliver</h3><p>Prepaid delivery across India. Delivery time depends on the courier and your PIN code. Please give a complete address and a working phone number.</p><h3>Cash on delivery</h3><p>Not offered. All orders are prepaid.</p>`],
+    privacy: ["Privacy Policy & Terms of Service", T`<h3>Payments</h3><p>Payments are handled by Razorpay. Your card, UPI or bank details go to Razorpay and are never stored by ${b.name}.</p>
+      <h3>Your information</h3><p>We keep your name, contact details, delivery address and order history only to process orders, deliver them and give support. We do not sell your information.</p>
+      <h3>Your account</h3><p>You can ask us to correct or delete your account details by writing to ${b.email}.</p>
+      <h3>Terms</h3><p>Prices are in Indian rupees. We may cancel an order if an item is out of stock and will refund any payment in full. By ordering you accept our Fair Return & Replacement Policy.</p>
+      <h3>Jurisdiction</h3><p>These terms are governed by the laws of India. Disputes fall under the courts of Rajasthan.</p>`]
+  }[k];
+  modal(T`<h2>${P[0]}</h2><div class="legalbody">${P[1]}</div>`, true);
+}
+
+/* =====================================================================
+   PUBLIC SHOWCASE (Apple-style) and the MIZUKI PRIVÉ sign-in page
+===================================================================== */
+const PREFS = ["Tech & Audio", "Fashion & Carry", "Home & Living", "Smart Deals"];
+const prefList = () => $$("#prefs button.on").map(b => b.dataset.v);
+let parBound = false;
+function parallax() {
+  if (parBound || matchMedia("(prefers-reduced-motion: reduce)").matches) return; parBound = true; let busy = false;
+  addEventListener("scroll", () => { if (busy) return; busy = true; requestAnimationFrame(() => { busy = false; $$("[data-par]").forEach(el => { const r = el.getBoundingClientRect(), d = (r.top + r.height / 2 - innerHeight / 2) / innerHeight; el.style.transform = `translateY(${(d * -40).toFixed(1)}px) scale(${(1 - Math.min(.06, Math.abs(d) * .06)).toFixed(3)})`; }); }); }, { passive: true });
+}
+const chapter = (p, i) => T`<section class="chapter ${i % 2 ? "alt" : ""}" id="c${i + 1}"><p class="eyebrow rv">${p.cat || "Mizuki"}</p><h2 class="rv">${p.headline || p.name}</h2><p class="tag2 rv">${p.tagline || p.desc}</p>
+  <div class="price2 rv">${money(p.price)}${lowPill(p)}</div><div class="cta2 rv"><button class="pillbtn fill" data-bag="${p.id}" data-open="1">Buy Now</button><button class="pillbtn" data-qv="${p.id}">Price History ›</button></div>
+  <div class="rv" style="width:100%"><div class="stage" data-par="1">${art(p)}</div></div></section>`;
+function showcase() {
+  const feat = Shop.products().filter(p => p.stock > 0).slice(0, 4), n = Bag.count();
+  document.body.classList.remove("lock"); Mizuki.close(); closeModal(); if ($("#ceremony")) $("#ceremony").className = "";
+  mount($("#root"), T`<nav class="nav2 glass" aria-label="Main"><button class="logo" data-act="home"><i></i><span>${storeName()}</span></button>
+      <button class="lnk hide" data-scroll="c1">Collection</button><button class="lnk hide" data-scroll="bento">Why Mizuki</button><button class="lnk" data-act="mzopen">Mizuki AI</button>
+      <button class="lnk" data-act="bag" aria-label="Open bag">Bag <span class="badge" id="bagCount">${n || ""}</span></button>
+      <button class="pillbtn fill" data-act="auth" data-m="login" style="padding:.5rem 1.2rem">Sign In</button></nav>
+    <main style="padding:0"><section class="chapter hero" id="c0"><p class="eyebrow rv">${storeName()}</p><h1 class="rv">Mizuki Reserve. Everything Extraordinary.</h1><p class="tag2 rv">Considered pieces, chosen for their craft and made to be kept.</p>
+      <div class="cta2 rv"><button class="pillbtn fill" data-scroll="c1">Explore Collection</button><button class="pillbtn" data-act="hist">Watch Price History</button></div>
+      <div class="rv" style="width:min(300px,64vw);margin-top:2.6rem" data-par="1">${raw(emblem())}</div></section>
+    ${feat.map(chapter)}
+    <section class="chapter" id="bento" style="min-height:auto;padding-top:6rem"><p class="eyebrow rv">Why Mizuki</p><h2 class="rv" style="margin-bottom:2.4rem">Built on trust.</h2>
+      <div class="bento2 rv"><div class="b glass"><span class="big">30 days</span><h3>30-Day Price Transparency</h3><p>Every price change is recorded. See how today's price compares with the month, with no invented discounts.</p></div>
+        <div class="b glass"><h3>Mizuki AI Budget Sniper</h3><p>Set the price you want to pay. Mizuki AI flags the moment a piece reaches your budget.</p></div>
+        <div class="b glass"><h3>24–48 Hr Express Dispatch</h3><p>Prepaid orders leave us within 24–48 hours, with AWB tracking.</p></div></div></section>
+    ${legalFooter()}</main>`);
+  afterMount(); parallax();
+}
+document.addEventListener("click", e => {
+  const s = e.target.closest("[data-scroll]"); if (s) { const t = $("#" + s.dataset.scroll); if (t) t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }
+  const p = e.target.closest("[data-policy]"); if (p) policyModal(p.dataset.policy);
+});
+
+function authPage(mode = "login") {
+  closeModal(); Bag.close(); Mizuki.close(); document.body.classList.remove("lock");
+  mount($("#root"), T`<button class="pillbtn backbtn" data-act="home">← Back to Showcase</button>
+    <section class="authwrap"><div class="authgrid"><div class="center"><div style="width:min(280px,66vw);margin:0 auto">${raw(emblem())}</div><h1 style="font-family:var(--sans);font-weight:600;letter-spacing:-.04em;font-size:clamp(2.2rem,5vw,3.4rem);margin-top:1rem">Mizuki Privé</h1><p class="lead" style="margin:.6rem auto 0">Your member pass to considered pieces.</p></div>
+      <div class="authbox glass" id="authbox" data-mode="${mode}"><div class="mini" id="authface"></div><h2 id="atitle" class="center"></h2><p class="muted center" id="asub"></p>
+        <div class="tabs" id="atabs"><button data-act="amode" data-m="login">Log in</button><button data-act="amode" data-m="signup">Sign up</button><i></i></div>
+        <div class="social"><button class="btn ghost" data-act="google"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 10.200v3.900h5.500c-.2 1.300-1.600 3.900-5.500 3.900a6 6 0 0 1 0-12c1.900 0 3.100.8 3.800 1.500l2.600-2.500A9.600 9.600 0 0 0 12 2.400a9.600 9.600 0 1 0 0 19.200c5.500 0 9.200-3.900 9.200-9.300 0-.6-.1-1.100-.2-1.600H12z"/></svg>Continue with Google</button>
+          <button class="btn ghost" data-act="apple"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.400 12.600c0-2.400 2-3.500 2.100-3.600-1.200-1.700-3-1.900-3.600-2-1.500-.2-3 .9-3.800.9s-2-.9-3.200-.9c-1.700 0-3.200 1-4.100 2.500-1.700 3-.4 7.500 1.300 10 .8 1.200 1.800 2.500 3.100 2.500 1.200 0 1.700-.8 3.200-.8s1.900.8 3.200.8c1.300 0 2.200-1.200 3-2.400.9-1.400 1.300-2.700 1.300-2.800-.1 0-2.500-1-2.500-3.800zM14 5.400c.7-.8 1.100-1.900 1-3-1 0-2.100.7-2.800 1.500-.6.700-1.200 1.800-1 2.900 1.100.1 2.100-.6 2.800-1.400z"/></svg>Continue with Apple</button></div>
+        <div class="or">or</div>
+        <div class="tabs" id="ameth" style="margin:0 0 .4rem"><button class="on" data-act="ameth" data-k="email">Email</button><button data-act="ameth" data-k="phone">Mobile +91</button><i></i></div>
+        <form id="aform" novalidate autocomplete="on"><div id="nameRow"><label for="an">Your name</label><input id="an" autocomplete="name" maxlength="60"></div>
+          <label for="ae">Email</label><input id="ae" type="email" autocomplete="email" inputmode="email" maxlength="254">
+          <label for="ap">Password</label><div class="pw"><input id="ap" type="password" autocomplete="current-password" maxlength="128"><button type="button" data-act="eye">Show</button></div>
+          <div class="meter" id="meter"><i></i><i></i><i></i><i></i></div><div class="err" id="aerr" role="alert"></div>
+          <button type="button" class="later" id="forgot" data-act="forgot" style="display:none;margin:0 0 .6rem">Forgot password?</button>
+          <button class="btn block" id="asub2" type="submit"><span></span></button></form>
+        <div id="phform" style="display:none"><label for="aph">Mobile number</label><div style="display:flex;gap:.5rem"><input value="+91" disabled style="width:70px;text-align:center"><input id="aph" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="10-digit number"></div>
+          <div id="phcode" style="display:none"><label for="phc">Enter the code</label><input id="phc" inputmode="numeric" maxlength="6" autocomplete="one-time-code"><label for="phname">Your name (new members)</label><input id="phname" maxlength="60" autocomplete="name"></div>
+          <div class="err" id="perr2" role="alert"></div><button type="button" class="btn block" id="phbtn" data-act="phsend">Send code</button></div>
+        <div id="prefs" style="margin-top:1rem"><label>What do you love shopping for?</label><div class="prefpills">${PREFS.map(x => T`<button type="button" data-act="pref" data-v="${x}">${x}</button>`)}</div></div>
+        <p class="fine center" style="margin-top:1rem">Passwords are scrambled in your browser and can never be read back.</p></div></div></section>`);
+  const box = $("#authbox"); Face.mount($("#authface")); setMode(mode, box);
+  box.addEventListener("focusin", e => { if (e.target.matches("input")) { const r = e.target.getBoundingClientRect(); Face.lookAt(r.left + Math.min(r.width, 40), r.top + r.height / 2); } });
+  box.addEventListener("input", e => { if (e.target.matches("input")) { const r = e.target.getBoundingClientRect(); Face.lookAt(r.left + Math.min(r.width - 10, 20 + e.target.value.length * 9), r.top + r.height / 2); } });
+  box.addEventListener("focusout", e => { if (e.target.id === "ae" && e.target.value && !validEmail(e.target.value.trim().toLowerCase())) Mizuki.mood("sad", { say: "Hmm, that email doesn't look right.", ms: 2600 }); if (e.target.id === "aph" && e.target.value && !/^[6-9]\d{9}$/.test(e.target.value)) Mizuki.mood("sad", { say: "That mobile number looks off. It should be 10 digits.", ms: 2600 }); });
+  Mizuki.mood("happy", { say: mode === "signup" ? "Let's get you a member pass!" : "Welcome back! Sign in and I'll have your bag ready.", ms: 0 });
+}
+function homeActs(need) {
+  const phone = () => $("#aph").value.trim();
+  return {
+    home: () => { if (Auth.session()) { location.hash = "#/shop"; } else if (location.hash) { location.hash = ""; } else showcase(); },
+    bag: () => Bag.open(), mzopen: () => Mizuki.open("chat"),
+    hist: () => { const p = Shop.products().find(x => x.stock > 0); if (p) quickView(p.id); },
+    pref: a => a.classList.toggle("on"),
+    ameth: a => { const ph = a.dataset.k === "phone"; $$("#ameth button").forEach(b => b.classList.toggle("on", b === a)); $("#ameth").classList.toggle("s", ph); $("#aform").style.display = ph ? "none" : ""; $("#phform").style.display = ph ? "" : "none"; $("#aerr").textContent = ""; },
+    phsend: need(async () => {
+      const e = $("#perr2"); e.textContent = ""; e.style.color = "";
+      if ($("#phcode").style.display === "none" || $("#phbtn").dataset.step !== "verify") {
+        if (!/^[6-9]\d{9}$/.test(phone())) { Mizuki.mood("sad", { say: "That mobile number looks off.", ms: 2600 }); e.textContent = "Enter a valid 10-digit mobile number."; return; }
+        await Auth.phoneRequest(phone()); $("#phcode").style.display = ""; $("#phbtn").textContent = "Verify and continue"; $("#phbtn").dataset.step = "verify";
+        e.style.color = "var(--ok)"; e.textContent = Auth.demoOtp ? "Demo mode: your code is " + Auth.demoOtp + ". Real SMS needs an SMS provider to be connected." : "Code sent. It expires in 5 minutes."; Mizuki.mood("happy", { say: "Code on its way!", ms: 2000 });
+      } else {
+        const r = await Auth.phoneVerify(phone(), $("#phc").value, { name: $("#phname").value, prefs: prefList() }); await celebrate(); await enter(r.session, true, "signup");
+      }
+    })
+  };
+}
+async function celebrate() { Mizuki.mood("excited", { ms: 2400 }); Mizuki.burst($("#authface") || $("#mzorb")); await new Promise(r => setTimeout(r, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 900)); }
+
 </script>
 
 <!-- ================= INTERFACE ================= -->
@@ -409,10 +1048,7 @@ function closeModal(v = $(".veil")) { if (!v) return; v.classList.add("out"); se
 addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closeDrawer(); } });
 
 /* ---------- login / sign up ---------- */
-function gate() {
-  document.body.classList.remove("lock"); $("#root").innerHTML = "";
-  mount($("#root"), T`<section class="gate"><div class="wrap center"><span class="pill glass load">${storeName()}</span><h1 class="load">Welcome to <span>${storeName()}</span></h1><p class="lead load">Log in to keep your wishlist, follow your orders and check out faster. You stay signed in on this device.</p><div class="cta-row load"><button class="btn mag" data-act="auth" data-m="login">Log in</button><button class="btn ghost mag" data-act="auth" data-m="signup">Sign up</button></div><p class="fine load" style="margin-top:2rem">Your details are kept safely in your own browser.</p></div></section>`);
-}
+function gate() { document.body.classList.remove("lock"); if (location.hash === "#/signin") authPage(window.__authMode || "login"); else showcase(); }
 function authSheet(mode) {
   closeModal();
   const v = modal(T`<h2 id="atitle"></h2><p class="muted" id="asub"></p>
@@ -423,27 +1059,28 @@ function authSheet(mode) {
       <label for="ae">Email</label><input id="ae" type="email" autocomplete="email" inputmode="email" maxlength="254">
       <label for="ap">Password</label><div class="pw"><input id="ap" type="password" autocomplete="current-password" maxlength="128"><button type="button" data-act="eye">Show</button></div>
       <div class="meter" id="meter"><i></i><i></i><i></i><i></i></div>
-      <div class="err" id="aerr" role="alert"></div>
+      <div class="err" id="aerr" role="alert"></div><button type="button" class="later" id="forgot" data-act="forgot" style="display:none;margin:0 0 .6rem">Forgot password?</button>
       <button class="btn block" id="asub2" type="submit" style="margin-top:.6rem"><span></span></button></form>
     <p class="fine center" style="margin-top:1rem">Passwords are scrambled in your browser and can never be read back.</p>`);
   v.dataset.mode = mode; setMode(mode, v); return v;
 }
-function setMode(mode, v = $(".veil")) {
+function setMode(mode, v = $("#authbox") || $(".veil")) {
   v.dataset.mode = mode; const s = mode === "signup";
   $("#atitle", v).textContent = s ? "Create your account" : "Welcome back"; $("#asub", v).textContent = s ? "It takes less than a minute." : "Log in to continue.";
   $("#atabs", v).classList.toggle("s", s); $$("#atabs button", v).forEach(b => b.classList.toggle("on", b.dataset.m === mode));
   $("#nameRow", v).style.display = s ? "" : "none"; $("#meter", v).style.display = s ? "" : "none"; $("#ap", v).autocomplete = s ? "new-password" : "current-password";
-  $("#asub2 span", v).textContent = s ? "Create account" : "Log in"; $("#aerr", v).textContent = "";
+  $("#asub2 span", v).textContent = s ? "Create account" : "Log in"; $("#aerr", v).textContent = ""; $("#forgot", v).style.display = CLOUD && !s ? "" : "none"; const pf = $("#prefs", v); if (pf) pf.style.display = s ? "" : "none";
 }
-function formError(msg) { const e = $("#aerr"); if (!e) return toast(msg, true); e.textContent = msg; const s = $(".sheet"); s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); }
+function info(msg) { const e = $("#aerr"); if (!e) return toast(msg); e.style.color = "var(--ok)"; e.textContent = msg; }
+function formError(msg) { const e = $("#aerr"); if (!e) return toast(msg, true); e.style.color = ""; e.textContent = msg; const s = $("#authbox") || $(".sheet"); Mizuki.mood("sad", { say: msg.length < 80 ? msg : "Hmm, something is not right.", ms: 2600 }); s.classList.remove("shake"); void s.offsetWidth; s.classList.add("shake"); }
 addEventListener("input", e => { if (e.target.id === "ap") { const n = strength(e.target.value); $$("#meter i").forEach((i, k) => i.classList.toggle("on", k < n)); } });
 addEventListener("submit", async e => {
   if (e.target.id !== "aform") return; e.preventDefault();
-  const v = $(".veil"), mode = v.dataset.mode, btn = $("#asub2"), label = $("span", btn).textContent; btn.disabled = true; $("span", btn).innerHTML = '<i class="spin"></i>'; $("#aerr").textContent = "";
+  const v = $("#authbox"), mode = v.dataset.mode, btn = $("#asub2"), label = $("span", btn).textContent; btn.disabled = true; $("span", btn).innerHTML = '<i class="spin"></i>'; $("#aerr").textContent = "";
   try {
-    const r = mode === "signup" ? await Auth.signup({ name: $("#an").value, email: $("#ae").value, password: $("#ap").value }) : await Auth.login($("#ae").value, $("#ap").value);
-    closeModal(); await enter(r.session, true);
-  } catch (err) { if (!(err instanceof AppError)) console.error(err); formError(err instanceof AppError ? err.message : "Something went wrong. Please try again."); btn.disabled = false; $("span", btn).textContent = label; }
+    const r = mode === "signup" ? await Auth.signup({ name: $("#an").value, email: $("#ae").value, password: $("#ap").value, prefs: prefList() }) : await Auth.login($("#ae").value, $("#ap").value);
+    await celebrate(); await enter(r.session, true, mode);
+  } catch (err) { if (!(err instanceof AppError)) console.error(err); err && err.code === "confirm" ? info(err.message) : formError(err instanceof AppError ? err.message : "Something went wrong. Please try again."); btn.disabled = false; $("span", btn).textContent = label; }
 });
 
 /* ---------- Google and Apple (light up when the keys are in CONFIG) ---------- */
@@ -455,12 +1092,14 @@ async function viaToken(provider, token, aud, issuers) {
   closeModal(); await enter(Auth.social({ provider, email: c.email, name: c.name }).session, true);
 }
 async function googleLogin() {
+  if (CLOUD) return Cloud.oauth("google").catch(e => formError(e.message));
   if (!CONFIG.GOOGLE_CLIENT_ID) return formError("Google sign-in will be available soon.");
   try { await loadScript("https://accounts.google.com/gsi/client");
     google.accounts.id.initialize({ client_id: CONFIG.GOOGLE_CLIENT_ID, callback: r => viaToken("google", r.credential, CONFIG.GOOGLE_CLIENT_ID, ["accounts.google.com", "https://accounts.google.com"]).catch(e => formError(e.message)) });
     google.accounts.id.prompt(); } catch (e) { formError(e.message); }
 }
 async function appleLogin() {
+  if (CLOUD) return Cloud.oauth("apple").catch(e => formError(e.message));
   if (!CONFIG.APPLE_CLIENT_ID || !CONFIG.APPLE_REDIRECT_URI) return formError("Apple sign-in will be available soon.");
   try { await loadScript("https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js");
     AppleID.auth.init({ clientId: CONFIG.APPLE_CLIENT_ID, scope: "name email", redirectURI: CONFIG.APPLE_REDIRECT_URI, usePopup: true });
@@ -487,10 +1126,12 @@ async function ceremony(kind, user) {
 }
 
 /* ---------- entering the app ---------- */
-async function enter(session, fresh) {
+async function enter(session, fresh, kind) {
   if (session.role === "owner") { if (fresh) await ceremony("owner"); if (!/^#\/o-/.test(location.hash)) location.hash = "#/o-overview"; return shell(); }
   const u = Auth.byId(session.uid); if (fresh) { await ceremony("user", u); u.idShown = true; Auth.put(u); } else toast("Welcome back, " + u.name.split(" ")[0]);
-  if (!/^#\/(?!o-)/.test(location.hash)) location.hash = "#/shop"; shell();
+  if (location.hash === "#/signin" || !/^#\/(?!o-)/.test(location.hash)) location.hash = "#/shop"; shell(); Bag.mergeGuest(); Bag.badge();
+  if (fresh) Mizuki.mood("excited", { say: (kind === "signup" ? "Welcome to Mizuki, " : "Welcome back, ") + u.name.split(" ")[0] + "!", ms: 3800 });
+  if (Bag.pending) { Bag.pending = false; setTimeout(() => Bag.open(), 800); }
 }
 function logout(msg) { Auth.end(); closeDrawer(); closeModal(); location.hash = ""; gate(); if (msg) toast(msg); }
 
@@ -509,34 +1150,44 @@ function shell() {
       <div class="hr"></div>
       ${owner ? T`<button class="nav" style="--i:9" data-act="go" data-p="shop">${raw(IC.shop)}View storefront</button>` : ""}
       <button class="nav" style="--i:10" data-act="logout">${raw(IC.out)}Sign out</button></aside>
-    <main><div class="wrap" id="page"></div></main>`);
+    <main><div class="wrap" id="page"></div></main>${legalFooter()}`);
   render();
 }
 function openDrawer(on) { $("#drawer").classList.toggle("on", on); $(".drawer-veil").classList.toggle("on", on); const b = $(".burger"); b.classList.toggle("open", on); b.setAttribute("aria-expanded", on); }
 const closeDrawer = () => { if ($("#drawer")) openDrawer(false); };
 
 /* ---------- router ---------- */
-function render() {
+let renderSeq = 0;
+async function render() {
   const s = Auth.session(); if (!s) return gate(); if (!$("#page")) return shell();
   const owner = s.role === "owner", p = (location.hash.match(/^#\/([\w-]+)/) || [])[1] || (owner ? "o-overview" : "shop");
   if (p.startsWith("o-") && !owner) { location.hash = "#/shop"; return; }
   if (owner && !p.startsWith("o-") && p !== "shop") { location.hash = "#/o-overview"; return; }
+  const seq = ++renderSeq;
+  if (CLOUD) {   // fetch what this page needs first, with a thin loading bar
+    document.body.classList.add("busy");
+    try { await Cloud.prefetch(p); } catch (e) { if (seq === renderSeq) toast(e.message, true); }
+    document.body.classList.remove("busy");
+    if (seq !== renderSeq || !Auth.session() || !$("#page")) return;
+  }
   const fn = PAGES[p] || PAGES[owner ? "o-overview" : "shop"], el = $("#page");
   el.className = "wrap pg"; el.style.animation = "none"; void el.offsetWidth; el.style.animation = "";
-  mount(el, fn(owner ? null : Auth.byId(s.uid))); afterMount(el); scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  mount(el, fn(owner ? null : Auth.byId(s.uid))); afterMount(el); if (p === "account") Mizuki.mood("happy", { say: "Here is your profile" + (Mizuki.who() ? ", " + Mizuki.who() : "") + ".", ms: 0 }); scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   $$(".nav").forEach(n => n.classList.toggle("on", n.dataset.p === p));
 }
-addEventListener("hashchange", () => { if (location.hash === "#owner-setup") return ownerSetup(); if (Auth.session()) render(); });
-addEventListener("storage", e => { if (e.key === "mz.session" && !Auth.session()) logout(); });
-setInterval(() => { const raw_ = ls.get("session", null); if (!raw_) return; const s = Auth.session(); if (!s) { const u = Auth.byId(raw_.uid); logout(u && u.banned ? "This account has been suspended." : "Your session ended. Please log in again."); } else if (s.role === "user") Auth.touch(s.uid); }, 20000);
+addEventListener("hashchange", () => { if (location.hash === "#owner-setup") return ownerSetup(); if (!Auth.session()) { location.hash === "#/signin" ? authPage(window.__authMode || "login") : showcase(); return; } render(); });
+addEventListener("storage", e => { if ((e.key === "mz.session" || e.key === "mz.cs") && !(CLOUD ? ls.get("cs", null) : Auth.session())) logout(); });
+setInterval(async () => {
+  if (CLOUD) { if (!Cloud.sess) return; const r = await Cloud.heartbeat(); if (r === "banned") logout("This account has been suspended."); else if (r === "expired") logout("Your session ended. Please log in again."); return; }
+  const raw_ = ls.get("session", null); if (!raw_) return; const s = Auth.session(); if (!s) { const u = Auth.byId(raw_.uid); logout(u && u.banned ? "This account has been suspended." : "Your session ended. Please log in again."); } else if (s.role === "user") Auth.touch(s.uid); }, CONFIG.HEARTBEAT_MS || 20000);
 
 /* ---------- storefront pages ---------- */
 const stat = (l, n, f) => T`<div class="stat glass rv"><small>${l}</small><b data-count="${n}" data-fmt="${f || ""}">0</b></div>`;
-const thumb = p => T`<div class="thumb">${safeUrl(p.img) ? raw(`<img src="${esc(safeUrl(p.img))}" alt="${esc(p.name)}" loading="lazy">`) : p.name[0]}</div>`;
+const thumb = p => T`<div class="thumb" data-qv="${p.id}" style="cursor:pointer">${safeUrl(p.img) ? raw(`<img src="${esc(safeUrl(p.img))}" alt="${esc(p.name)}" loading="lazy">`) : p.name[0]}</div>`;
 let shopCat = "All", shopQ = "";
 function productCard(p, u) {
   return T`<article class="card glass rv"><button class="heart ${u.wish.includes(p.id) ? "on" : ""}" data-act="wish" data-id="${p.id}" aria-label="Wishlist">${raw(IC.heart.replace("<svg", "<svg"))}</button>${thumb(p)}<h3>${p.name}</h3><p class="muted" style="font-size:.9rem">${p.desc}</p>
-    <div class="row"><span class="price">${money(p.price)}</span>${p.stock > 0 ? T`<button class="btn sm" data-act="add" data-id="${p.id}">Add to cart</button>` : T`<span class="tag">Sold out</span>`}</div></article>`;
+    <div class="row"><span class="price">${money(p.price)}</span>${p.stock > 0 ? T`<button class="btn sm" data-act="add" data-id="${p.id}">Add to bag</button>` : T`<span class="tag">Sold out</span>`}</div></article>`;
 }
 function shopGrid(u) {
   const list = Shop.products().filter(p => (shopCat === "All" || p.cat === shopCat) && p.name.toLowerCase().includes(shopQ.toLowerCase()));
@@ -585,7 +1236,7 @@ const PAGES = {
       <div class="tbl glass rv"><table><thead><tr><th>Invoice</th><th>Date</th><th>Items</th><th>Amount</th><th>Status</th></tr></thead><tbody>${o.length ? o.map(x => T`<tr><td>${x.id}</td><td>${new Date(x.t).toLocaleDateString("en")}</td><td>${x.items.length}</td><td>${money(x.total)}</td><td><span class="tag">${x.status}</span></td></tr>`) : T`<tr><td colspan="5" class="muted">No invoices yet.</td></tr>`}</tbody></table></div>`;
   },
   security(u) {
-    const a = ls.get("audit", []).filter(x => x.uid === u.uid).slice(0, 8);
+    const a = Audit.list().filter(x => x.uid === u.uid).slice(0, 8);
     return T`<div class="ph"><div><h1>Security</h1><p>Keep your account safe.</p></div></div><div class="two"><div class="card glass pad rv"><h3>Change password</h3>${u.pw ? T`<label for="op">Current password</label><input id="op" type="password" autocomplete="current-password"><label for="np">New password</label><input id="np" type="password" autocomplete="new-password"><div class="err" id="perr"></div><button class="btn" data-act="changePw">Update password</button>` : T`<p class="muted" style="margin-top:.6rem">You sign in with ${u.provider}, so there is no password to change.</p>`}</div>
       <div class="card glass pad rv"><h3>Devices</h3><p class="muted" style="margin:.6rem 0 1rem">Signed in somewhere you do not recognise? Sign out everywhere, this device stays signed in.</p><button class="btn ghost" data-act="outAll">Sign out of all devices</button></div></div>
       <div class="card glass pad rv" style="margin-top:1rem"><h3>Recent activity</h3>${a.map(x => T`<div class="line"><span>${x.msg}</span><span class="muted">${new Date(x.t).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" })}</span></div>`)}</div>`;
@@ -597,9 +1248,9 @@ const PAGES = {
 
   /* ---------- owner console ---------- */
   "o-overview"() {
-    const s = Admin.stats(), a = ls.get("audit", []).slice(0, 8);
+    const s = Admin.stats(), a = Audit.list().slice(0, 8);
     return T`<div class="ph"><div><h1 class="sheen">Owner console</h1><p>Everything about your store in one place.</p></div></div>
-      <div class="note rv"><b>Local mode.</b> This console shows the accounts and orders saved in this browser. To see every customer from every device, connect an online database (see the guide).</div>
+      ${CLOUD ? "" : T`<div class="note rv"><b>Local mode.</b> This console shows the accounts and orders saved in this browser. To see every customer from every device, connect an online database (see the guide).</div>`}
       <div class="stats">${stat("Accounts", s.accounts)}${stat("Online now", s.online)}${stat("Logins today", s.today)}${stat("New this week", s.week)}${stat("Orders", s.orders)}${stat("Revenue", s.revenue, "money")}${stat("Products", s.products)}${stat("Suspended", s.banned)}</div>
       <div class="card glass pad rv"><h3>Recent activity</h3>${a.length ? a.map(x => T`<div class="line"><span>${x.msg}</span><span class="muted">${new Date(x.t).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" })}</span></div>`) : T`<p class="muted">Nothing yet.</p>`}</div>`;
   },
@@ -608,7 +1259,7 @@ const PAGES = {
     return T`<div class="ph"><div><h1>People</h1><p>${l.length} accounts. Passwords are never shown, by design.</p></div></div>
       <div class="tools"><input id="uq" placeholder="Search name, email or ID" aria-label="Search people"></div>
       <div class="tbl glass rv"><table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Via</th><th>Joined</th><th>Last login</th><th>Logins</th><th>Orders</th><th>Status</th><th></th></tr></thead><tbody id="ut">${l.length ? l.map(u => T`<tr data-s="${(u.id + u.name + u.email).toLowerCase()}"><td><b>${u.id}</b></td><td>${u.name}</td><td>${u.email}</td><td>${u.provider}</td><td>${new Date(u.created).toLocaleDateString("en")}</td><td>${new Date(u.last).toLocaleDateString("en")}</td><td>${u.logins}</td><td>${u.orders}</td>
-        <td><span class="tag ${u.banned ? "bad" : "ok"}">${u.banned ? "Suspended" : "Active"}</span></td><td style="white-space:nowrap"><button class="btn ${u.banned ? "ghost" : "danger"} sm" data-act="ban" data-id="${u.uid}" data-v="${u.banned ? 0 : 1}">${u.banned ? "Restore" : "Suspend"}</button> <button class="btn ghost sm" data-act="kick" data-id="${u.uid}">Sign out</button></td></tr>`) : T`<tr><td colspan="10" class="muted">No accounts yet.</td></tr>`}</tbody></table></div>`;
+        <td><span class="tag ${u.banned ? "bad" : "ok"}">${u.banned ? "Suspended" : "Active"}</span></td><td style="white-space:nowrap"><button class="btn ${u.banned ? "ghost" : "danger"} sm" data-act="ban" data-id="${u.uid}" data-v="${u.banned ? 0 : 1}">${u.banned ? "Restore" : "Suspend"}</button> ${CLOUD ? "" : T`<button class="btn ghost sm" data-act="kick" data-id="${u.uid}">Sign out</button>`}</td></tr>`) : T`<tr><td colspan="10" class="muted">No accounts yet.</td></tr>`}</tbody></table></div>`;
   },
   "o-products"() {
     const l = Shop.products();
@@ -628,60 +1279,62 @@ const PAGES = {
   "o-api"() {
     const snip = "SEED_PRODUCTS: " + JSON.stringify(Shop.products());
     return T`<div class="ph"><div><h1>API and export</h1><p>Move your data in and out.</p></div></div>
-      <div class="two"><div class="card glass pad rv"><h3>Publish your products</h3><p class="muted" style="margin:.6rem 0 1rem">Visitors see the products written in the file. After editing products here, copy this snippet, replace SEED_PRODUCTS in CONFIG, and redeploy.</p><button class="btn" data-act="copy" data-w="catalog">Copy catalog snippet</button></div>
+      <div class="two">${CLOUD ? T`<div class="card glass pad rv"><h3>Your products</h3><p class="muted" style="margin:.6rem 0">Products are stored online. Changes made here show for every visitor straight away.</p></div>` : T`<div class="card glass pad rv"><h3>Publish your products</h3><p class="muted" style="margin:.6rem 0 1rem">Visitors see the products written in the file. After editing products here, copy this snippet, replace SEED_PRODUCTS in CONFIG, and redeploy.</p><button class="btn" data-act="copy" data-w="catalog">Copy catalog snippet</button></div>`}
       <div class="card glass pad rv"><h3>Download</h3><p class="muted" style="margin:.6rem 0 1rem">People are exported without passwords.</p><div class="cta-row" style="justify-content:flex-start"><button class="btn ghost sm" data-act="dl" data-w="products">Products</button><button class="btn ghost sm" data-act="dl" data-w="people">People</button><button class="btn ghost sm" data-act="dl" data-w="orders">Orders</button></div></div></div>
-      <div class="card glass pad rv" style="margin-top:1rem"><h3>Online backend</h3><p class="muted" style="margin:.6rem 0">Status: <span class="tag">Not connected</span> Connecting a database gives you every customer, shared wishlists and orders, and real security.</p><pre>${snip.slice(0, 300)}${snip.length > 300 ? "…" : ""}</pre></div>`;
+      <div class="card glass pad rv" style="margin-top:1rem"><h3>Online backend</h3><p class="muted" style="margin:.6rem 0">Status: <span class="tag ${CLOUD ? "ok" : ""}">${CLOUD ? "Connected to Supabase" : "Not connected"}</span> Connecting a database gives you every customer, shared wishlists and orders, and real security.</p><pre>${snip.slice(0, 300)}${snip.length > 300 ? "…" : ""}</pre></div>`;
   },
   "o-settings"() {
     const s = Settings.get();
-    return T`<div class="ph"><div><h1>Settings</h1></div></div><div class="two"><div class="card glass pad rv"><h3>Store</h3><label for="sn">Store name</label><input id="sn" value="${s.name}" maxlength="40"><label for="sd">Stay signed in for</label><select id="sd">${[7, 30, 90].map(d => T`<option value="${d}" ${d === s.days ? "selected" : ""}>${d} days</option>`)}</select>
+    return T`<div class="ph"><div><h1>Settings</h1></div></div><div class="two"><div class="card glass pad rv"><h3>Store</h3><label for="sn">Store name</label><input id="sn" value="${s.name}" maxlength="40">${CLOUD ? "" : T`<label for="sd">Stay signed in for</label><select id="sd">${[7, 30, 90].map(d => T`<option value="${d}" ${d === s.days ? "selected" : ""}>${d} days</option>`)}</select>`}
       <div class="line" style="margin-top:.6rem"><span>Accept new sign-ups</span><button class="sw ${s.open ? "on" : ""}" id="so" data-act="toggleOpen" role="switch" aria-checked="${s.open}" aria-label="Accept new sign-ups"></button></div><button class="btn" data-act="saveSettings" style="margin-top:1rem">Save</button></div>
-      <div class="card glass pad rv"><h3>Danger zone</h3><p class="muted" style="margin:.6rem 0 1rem">Removes every account, order and setting saved in this browser.</p><button class="btn danger" data-act="reset">Erase local data</button></div></div>`;
+      ${CLOUD ? "" : T`<div class="card glass pad rv"><h3>Danger zone</h3><p class="muted" style="margin:.6rem 0 1rem">Removes every account, order and setting saved in this browser.</p><button class="btn danger" data-act="reset">Erase local data</button></div>`}</div>`;
   },
   "o-log"() {
-    const a = ls.get("audit", []);
+    const a = Audit.list();
     return T`<div class="ph"><div><h1>Activity log</h1><p>Sign-ins, bans and orders.</p></div></div><div class="card glass pad rv">${a.length ? a.slice(0, 100).map(x => T`<div class="line"><span><span class="tag">${x.type}</span> ${x.msg}</span><span class="muted">${new Date(x.t).toLocaleString("en", { dateStyle: "medium", timeStyle: "short" })}</span></div>`) : T`<p class="muted">Nothing yet.</p>`}</div>`;
   }
 };
 
 /* ---------- actions (one place for every click) ---------- */
-const need = fn => (...a) => { try { return fn(...a); } catch (e) { if (e instanceof AppError) toast(e.message, true); else { console.error(e); toast("Something went wrong.", true); } } };
+const need = fn => async (...a) => { try { return await fn(...a); } catch (e) { if (e instanceof AppError) toast(e.message, true); else { console.error(e); toast("Something went wrong.", true); } } };
 const download = (name, data) => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); };
 function bump() { const u = Auth.user(); const b = $("#cartBadge"); if (!u || !b) return; b.textContent = Shop.cart(u.uid).reduce((a, l) => a + l.q, 0) || ""; b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }
 function prodForm(p) {
   const v = modal(T`<h2>${p ? "Edit product" : "Add product"}</h2><label for="fn">Name</label><input id="fn" value="${p ? p.name : ""}" maxlength="80"><div class="two"><div><label for="fp">Price (₹)</label><input id="fp" type="number" min="0" value="${p ? p.price : ""}"></div><div><label for="fk">Stock</label><input id="fk" type="number" min="0" value="${p ? p.stock : ""}"></div></div>
-    <label for="fc">Category</label><input id="fc" value="${p ? p.cat : ""}" maxlength="40"><label for="fd">Description</label><textarea id="fd" rows="3" maxlength="300">${p ? p.desc : ""}</textarea><label for="fi">Image link (https only, optional)</label><input id="fi" value="${p ? p.img : ""}" maxlength="500">
+    <label for="fc">Category</label><input id="fc" value="${p ? p.cat : ""}" maxlength="40"><label for="fd">Description</label><textarea id="fd" rows="3" maxlength="300">${p ? p.desc : ""}</textarea><label for="fo">Country of origin</label><input id="fo" value="${p ? p.origin || "India" : "India"}" maxlength="40"><label for="fh">Showcase headline (optional)</label><input id="fh" value="${p ? p.headline || "" : ""}" maxlength="40"><label for="ft">Showcase tagline (optional)</label><input id="ft" value="${p ? p.tagline || "" : ""}" maxlength="90"><label for="fi">Image link (https only, optional)</label><input id="fi" value="${p ? p.img : ""}" maxlength="500">
     <div class="err" id="ferr"></div><button class="btn block" data-act="saveProd" data-id="${p ? p.id : ""}">Save product</button>`);
 }
 const ACT = {
   close: () => closeModal(), drawer: () => openDrawer(!$("#drawer").classList.contains("on")), logout: () => logout("Signed out."),
-  go: a => { closeDrawer(); const p = a.dataset.p; if (location.hash === "#/" + p) render(); else location.hash = "#/" + p; },
-  auth: a => authSheet(a.dataset.m), amode: a => setMode(a.dataset.m), google: googleLogin, apple: appleLogin,
+  go: a => { closeDrawer(); const p = a.dataset.p; if (p === "cart") return Bag.open(); if (location.hash === "#/" + p) render(); else location.hash = "#/" + p; },
+  auth: a => { window.__authMode = a.dataset.m; if (location.hash === "#/signin") authPage(a.dataset.m); else location.hash = "#/signin"; }, amode: a => setMode(a.dataset.m), google: googleLogin, apple: appleLogin,
+  forgot: need(async () => { const e = $("#ae").value.trim().toLowerCase(); if (!validEmail(e)) return formError("Type your email above first."); await Cloud.recover(e); info("If that email has an account, a reset link is on its way."); }),
   eye: a => { const i = $("#ap"); i.type = i.type === "password" ? "text" : "password"; a.textContent = i.type === "password" ? "Show" : "Hide"; },
   cat: a => { shopCat = a.dataset.c; render(); }, wish: need(a => { const u = Auth.user(); const on = Shop.toggleWish(u.uid, a.dataset.id); a.classList.toggle("on", on); toast(on ? "Saved to wishlist" : "Removed from wishlist"); const e = $(".nav em"); if (e) e.textContent = Auth.byId(u.uid).wish.length || ""; if (/wishlist/.test(location.hash)) setTimeout(render, 450); }),
-  add: need(a => { Shop.addToCart(Auth.user().uid, a.dataset.id); bump(); toast("Added to cart"); }),
+  add: a => Bag.add(a.dataset.id),
   qty: need(a => { const u = Auth.user(), c = Shop.cart(u.uid), l = c.find(x => x.pid === a.dataset.id), d = +a.dataset.d; if (d > 0) Shop.addToCart(u.uid, l.pid); else { l.q--; Shop.saveCart(u.uid, c.filter(x => x.q > 0)); } bump(); render(); }),
-  place: need(() => { const o = Shop.place(Auth.user().uid); toast("Order " + o.id + " placed"); bump(); location.hash = "#/orders"; }),
+  place: need(async () => { const o = await Shop.place(Auth.user().uid); toast("Order " + o.id + " placed"); bump(); location.hash = "#/orders"; }),
   saveName: need(() => { const n = $("#pn").value.trim().slice(0, 60); if (!n) throw new AppError("n", "Please enter your name."); const u = Auth.user(); u.name = n; Auth.put(u); toast("Saved"); shell(); }),
   changePw: need(async () => { const e = $("#perr"); e.textContent = ""; try { await Auth.changePassword(Auth.user().uid, $("#op").value, $("#np").value); toast("Password updated"); render(); } catch (x) { e.textContent = x.message; } }),
-  outAll: need(() => { Auth.signOutEverywhere(Auth.user().uid); toast("Signed out of all other devices"); }),
-  ban: need(a => { Admin.ban(a.dataset.id, +a.dataset.v); toast(+a.dataset.v ? "Account suspended" : "Account restored"); render(); }), kick: need(a => { Admin.kick(a.dataset.id); toast("Signed out"); }),
-  status: need(a => { Admin.setStatus(a.dataset.id, a.value); toast("Order updated"); }),
+  outAll: need(async () => { await Auth.signOutEverywhere(Auth.user().uid); toast("Signed out of all other devices"); }),
+  ban: need(async a => { await Admin.ban(a.dataset.id, +a.dataset.v); toast(+a.dataset.v ? "Account suspended" : "Account restored"); render(); }), kick: need(async a => { await Admin.kick(a.dataset.id); toast("Signed out"); }),
+  status: need(async a => { await Admin.setStatus(a.dataset.id, a.value); toast("Order updated"); }),
   editProd: a => prodForm(Shop.products().find(p => p.id === a.dataset.id)),
-  saveProd: need(a => { Admin.guard(); const g = i => $(i).value.trim(), name = g("#fn"), price = +g("#fp"), stock = +g("#fk"), img = g("#fi");
+  saveProd: need(async a => { Admin.guard(); const g = i => $(i).value.trim(), name = g("#fn"), price = +g("#fp"), stock = +g("#fk"), img = g("#fi");
     if (!name || !(price >= 0) || !(stock >= 0) || g("#fp") === "" || g("#fk") === "") return $("#ferr").textContent = "Add a name, price and stock.";
     if (img && !safeUrl(img)) return $("#ferr").textContent = "Image link must start with https://";
-    const l = Shop.products().slice(), id = a.dataset.id, rec = { id: id || "p" + now().toString(36), name, price, stock: Math.floor(stock), cat: g("#fc"), desc: g("#fd"), img };
-    id ? l[l.findIndex(p => p.id === id)] = rec : l.push(rec); Shop.saveProducts(l); audit("product", "owner", name + " saved"); closeModal(); toast("Product saved"); render(); }),
-  delProd: need(a => { Admin.guard(); if (!confirm("Delete this product?")) return; Shop.saveProducts(Shop.products().filter(p => p.id !== a.dataset.id)); toast("Product deleted"); render(); }),
-  carrier: need(a => { Admin.guard(); const c = Settings.get().carriers; c[a.dataset.c] = !c[a.dataset.c]; Settings.set({ carriers: c }); a.classList.toggle("on", c[a.dataset.c]); a.setAttribute("aria-checked", !!c[a.dataset.c]); }),
-  saveShip: need(() => { Admin.guard(); Settings.set({ freeShip: Math.max(0, +$("#fs").value || 0), shipFee: Math.max(0, +$("#sf").value || 0) }); toast("Saved"); }),
+    const l = Shop.products().slice(), id = a.dataset.id, rec = { ...(l.find(p => p.id === id) || {}), id: id || "p" + now().toString(36), name, price, stock: Math.floor(stock), cat: g("#fc"), desc: g("#fd"), img, origin: g("#fo") || "India", headline: g("#fh"), tagline: g("#ft") };
+    id ? l[l.findIndex(p => p.id === id)] = rec : l.push(rec); await Shop.saveProducts(l); audit("product", "owner", name + " saved"); closeModal(); toast("Product saved"); render(); }),
+  delProd: need(async a => { Admin.guard(); if (!confirm("Delete this product?")) return; await Shop.saveProducts(Shop.products().filter(p => p.id !== a.dataset.id)); toast("Product deleted"); render(); }),
+  carrier: need(async a => { Admin.guard(); const c = Settings.get().carriers; c[a.dataset.c] = !c[a.dataset.c]; await Settings.set({ carriers: c }); a.classList.toggle("on", c[a.dataset.c]); a.setAttribute("aria-checked", !!c[a.dataset.c]); }),
+  saveShip: need(async () => { Admin.guard(); await Settings.set({ freeShip: Math.max(0, +$("#fs").value || 0), shipFee: Math.max(0, +$("#sf").value || 0) }); toast("Saved"); }),
   toggleOpen: a => { a.classList.toggle("on"); a.setAttribute("aria-checked", a.classList.contains("on")); },
-  saveSettings: need(() => { Admin.guard(); Settings.set({ name: $("#sn").value.trim().slice(0, 40) || CONFIG.STORE_NAME, days: +$("#sd").value, open: $("#so").classList.contains("on") }); toast("Saved"); shell(); }),
+  saveSettings: need(async () => { Admin.guard(); await Settings.set({ name: $("#sn").value.trim().slice(0, 40) || CONFIG.STORE_NAME, days: $("#sd") ? +$("#sd").value : 30, open: $("#so").classList.contains("on") }); toast("Saved"); shell(); }),
   copy: need(async () => { Admin.guard(); try { await navigator.clipboard.writeText("SEED_PRODUCTS: " + JSON.stringify(Shop.products(), null, 2)); toast("Copied. Paste it into CONFIG."); } catch { toast("Copy was blocked. Use Download instead.", true); } }),
   dl: need(a => { Admin.guard(); const w = a.dataset.w; download("mizuki-" + w + ".json", w === "products" ? Shop.products() : w === "people" ? Admin.users() : Shop.orders()); }),
-  reset: need(() => { Admin.guard(); if (!confirm("Erase ALL local accounts, orders and settings?") ) return; Object.keys(localStorage).filter(k => k.startsWith("mz.")).forEach(k => localStorage.removeItem(k)); logout("Local data erased."); })
+  reset: need(() => { Admin.guard(); if (CLOUD) throw new AppError("cloud", "This is not available when connected online."); if (!confirm("Erase ALL local accounts, orders and settings?") ) return; Object.keys(localStorage).filter(k => k.startsWith("mz.")).forEach(k => localStorage.removeItem(k)); logout("Local data erased."); })
 };
+Object.assign(ACT, homeActs(need));
 document.addEventListener("click", e => { const a = e.target.closest("[data-act]"); if (a && ACT[a.dataset.act] && a.tagName !== "SELECT") ACT[a.dataset.act](a, e); });
 document.addEventListener("change", e => { const a = e.target.closest("select[data-act]"); if (a) ACT[a.dataset.act](a, e); });
 document.addEventListener("input", e => {
@@ -692,15 +1345,33 @@ document.addEventListener("input", e => {
 /* ---------- owner password setup page (#owner-setup) ---------- */
 function ownerSetup() {
   closeModal(); $("#ceremony").className = "";
+  if (CLOUD) return mount($("#root"), T`<section class="gate"><div class="wrap center"><span class="pill glass">Online mode</span><h1 style="font-size:2.4rem">Owner password</h1><p class="lead">In online mode your owner password lives in Supabase (Authentication, Users). Nothing to set up here.</p></div></section>`);
   mount($("#root"), T`<section class="gate"><div class="wrap" style="max-width:640px"><div class="sheet wide glass" style="margin:auto"><h2>Owner password setup</h2><p class="muted">Type the password you want to use as owner. This page scrambles it on your device and shows one line. Paste that line into <b>CONFIG → OWNER_HASH</b>, then redeploy. Your password is not sent anywhere.</p>
     <label for="op1">Owner password (12+ characters)</label><input id="op1" type="password" autocomplete="new-password"><button class="btn" id="mk" style="margin-top:1rem">Create line</button><div class="err" id="oerr"></div><pre id="oout" style="display:none"></pre>
     <p class="fine" style="margin-top:1rem"><a href="#" onclick="location.hash='';location.reload();return false">Back to the site</a></p></div></div></section>`);
   $("#mk").onclick = async () => { const p = $("#op1").value; if (p.length < 12) return $("#oerr").textContent = "Use at least 12 characters."; $("#oerr").textContent = ""; $("#mk").disabled = true; const h = await hashPw(p); $("#oout").style.display = "block"; $("#oout").textContent = "OWNER_HASH: " + JSON.stringify(h) + ","; $("#mk").disabled = false; };
 }
 
+function recoveryModal() {
+  gate(); const v = modal(T`<h2>Choose a new password</h2><p class="muted">Use at least 8 characters.</p><label for="rp">New password</label><input id="rp" type="password" autocomplete="new-password" maxlength="128"><div class="err" id="rerr"></div><button class="btn block" id="rgo">Save password</button>`);
+  $("#rgo").onclick = async () => {
+    const p = $("#rp").value; if (p.length < 8) return $("#rerr").textContent = "Use at least 8 characters.";
+    try { await Cloud.api("/auth/v1/user", { method: "PUT", body: { password: p } }); await Cloud.establish({ ...Cloud.tok }); await Cloud.recordLogin(); closeModal(); await enter(Auth.session(), true); }
+    catch (e) { $("#rerr").textContent = e.message; }
+  };
+}
+
 /* ---------- start ---------- */
-(function boot() {
+(async function boot() {
+  Mizuki.init();
   if (location.hash === "#owner-setup") return ownerSetup();
+  if (CLOUD) {
+    mount($("#root"), T`<section class="gate"><div class="wrap center"><span class="pill glass load">${CONFIG.STORE_NAME}</span></div></section>`);
+    try { await Cloud.init(); } catch (e) { Cloud.notice = e.message; }
+    if (Cloud.recovery) return recoveryModal();
+    const s = Auth.session(); if (s) return enter(s, Cloud.fresh);
+    gate(); if (Cloud.notice) toast(Cloud.notice, true); return;
+  }
   const had = ls.get("session", null), s = Auth.session();
   if (s) return enter(s, false);
   gate(); if (had) { const u = had.uid && Auth.byId(had.uid); toast(u && u.banned ? "This account has been suspended." : "Your session ended. Please log in again.", true); Auth.end(); }
