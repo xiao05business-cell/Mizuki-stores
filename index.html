@@ -241,12 +241,87 @@ const CONFIG = {
   SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhsZmFjcXR2eW5vbXd2Zm16c2VpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1Mjc1MjQsImV4cCI6MjExMTEwMzUyNH0.sXps4r14B4U8I6hJmaT2VPmhehjx8yKP37x7isqYNxI",
   HEARTBEAT_MS: 20000,
   // Products every visitor sees. Edit in the owner console, then use API > Copy catalog snippet to paste here.
-  SEED_PRODUCTS: [ { id: "p1", name: "Mizuki Studio ANC Headphones", price: 6999, stock: 25, cat: "Tech & Audio", art: "headphones", origin: "India", headline: "Silence, Perfected.", tagline: "Adaptive noise cancelling in a champagne-brushed frame.", desc: "Adaptive noise cancelling in a champagne-brushed frame.", img: "" },
-    { id: "p2", name: "Chrono Espresso Edition", price: 8499, stock: 12, cat: "Fashion & Carry", art: "watch", origin: "India", headline: "Time, Roasted Slow.", tagline: "A bronze-dial chronograph on a deep espresso strap.", desc: "A bronze-dial chronograph on a deep espresso strap.", img: "" },
-    { id: "p3", name: "Artisan Pour-Over Vessel", price: 2299, stock: 30, cat: "Home & Living", art: "vessel", origin: "India", headline: "Pour. Pause. Savour.", tagline: "Hand-finished ceramic and brushed brass.", desc: "Hand-finished ceramic and brushed brass.", img: "" },
-    { id: "p4", name: "Obsidian Leather Weekender", price: 9999, stock: 8, cat: "Fashion & Carry", art: "bag", origin: "India", headline: "Carry Everything. Quietly.", tagline: "Full-grain leather with a quiet champagne zip.", desc: "Full-grain leather with a quiet champagne zip.", img: "" },
-    { id: "p5", name: "Washed linen throw", price: 1499, stock: 20, cat: "Home & Living", art: "", origin: "India", headline: "", tagline: "", desc: "Washed linen that softens with every wash.", img: "" },
-    { id: "p6", name: "Leather card holder", price: 899, stock: 40, cat: "Fashion & Carry", art: "", origin: "India", headline: "", tagline: "", desc: "Vegetable-tanned leather, hand stitched.", img: "" }],
+  const SEED_PRODUCTS = [
+  {
+    id: "p1",
+    name: "Mizuki Studio ANC Headphones",
+    price: 6999,
+    stock: 25,
+    cat: "Tech & Audio",
+    art: "headphones",
+    origin: "India",
+    headline: "Silence, Perfected.",
+    tagline: "Adaptive noise cancelling in a champagne-brushed frame.",
+    desc: "Adaptive noise cancelling in a champagne-brushed frame.",
+    img: ""
+  },
+  {
+    id: "p2",
+    name: "Chrono Espresso Edition",
+    price: 8499,
+    stock: 12,
+    cat: "Fashion & Carry",
+    art: "watch",
+    origin: "India",
+    headline: "Time, Roasted Slow.",
+    tagline: "A bronze-dial chronograph on a deep espresso strap.",
+    desc: "A bronze-dial chronograph on a deep espresso strap.",
+    img: ""
+  },
+  {
+    id: "p3",
+    name: "Artisan Pour-Over Vessel",
+    price: 2299,
+    stock: 30,
+    cat: "Home & Living",
+    art: "vessel",
+    origin: "India",
+    headline: "Pour. Pause. Savour.",
+    tagline: "Hand-finished ceramic and brushed brass.",
+    desc: "Hand-finished ceramic and brushed brass.",
+    img: ""
+  },
+  {
+    id: "p4",
+    name: "Obsidian Leather Weekender",
+    price: 9999,
+    stock: 8,
+    cat: "Fashion & Carry",
+    art: "bag",
+    origin: "India",
+    headline: "Carry Everything. Quietly.",
+    tagline: "Full-grain leather with a quiet champagne zip.",
+    desc: "Full-grain leather with a quiet champagne zip.",
+    img: ""
+  },
+  {
+    id: "p5",
+    name: "Washed Linen Throw",
+    price: 1499,
+    stock: 20,
+    cat: "Home & Living",
+    art: "throw",
+    origin: "India",
+    headline: "Draped in Calm.",
+    tagline: "Airy, stone-washed linen that softens with every wash.",
+    desc: "Washed linen that softens with every wash.",
+    img: ""
+  },
+  {
+    id: "p6",
+    name: "Leather Card Holder",
+    price: 899,
+    stock: 40,
+    cat: "Fashion & Carry",
+    art: "wallet",
+    origin: "India",
+    headline: "Essentials, Streamlined.",
+    tagline: "Hand-stitched, vegetable-tanned leather built to patina.",
+    desc: "Vegetable-tanned leather, hand stitched.",
+    img: ""
+  }
+];
+
   // Razorpay Key ID (starts with rzp_test_ or rzp_live_). Empty = checkout offers a clearly marked DEMO order.
   RAZORPAY_KEY_ID: "",
   // Shown in the footer. Required by India's Consumer Protection (E-Commerce) Rules, 2020.
