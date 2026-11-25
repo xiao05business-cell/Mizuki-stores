@@ -230,15 +230,18 @@ const CONFIG = {
   OWNER_EMAIL: "zian.xi.005@gmail.com",
   // Owner password check. Leave null, open  YOURSITE/#owner-setup , type your password,
   // copy the line it shows and paste it here instead of null. Then redeploy.
-  OWNER_HASH: {"s":"JcOcqLrTQX5iD1SZJZuGQw==","i":310000,"h":"3NoIfKuqzwNY9n8sGijXMtq7fM7r2P0Wsm6X5LRVfzk="},
+  OWNER_HASH: null,
   // Add these when you have the keys (see the guide). Empty = the button shows a notice.
   GOOGLE_CLIENT_ID: "",
   APPLE_CLIENT_ID: "",
   APPLE_REDIRECT_URI: "",
   // ONLINE MODE: fill both lines (see SETUP-SUPABASE.md) and every customer from every device appears in the owner console.
+  // SUPABASE_URL looks like  https://abcdxyz.supabase.co   (extra text after .supabase.co is ignored).
+  // SUPABASE_ANON_KEY is the PUBLISHABLE key (sb_publishable_...) or the older anon public key. NEVER a secret / service_role key.
+  // When online mode is ON, products come from your Supabase database, not from SEED_PRODUCTS below.
   // Leave them empty to keep everything in each visitor's own browser.
-  SUPABASE_URL: "https://xlfacqtvynomwvfmzsei.supabase.co/rest/v1/",
-  SUPABASE_ANON_KEY: "sb_publishable_12L2EKpWUZJkKOi_OsLsvg_VxzIETwD",
+  SUPABASE_URL: "",
+  SUPABASE_ANON_KEY: "",
   HEARTBEAT_MS: 20000,
   // Products every visitor sees. Edit in the owner console, then use API > Copy catalog snippet to paste here.
   SEED_PRODUCTS: [
@@ -255,7 +258,9 @@ const CONFIG = {
   BUSINESS: { name: "Mizuki Stores", region: "Rajasthan, India", email: "zian.xi.005@gmail.com", whatsapp: "7688874076", grievance: "xiao" }
 };
 
-const CLOUD = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
+const keyRole = k => { try { return JSON.parse(atob(String(k).split(".")[1].replace(/-/g, "+").replace(/_/g, "/"))).role || ""; } catch { return ""; } };
+const keySecret = k => /^sb_secret_/.test(k) || keyRole(k) === "service_role";   // a secret key must never be in a website file
+const CLOUD = !!(String(CONFIG.SUPABASE_URL || "").trim() && String(CONFIG.SUPABASE_ANON_KEY || "").trim()) && !keySecret(String(CONFIG.SUPABASE_ANON_KEY).trim());
 
 /* ---------------------------------------------------------------
    2. Small helpers. Everything shown on screen goes through T`` which escapes it.
@@ -455,7 +460,7 @@ const Admin = {
 <!-- ================= CLOUD MODE: used only when SUPABASE_URL and SUPABASE_ANON_KEY are filled in CONFIG ================= -->
 <script id="cloud">
 "use strict";
-const Cloud = { on: CLOUD, base: String(CONFIG.SUPABASE_URL || "").replace(/\/+$/, ""), key: CONFIG.SUPABASE_ANON_KEY || "",
+const Cloud = { on: CLOUD, base: (() => { const u = String(CONFIG.SUPABASE_URL || "").trim(); try { return new URL(u).origin; } catch { return u.replace(/\/+$/, ""); } })(), key: String(CONFIG.SUPABASE_ANON_KEY || "").trim(), down: false,
   tok: null, sess: null, me: null, products: [], settings: {}, users: [], orders: [], audit: [], recovery: false, fresh: false, notice: "", external: null };
 if (Cloud.on) {
   /* ---------- talking to Supabase (plain fetch, no library) ---------- */
@@ -474,7 +479,8 @@ if (Cloud.on) {
   };
   Cloud.api = async (path, o = {}) => {
     if (o.auth !== false && !o.token && Cloud.tok) await Cloud.ensure();
-    const token = o.token || (o.auth === false ? null : Cloud.tok && Cloud.tok.access_token), h = { apikey: Cloud.key, "Content-Type": "application/json", Authorization: "Bearer " + (token || Cloud.key) };
+    const token = o.token || (o.auth === false ? null : Cloud.tok && Cloud.tok.access_token), h = { apikey: Cloud.key, "Content-Type": "application/json" }, bearer = token || (/^eyJ/.test(Cloud.key) ? Cloud.key : "");
+    if (bearer) h.Authorization = "Bearer " + bearer;
     if (o.prefer) h.Prefer = o.prefer;
     let r; try { r = await fetch(Cloud.base + path, { method: o.method || "GET", headers: h, body: o.body === undefined ? undefined : JSON.stringify(o.body) }); } catch { throw new AppError("net", "Can't reach the store. Check your internet connection."); }
     const t = await r.text(); let j = null; try { j = t ? JSON.parse(t) : null; } catch {}
@@ -494,7 +500,10 @@ if (Cloud.on) {
     created: Date.parse(p.created_at), last: Date.parse(p.last_login), seen: Date.parse(p.last_seen), logins: p.logins, banned: !!p.banned, wish: Array.isArray(p.wish) ? p.wish : [], idShown: !!p.id_shown, prefs: Array.isArray(p.prefs) ? p.prefs : [] });
   Cloud.mapOrder = o => ({ policy_accepted: o.policy_accepted, policy_accepted_at: o.policy_accepted_at, pay_ref: o.pay_ref, id: o.id, uid: o.user_id, items: o.items, sub: o.sub, ship: o.ship, total: o.total, status: o.status, t: Date.parse(o.created_at), history: o.history || [] });
   Cloud.mapProduct = p => ({ id: p.id, name: p.name, price: p.price, stock: p.stock, cat: p.cat, desc: p.descr, img: p.img, headline: p.headline, tagline: p.tagline, art: p.art, origin: p.origin });
-  Cloud.loadPublic = async () => { const [pr, st] = await Promise.all([Cloud.api("/rest/v1/products?select=*&order=name.asc"), Cloud.api("/rest/v1/settings?key=eq.store&select=value")]); Cloud.products = pr.map(Cloud.mapProduct); Cloud.settings = st[0] ? st[0].value : {}; };
+  Cloud.loadPublic = async () => {
+    try { const [pr, st] = await Promise.all([Cloud.api("/rest/v1/products?select=*&order=name.asc"), Cloud.api("/rest/v1/settings?key=eq.store&select=value")]); Cloud.products = pr.map(Cloud.mapProduct); Cloud.settings = st[0] ? st[0].value : {}; Cloud.down = false; }
+    catch (e) { Cloud.down = true; if (!Cloud.products.length) Cloud.products = JSON.parse(JSON.stringify(CONFIG.SEED_PRODUCTS)); throw e; }
+  };
   Cloud.loadMe = async uid => { const r = await Cloud.api("/rest/v1/profiles?id=eq." + uid + "&select=*"); Cloud.me = r[0] ? Cloud.mapUser(r[0]) : null; };
   Cloud.loadUsers = async () => { Cloud.users = (await Cloud.api("/rest/v1/profiles?select=*&order=created_at.desc&limit=1000")).map(Cloud.mapUser); };
   Cloud.loadOrders = async () => { Cloud.orders = (await Cloud.api("/rest/v1/orders?select=*&order=created_at.desc&limit=500")).map(Cloud.mapOrder); };
@@ -607,6 +616,7 @@ if (Cloud.on) {
   Shop.orders = () => Cloud.orders;
   Shop.toggleWish = (uid, pid) => { const u = Cloud.me, i = u.wish.indexOf(pid); i < 0 ? u.wish.push(pid) : u.wish.splice(i, 1); Cloud.saveMe().catch(e => toast(e.message, true)); return i < 0; };
   Shop.place = async (uid, opt = {}) => {
+    if (Cloud.down) throw new AppError("down", "The live store is not reachable right now, so checkout is paused. Please try again soon.");
     const c = Shop.cart(uid); if (!c.length) throw new AppError("empty", "Your cart is empty.");
     const r = await Cloud.api("/rest/v1/rpc/place_order", { method: "POST", body: { p_items: c.map(l => ({ pid: l.pid, q: l.q })), p_policy: !!(opt.policy && opt.policy.accepted), p_pay_ref: opt.payId || "DEMO" } });
     Shop.saveCart(uid, []); await Promise.all([Cloud.loadPublic(), Cloud.loadOrders()]); return Cloud.orders.find(o => o.id === r.id) || { id: r.id, total: r.total };
@@ -919,7 +929,7 @@ const chapter = (p, i) => T`<section class="chapter ${i % 2 ? "alt" : ""}" id="c
 function showcase() {
   const feat = Shop.products().filter(p => p.stock > 0).slice(0, 4), n = Bag.count();
   document.body.classList.remove("lock"); Mizuki.close(); closeModal(); if ($("#ceremony")) $("#ceremony").className = "";
-  mount($("#root"), T`<nav class="nav2 glass" aria-label="Main"><button class="logo" data-act="home"><i></i><span>${storeName()}</span></button>
+  mount($("#root"), T`${CLOUD && Cloud.down ? T`<div class="note" role="alert" style="position:fixed;top:84px;left:50%;transform:translateX(-50%);z-index:49;width:min(640px,100% - 1.4rem);margin:0;background:rgba(26,17,13,.95)"><b>Store connection problem.</b> Showing sample pieces and checkout is paused. Open <a href="#/debug" style="color:var(--gold)">#/debug</a> to see what to fix.</div>` : ""}<nav class="nav2 glass" aria-label="Main"><button class="logo" data-act="home"><i></i><span>${storeName()}</span></button>
       <button class="lnk hide" data-scroll="c1">Collection</button><button class="lnk hide" data-scroll="bento">Why Mizuki</button><button class="lnk" data-act="mzopen">Mizuki AI</button>
       <button class="lnk" data-act="bag" aria-label="Open bag">Bag <span class="badge" id="bagCount">${n || ""}</span></button>
       <button class="pillbtn fill" data-act="auth" data-m="login" style="padding:.5rem 1.2rem">Sign In</button></nav>
@@ -965,6 +975,26 @@ function authPage(mode = "login") {
   box.addEventListener("input", e => { if (e.target.matches("input")) { const r = e.target.getBoundingClientRect(); Face.lookAt(r.left + Math.min(r.width - 10, 20 + e.target.value.length * 9), r.top + r.height / 2); } });
   box.addEventListener("focusout", e => { if (e.target.id === "ae" && e.target.value && !validEmail(e.target.value.trim().toLowerCase())) Mizuki.mood("sad", { say: "Hmm, that email doesn't look right.", ms: 2600 }); if (e.target.id === "aph" && e.target.value && !/^[6-9]\d{9}$/.test(e.target.value)) Mizuki.mood("sad", { say: "That mobile number looks off. It should be 10 digits.", ms: 2600 }); });
   Mizuki.mood("happy", { say: mode === "signup" ? "Let's get you a member pass!" : "Welcome back! Sign in and I'll have your bag ready.", ms: 0 });
+}
+async function debugPage() {
+  closeModal(); document.body.classList.remove("lock");
+  const raw_ = String(CONFIG.SUPABASE_URL || "").trim(), key = String(CONFIG.SUPABASE_ANON_KEY || "").trim(), rows = [], add = (ok, t, h) => rows.push({ ok, t, h: h || "" });
+  let origin = ""; try { origin = new URL(raw_).origin; } catch {}
+  add(!!raw_ && !!origin, "SUPABASE_URL: " + (origin || "missing or not a web address"), !raw_ ? "Paste your Project URL (like https://abcdxyz.supabase.co) into CONFIG." : !origin ? "It must start with https://" : (raw_.replace(/\/+$/, "") !== origin ? "Your address had extra text after .supabase.co (for example /rest/v1/). The site now ignores that, but you can delete it." : ""));
+  const kind = !key ? "missing" : /^sb_publishable_/.test(key) ? "publishable key (correct)" : keySecret(key) ? "SECRET KEY (dangerous)" : keyRole(key) === "anon" ? "legacy anon key (correct)" : "not recognised";
+  add(!!key && !keySecret(key) && kind !== "not recognised", "SUPABASE_ANON_KEY: " + kind + (key ? " (" + key.length + " characters)" : ""), !key ? "Paste the publishable (or anon public) key into CONFIG." : keySecret(key) ? "Never put a secret or service_role key in the website. Online mode is switched off until you replace it with the publishable key." : kind === "not recognised" ? "It should start with sb_publishable_ (or eyJ for the older anon key). Check you copied the right one, with no spaces or line breaks." : "");
+  add(CLOUD, "Online mode is " + (CLOUD ? "ON" : "OFF"), CLOUD ? "" : "Fill in both lines above to turn it on. Until then products come from SEED_PRODUCTS in the file and everything stays in each visitor's browser.");
+  if (CLOUD) {
+    const call_ = async (path) => { try { const r = await fetch(Cloud.base + path, { headers: { apikey: Cloud.key, ...(/^eyJ/.test(Cloud.key) ? { Authorization: "Bearer " + Cloud.key } : {}) } }); let b = null; try { b = await r.json(); } catch {} return { st: r.status, b }; } catch (e) { return { st: 0, b: null }; } };
+    const a = await call_("/auth/v1/settings"); add(a.st === 200, "Login service answers (" + (a.st || "no reply") + ")", a.st === 0 ? "Cannot reach the address. Check the URL for typos and your internet." : a.st === 401 || a.st === 403 ? "The key was refused. Check you copied the right key." : a.st !== 200 ? "Unexpected reply." : "");
+    const p = await call_("/rest/v1/products?select=id&limit=3"); add(p.st === 200, "Products table reachable (" + (p.st || "no reply") + ")", p.st === 404 ? "The database tables do not exist yet. In Supabase open SQL Editor and run supabase-setup.sql (see SETUP-SUPABASE.md)." : p.st === 401 ? "The key was refused for the database. Use the publishable key, not a secret one." : p.st === 0 ? "Cannot reach the database." : p.st !== 200 ? ((p.b && p.b.message) || "Unexpected reply.") : "");
+    if (p.st === 200) add(Array.isArray(p.b) && p.b.length > 0, "Products found: " + (Array.isArray(p.b) ? p.b.length : 0) + (Array.isArray(p.b) && p.b.length >= 3 ? " or more" : ""), Array.isArray(p.b) && p.b.length ? "" : "The table is empty. Run supabase-setup.sql, or add products in the owner console.");
+    const st = await call_("/rest/v1/settings?select=key&limit=3"); add(st.st === 200, "Settings table reachable (" + (st.st || "no reply") + ")", st.st === 404 ? "Run supabase-setup.sql." : "");
+  }
+  const good = rows.every(r => r.ok);
+  mount($("#root"), T`<section class="authwrap"><div class="wrap" style="max-width:720px"><h1 style="font-family:var(--sans);font-weight:600;letter-spacing:-.03em;font-size:2.2rem">Connection check</h1><p class="muted" style="margin:.4rem 0 1.4rem">No secrets are shown here.</p>
+    <div class="glass pad">${rows.map(r => T`<div class="line" style="align-items:flex-start"><span style="color:${r.ok ? "var(--ok)" : "var(--danger)"};font-size:1.2rem">${r.ok ? "✓" : "✗"}</span><div style="flex:1"><div>${r.t}</div>${r.h ? T`<small class="muted">${r.h}</small>` : ""}</div></div>`)}</div>
+    <p style="margin-top:1.2rem;color:${good ? "var(--ok)" : "var(--warn)"}">${good ? "Everything looks good." : "Fix the items marked ✗ and reload this page."}</p><button class="pillbtn fill" style="margin-top:1rem" onclick="location.hash='';location.reload()">← Back to the store</button></div></section>`);
 }
 function homeActs(need) {
   const phone = () => $("#aph").value.trim();
@@ -1175,7 +1205,7 @@ async function render() {
   mount(el, fn(owner ? null : Auth.byId(s.uid))); afterMount(el); if (p === "account") Mizuki.mood("happy", { say: "Here is your profile" + (Mizuki.who() ? ", " + Mizuki.who() : "") + ".", ms: 0 }); scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   $$(".nav").forEach(n => n.classList.toggle("on", n.dataset.p === p));
 }
-addEventListener("hashchange", () => { if (location.hash === "#owner-setup") return ownerSetup(); if (!Auth.session()) { location.hash === "#/signin" ? authPage(window.__authMode || "login") : showcase(); return; } render(); });
+addEventListener("hashchange", () => { if (location.hash === "#owner-setup") return ownerSetup(); if (location.hash === "#/debug") return debugPage(); if (!Auth.session()) { location.hash === "#/signin" ? authPage(window.__authMode || "login") : showcase(); return; } render(); });
 addEventListener("storage", e => { if ((e.key === "mz.session" || e.key === "mz.cs") && !(CLOUD ? ls.get("cs", null) : Auth.session())) logout(); });
 setInterval(async () => {
   if (CLOUD) { if (!Cloud.sess) return; const r = await Cloud.heartbeat(); if (r === "banned") logout("This account has been suspended."); else if (r === "expired") logout("Your session ended. Please log in again."); return; }
@@ -1365,6 +1395,7 @@ function recoveryModal() {
 (async function boot() {
   Mizuki.init();
   if (location.hash === "#owner-setup") return ownerSetup();
+  if (location.hash === "#/debug") return debugPage();
   if (CLOUD) {
     mount($("#root"), T`<section class="gate"><div class="wrap center"><span class="pill glass load">${CONFIG.STORE_NAME}</span></div></section>`);
     try { await Cloud.init(); } catch (e) { Cloud.notice = e.message; }
